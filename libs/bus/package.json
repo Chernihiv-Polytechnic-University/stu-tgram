@@ -1,0 +1,25 @@
+{
+  "name": "domain-model",
+  "version": "0.0.1",
+  "description": "See README.md",
+  "main": "dist/index.js",
+  "scripts": {
+    "clean": "rm -rf dist node_modules",
+    "compile": "npm run clean && npm i && tsc -p tsconfig.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://iskryzhytskyi@bitbucket.org/iskryzhytskyi/utb.git"
+  },
+  "author": "a.iskryzhytskyi",
+  "license": "UNLICENSED",
+  "homepage": "https://bitbucket.org/iskryzhytskyi/utb#readme",
+  "devDependencies": {
+    "@types/node": "^12.7.2",
+    "@types/body-parser": "^1.17.1",
+    "typescript": "^3.5.3"
+  },
+  "dependencies": {
+    "body-parser": "^1.19.0"
+  }
+}
