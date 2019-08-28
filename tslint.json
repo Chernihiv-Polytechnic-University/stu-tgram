@@ -5,6 +5,14 @@
     "no-unused-variable": true,
     "semicolon": [true, "never"],
     "only-arrow-functions": true,
-    "max-line-length": [true, 120]
+    "max-line-length": [true, 120],
+    "variable-name": {
+      "options": [
+        "ban-keywords",
+        "allow-leading-underscore",
+        "allow-pascal-case"
+      ]
+    },
+    "align": false
   }
 }
