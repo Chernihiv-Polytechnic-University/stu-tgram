@@ -1,0 +1,10 @@
+{
+  "extends": "tslint-config-airbnb",
+  "rules": {
+    "quotemark": [true, "single"],
+    "no-unused-variable": true,
+    "semicolon": [true, "never"],
+    "only-arrow-functions": true,
+    "max-line-length": [true, 120]
+  }
+}
