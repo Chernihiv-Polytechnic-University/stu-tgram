@@ -1,4 +1,4 @@
-components/telegram-back/dist
+dist
 x-local
 .env*
 .npmrc
