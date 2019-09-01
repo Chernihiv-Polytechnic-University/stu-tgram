@@ -1,9 +1,13 @@
 import * as mongoose from 'mongoose'
 
+const READY_STATE_CONNECTED = 1
+
 export * from './schema/User'
 export * from './schema/Info'
 export * from './schema/Request'
 export * from './schema/TelegramUser'
+export * from './schema/Log'
+export * from './schema/Lesson'
 
 export interface ConnectConfig {
   host: string
@@ -22,3 +26,7 @@ export const connect = (config: ConnectConfig): Promise<any> => {
     useFindAndModify: false,
   })
 }
+
+export const checkIsConnected = () => mongoose.connection.readyState === READY_STATE_CONNECTED
+
+export { mongoose }

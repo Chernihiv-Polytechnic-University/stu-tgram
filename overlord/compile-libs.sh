@@ -7,10 +7,15 @@ componentPath="$rootPath"/"$1"
 targetDir="$componentPath"/node_modules/libs
 libsPath="$rootPath"/libs
 
-mkdir $targetDir
+mkdir -p $targetDir
 
+IFS=' ' read -r -a neededLibsList <<< "$*"
 for libPath in $libsPath/*; do
-  npm run compile --prefix $libPath
   libName=$(basename $libPath)
-  cp $libPath/dist $targetDir/$libName -r
+  for element in "${neededLibsList[@]}"; do
+    if [[ $element == $libName ]]; then
+      npm run compile-component --prefix $libPath
+      cp $libPath/dist $targetDir/$libName -r
+    fi
+  done
 done
