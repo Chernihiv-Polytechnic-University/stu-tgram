@@ -8,6 +8,7 @@ export * from './schema/Request'
 export * from './schema/TelegramUser'
 export * from './schema/Log'
 export * from './schema/Lesson'
+export * from './schema/Metric'
 
 export interface ConnectConfig {
   host: string

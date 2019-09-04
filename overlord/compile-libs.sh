@@ -13,8 +13,8 @@ IFS=' ' read -r -a neededLibsList <<< "$*"
 for libPath in $libsPath/*; do
   libName=$(basename $libPath)
   for element in "${neededLibsList[@]}"; do
-    if [[ $element == $libName ]]; then
-      npm run compile-component --prefix $libPath
+    if [[ $element == $libName || $element == "all" ]]; then
+      npm run compile --prefix $libPath
       cp $libPath/dist $targetDir/$libName -r
     fi
   done

@@ -10,7 +10,12 @@ TODO
 TODO
 ### Structure of code
 * overlord - bash scripts and files to build, run, test project components
-* libs - shared code or code for specific things
+* libs - shared code or code for specific things  
+IMPORTANT - libs don't support versions, so you can't make  not backward-compatible changes
+    * logger - log important events
+    * metrics - collect metrics to get in mind how system is used
+    * domain-model - MongoDB interface
+    * xlsx-parser - parse data in xlsx format
 * components - components of the utb system
     * api - API for admin UI
     * telegram-handler - app responsible for handling telegram bot

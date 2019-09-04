@@ -13,6 +13,7 @@
         "allow-pascal-case"
       ]
     },
+    "import-name": false,
     "align": false
   }
 }
