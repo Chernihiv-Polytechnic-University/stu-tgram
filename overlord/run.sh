@@ -11,5 +11,5 @@ fi
 
 if [[ "$1" == *service* ]]
 then
-    docker-compose -f "$rootPath"/overlord/docker/"$2"-compose -p utb up -d
+    docker-compose -f "$rootPath"/overlord/docker/"$2"-compose -p ucs up -d
 fi
