@@ -1,0 +1,35 @@
+{
+  "name": "telegram-back",
+  "version": "0.0.1",
+  "description": "See README.md",
+  "main": "dist/main.js",
+  "scripts": {
+    "clean": "rm -rf dist node_modules",
+    "compile": "npm run clean && npm i && npm run compile-libs && npm run compile-component",
+    "compile-component": "tsc -p tsconfig.json",
+    "compile-libs": "../../overlord/compile-libs.sh components/telegram-back logger metrics bus domain-model",
+    "dev": "./node_modules/.bin/nodemon -e ts --watch 'src/app' --exec 'npm run compile-component && node dist/main.js'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://iskryzhytskyi@bitbucket.org/iskryzhytskyi/utb.git"
+  },
+  "author": "a.iskryzhytskyi",
+  "license": "UNLICENSED",
+  "homepage": "https://bitbucket.org/iskryzhytskyi/utb#readme",
+  "devDependencies": {
+    "@types/config": "0.0.34",
+    "@types/lodash": "^4.14.137",
+    "@types/node": "^12.7.2",
+    "@types/node-telegram-bot-api": "^0.31.0",
+    "@types/mongoose": "^5.5.17",
+    "nodemon": "^1.19.1",
+    "typescript": "^3.5.3"
+  },
+  "dependencies": {
+    "config": "^3.2.2",
+    "mongoose": "^5.6.12",
+    "lodash": "^4.17.15",
+    "node-telegram-bot-api": "^0.30.0"
+  }
+}

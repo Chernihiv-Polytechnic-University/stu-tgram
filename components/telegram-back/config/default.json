@@ -1,0 +1,9 @@
+{
+  "T_BOT_TOKEN": "964311977:AAEZZizZQuNnhcOH4ozfl-toZ-g4_Dq9C74",
+  "MONGODB": {
+    "HOST": "localhost",
+    "DATABASE": "CNTU_UCSDOSSG",
+    "USER": "root",
+    "PASSWORD": "zxc123zxc123plkjn"
+  }
+}

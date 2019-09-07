@@ -1,0 +1,12 @@
+{
+  "hello": "Привіт, {username}, будемо знайомі!",
+  "whatIsLesson": "Яка пара?",
+  "schedule": "Який Розклад?",
+  "questionAnswer": "Питання та відповіді.",
+  "aboutBot": "Що за бот такий?",
+  "letsGetAcquainted": "Давай познайомимось!",
+  "whyIShouldGetAcquainted": "Чому я повинен знайомитися?",
+  "requests": "Запит до деканату.",
+  "settings": "Налаштування.",
+  "feedback": "Залишити відгук."
+}
