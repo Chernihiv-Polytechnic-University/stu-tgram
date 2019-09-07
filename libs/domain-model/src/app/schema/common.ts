@@ -4,3 +4,8 @@ export interface File {
   name: string,
   data: any,
 }
+
+export interface Group {
+  name: string,
+  subgroupNumber: number,
+}

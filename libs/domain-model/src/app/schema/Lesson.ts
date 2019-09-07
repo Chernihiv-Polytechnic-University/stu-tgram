@@ -1,4 +1,5 @@
 import * as mongoose from 'mongoose'
+import { Group } from './common'
 
 export interface LessonAttributes {
   isExist: boolean,
@@ -8,10 +9,7 @@ export interface LessonAttributes {
   name?: string,
   auditory?: string,
   week: number,
-  group: {
-    name: string,
-    subgroupNumber: number,
-  },
+  group: Group,
   teacher?: {
     name?: string,
   },
