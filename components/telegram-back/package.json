@@ -18,18 +18,20 @@
   "license": "UNLICENSED",
   "homepage": "https://bitbucket.org/iskryzhytskyi/utb#readme",
   "devDependencies": {
+    "@types/bluebird": "^3.5.27",
     "@types/config": "0.0.34",
     "@types/lodash": "^4.14.137",
+    "@types/mongoose": "^5.5.17",
     "@types/node": "^12.7.2",
     "@types/node-telegram-bot-api": "^0.31.0",
-    "@types/mongoose": "^5.5.17",
     "nodemon": "^1.19.1",
     "typescript": "^3.5.3"
   },
   "dependencies": {
+    "bluebird": "^3.5.5",
     "config": "^3.2.2",
-    "mongoose": "^5.6.12",
     "lodash": "^4.17.15",
+    "mongoose": "^5.6.12",
     "node-telegram-bot-api": "^0.30.0"
   }
 }
