@@ -1,38 +1,39 @@
-// TODO find the way to avoid Error: document is larger than the maximum size 16777216
-import { MetricModel, MetricAttributes, MetricData } from 'libs/domain-model'
+import { MetricHeaderModel, MetricRecordModel, MetricHeaderAttributes, MetricRecordAttributes } from 'libs/domain-model'
 
-export interface MetricSaveInput {
+export interface MetricCountInput {
   timestamp?: number,
   value: number
 }
 
 export interface MetricHandler {
-  count(input: MetricSaveInput): void
+  count(input: MetricCountInput): void
   save(): Promise<void>
+  countAndSave(input: MetricCountInput): Promise<void>
 }
 
-const createCount = (dataStore: MetricData[]) => (input: MetricSaveInput) => {
+const createCount = (dataStore: Partial<MetricRecordAttributes>[]) => (input: MetricCountInput) => {
   const timestamp = input.timestamp || Date.now()
   dataStore.push({ timestamp, value: input.value })
 }
 
-const createSave = (dataStore: MetricData[], workingMetricId: any) => async () => {
-  await MetricModel.updateOne({ _id: workingMetricId }, { $push: { data: { $each: dataStore } } })
+const createSave = (dataStore: MetricRecordAttributes[], workingMetricId: any) => async () => {
+  await MetricRecordModel.create(dataStore.map(e => ({ ...e, header: workingMetricId })))
   dataStore.splice(0, dataStore.length)
 }
 
 export const createMetric = async (name: string): Promise<MetricHandler> => {
-  const metric: MetricAttributes = { name, isOld: false }
-  let workingMetric = await MetricModel
-    .findOne(metric)
+  const metricHeader: MetricHeaderAttributes = { name }
+  let workingMetric = await MetricHeaderModel
+    .findOne(metricHeader)
     .select('_id name')
     .exec()
   if (!workingMetric) {
-    workingMetric = await MetricModel.create(metric)
+    workingMetric = await MetricHeaderModel.create(metricHeader)
   }
   const data = []
   return {
     count: createCount(data),
     save: createSave(data, workingMetric._id),
+    countAndSave: input => MetricRecordModel.create({ ...input, header: workingMetric._id }) as any,
   }
 }

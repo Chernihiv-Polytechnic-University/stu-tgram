@@ -5,7 +5,7 @@
     "no-unused-variable": true,
     "semicolon": [true, "never"],
     "only-arrow-functions": true,
-    "max-line-length": [true, 120],
+    "max-line-length": [true, 150],
     "variable-name": {
       "options": [
         "ban-keywords",

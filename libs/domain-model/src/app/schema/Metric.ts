@@ -1,32 +1,37 @@
-// TODO can be broken by Error: document is larger than the maximum size 16777216, find the way to avoid it
-// TODO labels??
 import * as mongoose from 'mongoose'
 
-export interface MetricData {
+const SIZE_2GB = 1024 * 1024 * 2e3
+
+export interface MetricRecordAttributes {
   value: number
   timestamp: number,
+  header: string,
 }
 
-export interface MetricAttributes {
+export interface MetricHeaderAttributes {
   name: string
-  isOld: boolean
-  data?: [MetricData],
 }
 
-export interface Metric extends MetricAttributes, mongoose.Document {}
+export interface MetricHeader extends MetricHeaderAttributes, mongoose.Document {}
+export interface MetricRecord extends MetricRecordAttributes, mongoose.Document {}
 
-const schema = new mongoose.Schema({
-  name: { type: String, index: true, required: true },
-  isOld:  { type: Boolean, default: false },
-  data: [{
-    value: { type: Number, required: true },
-    timestamp: { type: Number, required: true },
-  }],
+const headerSchema = new mongoose.Schema({
+  name: { type: String, index: true, unique: true },
 }, {
-  collection: 'Metric',
-  autoIndex: false,
+  collection: 'MetricHeader',
+  autoIndex: true,
   timestamps: true,
-  capped: { size: 1024 * 1024 * 100, max: 1e5 },
 })
 
-export const MetricModel = mongoose.model<Metric>('MetricModel', schema)
+const recordSchema = new mongoose.Schema({
+  value: { type: Number },
+  timestamp: { type: Number },
+  header: { type: mongoose.Schema.Types.ObjectId, index: true, required: true },
+}, {
+  collection: 'MetricRecord',
+  autoIndex: true,
+  capped: { size: SIZE_2GB, max: 1e9 },
+})
+
+export const MetricHeaderModel = mongoose.model<MetricHeader>('MetricHeaderModel', headerSchema)
+export const MetricRecordModel = mongoose.model<MetricRecord>('MetricRecordModel', recordSchema)

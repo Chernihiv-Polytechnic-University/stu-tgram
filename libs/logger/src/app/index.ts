@@ -6,7 +6,15 @@ const log = (name: string, labels: string[], level, ...args) => {
     labels,
     level,
     timestamp: Date.now(),
-    data: args.map(e => String(e)),
+    data: JSON.stringify(args.map((e) => {
+      if (e instanceof Error) {
+        return e.stack
+      }
+      if (typeof e === 'object') {
+        return JSON.stringify(e)
+      }
+      return e.toString()
+    })),
   }
   console.dir(log, { depth: 4 })
   LogModel.create(log).catch(e => console.error(e))
