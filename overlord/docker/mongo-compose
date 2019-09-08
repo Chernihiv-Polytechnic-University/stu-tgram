@@ -1,4 +1,4 @@
-version: '3'
+version: '3.4'
 services:
   mongo:
     image: mongo:4.2
@@ -9,6 +9,6 @@ services:
     ports:
       - '27017:27017'
     volumes:
-      - mongo:/var/lib/mongo
+      - mongo:/data/db
 volumes:
-  mongo: ~
+  mongo:

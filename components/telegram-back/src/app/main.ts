@@ -22,7 +22,7 @@ const baseMiddlewares = [
 const start = async () => {
   await connectToDb({
     host: config.get('MONGODB.HOST'),
-    database: config.get('MONGODB.HOST'),
+    database: config.get('MONGODB.DATABASE'),
     user: config.get('MONGODB.USER'),
     password: config.get('MONGODB.PASSWORD'),
   })
