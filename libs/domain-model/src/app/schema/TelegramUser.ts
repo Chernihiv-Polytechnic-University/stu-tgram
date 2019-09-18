@@ -1,5 +1,4 @@
 import * as mongoose from 'mongoose'
-import { Group } from './common'
 
 export enum TelegramUserRole {
   student = 's',
@@ -21,7 +20,7 @@ export interface TelegramData {
 
 export interface TelegramUserAttributes {
   name?: string
-  group?: Group
+  groupId?: string
   status: TelegramUserStatus
   code?: string
   telegram: TelegramData
@@ -32,10 +31,7 @@ export interface TelegramUser extends TelegramUserAttributes, mongoose.Document 
 
 const schema = new mongoose.Schema({
   name: { type: String },
-  group: {
-    name: { type: String, index: true },
-    subgroupNumber: { type: Number, index: true },
-  },
+  groupId: { type: String, index: true },
   status: { type: String, enum: ['u', 'p', 't'], default: 'u' },
   role: { type: String, enum: ['s', 't'], default: 's' },
   code: { type: String },

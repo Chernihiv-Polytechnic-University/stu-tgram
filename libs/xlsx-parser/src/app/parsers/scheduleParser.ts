@@ -1,6 +1,6 @@
+// TODO rewrite, test
 import * as xlsx from 'xlsx'
 import { range, get } from 'lodash'
-import { LessonAttributes } from 'libs/domain-model'
 
 const DAYS = ['ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ']
 const GROUP_NUMBER_REGEXP = /^([0-9]{2,3})$/
@@ -8,6 +8,19 @@ const GROUP_CODE_REGEXP = /^([а-щА-ЩЬьЮюЯяЇїІіЄєҐґ]{2,4})$/
 const AUDITORY_REGEXP = /[0-9]{1}[ ]{0,1}-[ ]{0,1}[0-9]{1,3}/
 const GROUP_CODE_NUMBER_SEPARATOR = '-'
 const LESSON_IS_COMMON_IXFE_THRESHOLD = 200
+const DAYS_IN_WEEK = 6
+
+export interface Lesson {
+  isExist: boolean,
+  course: number,
+  number: number,
+  group: { subgroupNumber: number, name: string },
+  week: number,
+  day: 'ПН' | 'ВТ' | 'СР' | 'ЧТ' | 'ПТ' | 'СБ',
+  auditory?: string
+  name?: string
+  teacher?: { name: string }
+}
 
 const findCourse = (data) => {
   let course = null
@@ -46,16 +59,13 @@ const findGroups = (data) => {
   }
   return groups
 }
-
 const findDays = (data) => {
   const days = {}
   let isOdd = true
   let lastDay = null
   let dayColumn = null
   for (let i = 0; i < data.length; i += 1) {
-    if (Object.keys(days).length >= 6) {
-      isOdd = false
-    }
+    isOdd = Object.keys(days).length <= DAYS_IN_WEEK
     const row = data[i]
     if (dayColumn && row[dayColumn]) {
       const day = row[dayColumn]
@@ -66,7 +76,7 @@ const findDays = (data) => {
       }
       // new day
       lastDay = day
-      days[`${lastDay}-${isOdd ? 'odd' : 'even'}`] = { isOdd, rows: [i], name: lastDay }
+      days[`${lastDay}-${Object.keys(days).length + 1 <= DAYS_IN_WEEK ? 'odd' : 'even'}`] = { isOdd, rows: [i], name: lastDay }
       continue
     }
     if (dayColumn && !lastDay) {
@@ -132,13 +142,14 @@ const getLessonData = (day, lessonNumber, subgroupNumber) => {
   return  get(day, `lessons[${lessonNumber}][${subgroupNumber}]`)
 }
 
-const buildLessons = (course, groups) => {
+const buildLessons = (course, groups): Lesson[] => {
   const weeksCount = 2
   const lessonsInDayCount = 5
-  const daysInWeekCount = 6
+  const daysInWeekCount = DAYS_IN_WEEK
   const subgroupsCount = 2
-
-  const week1group1Lessons = []
+  // const lessons = range(0, weeksCount * daysInWeekCount * lessonsInDayCount * groupsCount * subgroupsCount).map(e => ({}))
+  // odd week for each 1 part of each group
+  const lessons: Lesson[] = []
   range(subgroupsCount).forEach((subgroupNumber) => {
     groups.forEach((group) => {
       range(daysInWeekCount * lessonsInDayCount * weeksCount).forEach((i) => {
@@ -147,11 +158,11 @@ const buildLessons = (course, groups) => {
         const lessonNumber = (i % lessonsInDayCount)
         const lessonData = getLessonData(day, lessonNumber, subgroupNumber)
         const isExist = !!lessonData
-        const lesson: LessonAttributes = {
+        const lesson: Lesson = {
           isExist,
           course,
           number: lessonNumber,
-          group: { subgroupNumber, name: group.name },
+          group: { subgroupNumber, name: group.name && group.name.replace(/ /g, '') },
           week: weekNumber,
           day: day.name,
         }
@@ -161,21 +172,23 @@ const buildLessons = (course, groups) => {
           lesson.name = lessonName
           lesson.teacher = { name: teacherName }
         }
-        week1group1Lessons.push(lesson)
+        lessons.push(lesson)
       })
     })
   })
-  return week1group1Lessons
+  return lessons
 }
 
-export const parse = (filePath: string): LessonAttributes[] => {
-  const workbook = xlsx.readFile(filePath) // TODO sync function
-  return Object.values(workbook.Sheets).reduce((acc: LessonAttributes[], sheet) => {
-    const data = xlsx.utils.sheet_to_json(sheet, { header: range(25), raw: false })
+export const parse = (fileBuffer: Buffer): Lesson[] => {
+  const workbook = xlsx.read(fileBuffer)
+  const result: Lesson[] = []
+  Object.values(workbook.Sheets).forEach((sheet, i) => {
+    const data = xlsx.utils.sheet_to_json(sheet, { header: range(100), raw: false })
     const course = findCourse(data)
     const groupsData = findGroups(data)
     const days = findDays(data)
     const groups = findGroupLessons(data, groupsData, days, sheet)
-    return acc.concat(buildLessons(course, groups))
-  }, []) as LessonAttributes[]
+    result.push(...buildLessons(course, groups))
+  })
+  return result
 }

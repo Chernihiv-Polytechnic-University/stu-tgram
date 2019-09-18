@@ -1,0 +1,11 @@
+{
+  "JSON_SIZE_LIMIT": "100kb",
+  "FILE_SIZE_LIMIT_BYTES": 524288,
+  "APP_PORT": 3000,
+  "MONGODB": {
+    "HOST": "localhost",
+    "DATABASE": "CNTU_UCSDOSSG",
+    "USER": "root",
+    "PASSWORD": "zxc123zxc123plkjn"
+  }
+}

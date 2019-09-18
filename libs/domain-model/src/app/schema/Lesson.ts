@@ -1,15 +1,14 @@
 import * as mongoose from 'mongoose'
-import { Group } from './common'
 
+export type LessonDay = 'ПН' | 'ВТ' | 'СР' | 'ЧТ' | 'ПТ' | 'СБ'
 export interface LessonAttributes {
   isExist: boolean,
-  course: number,
   number: number,
-  day: string,
+  day: LessonDay,
   name?: string,
   auditory?: string,
   week: number,
-  group: Group,
+  groupId: string,
   teacher?: {
     name?: string,
   },
@@ -19,16 +18,12 @@ export interface Lesson extends LessonAttributes, mongoose.Document {}
 
 const schema = new mongoose.Schema({
   isExist: { type: Boolean, default: false },
-  course: { type: Number, default: 0 },
   number: { type: Number, default: -1 },
-  day: { type: String },
+  day: { type: String, enum: ['ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ'] },
   name: { type: String },
   auditory: { type: String },
   week: { type: Number, default: 0, enum: [0, 1] },
-  group: {
-    name: { type: String },
-    part: { type: Number, default: 0, enum: [0, 1] },
-  },
+  groupId: { type: String, index: true },
   teacher: {
     name: { type: String },
   },

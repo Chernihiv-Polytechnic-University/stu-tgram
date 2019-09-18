@@ -15,6 +15,7 @@ for libPath in $libsPath/*; do
   for element in "${neededLibsList[@]}"; do
     if [[ $element == $libName || $element == "all" ]]; then
       npm run compile --prefix $libPath
+      rm -rf $targetDir/$libName
       cp $libPath/dist $targetDir/$libName -r
     fi
   done
