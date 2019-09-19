@@ -7,7 +7,12 @@ import createCheckUserStatusMiddleware from '../middleware/checkUserStatus'
 
 import { handleStartEvent } from './start'
 import { handleLessonEvent } from './lesson'
+import { handleSetGroupEvent } from './setGroup'
+
 import { buildText } from '../utils/text-builder'
+
+const SET_GROUP_REGEXP = /Моя группа:(.+)/
+const WHAT_IS_LESSON_REGEXP = new RegExp(buildText('whichLesson'))
 
 const baseMiddlewares = [
   showTypingMiddleware,
@@ -22,8 +27,11 @@ const checkUserStatusMiddlewareForLesson = createCheckUserStatusMiddleware(
 export default async (bot) => {
   const startHandler = buildHandler(bot, ...baseMiddlewares, handleStartEvent)
   const lessonHandler = buildHandler(bot, ...baseMiddlewares, checkUserStatusMiddlewareForLesson, handleLessonEvent)
+  const setGroupHandler = buildHandler(bot, ...baseMiddlewares,  handleSetGroupEvent)
 
   bot.onText(/\/start/, await startHandler(['command', 'start']))
+
   bot.onText(/\/lesson/, await lessonHandler(['command', 'lesson']))
-  bot.onText(new RegExp(buildText('whatIsLesson')), await lessonHandler(['text', 'whatIsLesson']))
+  bot.onText(WHAT_IS_LESSON_REGEXP, await lessonHandler(['text', 'which_lesson']))
+  bot.onText(SET_GROUP_REGEXP, await setGroupHandler(['text', 'set_group']))
 }

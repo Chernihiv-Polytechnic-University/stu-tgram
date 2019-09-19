@@ -14,7 +14,7 @@ export interface Lesson {
   isExist: boolean,
   course: number,
   number: number,
-  group: { subgroupNumber: number, name: string },
+  group: { subgroupNumber: 1 | 2, name: string },
   week: number,
   day: 'ПН' | 'ВТ' | 'СР' | 'ЧТ' | 'ПТ' | 'СБ',
   auditory?: string
@@ -147,8 +147,7 @@ const buildLessons = (course, groups): Lesson[] => {
   const lessonsInDayCount = 5
   const daysInWeekCount = DAYS_IN_WEEK
   const subgroupsCount = 2
-  // const lessons = range(0, weeksCount * daysInWeekCount * lessonsInDayCount * groupsCount * subgroupsCount).map(e => ({}))
-  // odd week for each 1 part of each group
+
   const lessons: Lesson[] = []
   range(subgroupsCount).forEach((subgroupNumber) => {
     groups.forEach((group) => {
@@ -162,7 +161,7 @@ const buildLessons = (course, groups): Lesson[] => {
           isExist,
           course,
           number: lessonNumber,
-          group: { subgroupNumber, name: group.name && group.name.replace(/ /g, '') },
+          group: { subgroupNumber: subgroupNumber + 1, name: group.name && group.name.replace(/ /g, '') },
           week: weekNumber,
           day: day.name,
         }

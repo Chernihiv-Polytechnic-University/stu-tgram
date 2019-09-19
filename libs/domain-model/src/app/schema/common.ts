@@ -7,5 +7,5 @@ export interface File {
 
 export interface Group {
   name: string,
-  subgroupNumber: number,
+  subgroupNumber: 1 | 2,
 }
