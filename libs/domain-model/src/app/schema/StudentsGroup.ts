@@ -1,13 +1,16 @@
 import * as mongoose from 'mongoose'
 import { Group } from './common'
 
-export interface StudentsGroupAttributes extends Group {}
+export interface StudentsGroupAttributes extends Group {
+  schedulePDF?: Buffer
+}
 
 export interface StudentsGroup extends StudentsGroupAttributes, mongoose.Document {}
 
 const schema = new mongoose.Schema({
   name: { type: String, required: true },
   subgroupNumber: { type: Number, required: true, enum: [1, 2] },
+  schedulePDF: { type: Buffer },
 }, {
   collection: 'StudentsGroup',
   autoIndex: true,

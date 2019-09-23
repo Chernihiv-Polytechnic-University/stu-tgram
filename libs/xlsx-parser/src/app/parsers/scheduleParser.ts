@@ -1,6 +1,6 @@
 // TODO rewrite, test
 import * as xlsx from 'xlsx'
-import { range, get } from 'lodash'
+import { range, get, isString } from 'lodash'
 
 const DAYS = ['ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ']
 const GROUP_NUMBER_REGEXP = /^([0-9]{2,3})$/
@@ -14,7 +14,7 @@ export interface Lesson {
   isExist: boolean,
   course: number,
   number: number,
-  group: { subgroupNumber: 1 | 2, name: string },
+  group: { subgroupNumber: number, name: string },
   week: number,
   day: 'ПН' | 'ВТ' | 'СР' | 'ЧТ' | 'ПТ' | 'СБ',
   auditory?: string
@@ -76,7 +76,8 @@ const findDays = (data) => {
       }
       // new day
       lastDay = day
-      days[`${lastDay}-${Object.keys(days).length + 1 <= DAYS_IN_WEEK ? 'odd' : 'even'}`] = { isOdd, rows: [i], name: lastDay }
+      isOdd = Object.keys(days).length + 1 <= DAYS_IN_WEEK
+      days[`${lastDay}-${isOdd ? 'odd' : 'even'}`] = { isOdd, rows: [i], name: lastDay }
       continue
     }
     if (dayColumn && !lastDay) {
@@ -89,7 +90,7 @@ const findDays = (data) => {
       continue
     }
     // find first day
-    Object.entries(row).forEach(([key, value]: [string, string]) => {
+    Object.entries(row).forEach(([key, value]: [any, any]) => {
       if (!dayColumn && DAYS.includes(value.trim())) {
         lastDay = value.trim()
         dayColumn = key
@@ -105,9 +106,9 @@ const findGroupLessons = (data, groups, days, sheet) => {
   groups.forEach((group) => { group.days = [] })
   Object.values(days).forEach((day: any) => {
     const dayRows = day.rows.map(rowIndex => data[rowIndex])
-    groups.forEach((group: any) => {
+    groups.forEach((group) => {
       const groupDay: any = { name: day.name, isOdd: day.isOdd }
-      groupDay.lessons = dayRows.map((dayRow: any) => group.columns.reduce((acc, column, i) => {
+      groupDay.lessons = dayRows.map(dayRow => group.columns.reduce((acc, column, i) => {
         const data =  dayRow[column]
         if (i === 0) {
           const size = get(sheetValues.find((e: any) => e.v === data), 'ixfe')
@@ -138,56 +139,56 @@ const parseLessonData = (lessonData) => {
   return [...splittedTwo.map(str => str.trim()).filter(str => str.length > 1), auditoryName]
 }
 
-const getLessonData = (day, lessonNumber, subgroupNumber) => {
-  return  get(day, `lessons[${lessonNumber}][${subgroupNumber}]`)
-}
-
-const buildLessons = (course, groups): Lesson[] => {
-  const weeksCount = 2
-  const lessonsInDayCount = 5
-  const daysInWeekCount = DAYS_IN_WEEK
-  const subgroupsCount = 2
-
-  const lessons: Lesson[] = []
-  range(subgroupsCount).forEach((subgroupNumber) => {
-    groups.forEach((group) => {
-      range(daysInWeekCount * lessonsInDayCount * weeksCount).forEach((i) => {
-        const weekNumber = Math.floor(i / (lessonsInDayCount * daysInWeekCount))
-        const day = group.days[Math.floor(i / (daysInWeekCount - 1))]
-        const lessonNumber = (i % lessonsInDayCount)
-        const lessonData = getLessonData(day, lessonNumber, subgroupNumber)
-        const isExist = !!lessonData
-        const lesson: Lesson = {
-          isExist,
-          course,
-          number: lessonNumber,
-          group: { subgroupNumber: subgroupNumber + 1, name: group.name && group.name.replace(/ /g, '') },
-          week: weekNumber,
-          day: day.name,
+const buildLessons = (groups) => {
+  const lessons = []
+  groups.forEach((group) => {
+    group.days.forEach((day) => {
+      day.lessons.forEach((lessonsSource, i) => {
+        if (isString(lessonsSource[0])) {
+          const [lessonName, teacherName, auditory] = parseLessonData(lessonsSource[0])
+          const lesson = {
+            auditory,
+            course: 0,
+            number: i,
+            isExist: true,
+            group:  { subgroupNumber: 1, name: group.name && group.name.replace(/ /g, '') },
+            week: day.isOdd ? 0 : 1,
+            day: day.name,
+            name: lessonName,
+            teacher: { name: teacherName },
+          }
+          lessons.push(lesson)
         }
-        if (isExist) {
-          const [lessonName, teacherName, auditory] = parseLessonData(lessonData)
-          lesson.auditory = auditory
-          lesson.name = lessonName
-          lesson.teacher = { name: teacherName }
+        if (isString(lessonsSource[1])) {
+          const [lessonName, teacherName, auditory] = parseLessonData(lessonsSource[1])
+          const lesson = {
+            auditory,
+            course: 0,
+            number: i,
+            isExist: true,
+            group:  { subgroupNumber: 2, name: group.name && group.name.replace(/ /g, '') },
+            week: day.isOdd ? 0 : 1,
+            day: day.name,
+            name: lessonName,
+            teacher: { name: teacherName },
+          }
+          lessons.push(lesson)
         }
-        lessons.push(lesson)
       })
     })
   })
   return lessons
 }
 
-export const parse = (fileBuffer: Buffer): Lesson[] => {
+export const parse = (fileBuffer) => {
   const workbook = xlsx.read(fileBuffer)
-  const result: Lesson[] = []
+  const result = []
   Object.values(workbook.Sheets).forEach((sheet, i) => {
-    const data = xlsx.utils.sheet_to_json(sheet, { header: range(100), raw: false })
-    const course = findCourse(data)
+    const data = xlsx.utils.sheet_to_json(sheet, { header: range(100).map(e => String(e)) })
     const groupsData = findGroups(data)
     const days = findDays(data)
     const groups = findGroupLessons(data, groupsData, days, sheet)
-    result.push(...buildLessons(course, groups))
+    result.push(...buildLessons(groups))
   })
   return result
 }
