@@ -6,8 +6,9 @@ import findOrCreateUserMiddleware from '../middleware/findOrCreateUser'
 import createCheckUserStatusMiddleware from '../middleware/checkUserStatus'
 
 import { handleStartEvent } from './start'
-import { handleLessonEvent } from './lesson'
+import { handleGetLessonEvent } from './lesson'
 import { handleSetGroupEvent } from './setGroup'
+import { handleGetScheduleEvent } from './schedule'
 
 import { buildText } from '../utils/text-builder'
 
@@ -26,12 +27,14 @@ const checkUserStatusMiddlewareForLesson = createCheckUserStatusMiddleware(
 
 export default async (bot) => {
   const startHandler = buildHandler(bot, ...baseMiddlewares, handleStartEvent)
-  const lessonHandler = buildHandler(bot, ...baseMiddlewares, checkUserStatusMiddlewareForLesson, handleLessonEvent)
+  const lessonHandler = buildHandler(bot, ...baseMiddlewares, checkUserStatusMiddlewareForLesson, handleGetLessonEvent)
+  const scheduleHandler = buildHandler(bot, ...baseMiddlewares, checkUserStatusMiddlewareForLesson, handleGetScheduleEvent)
   const setGroupHandler = buildHandler(bot, ...baseMiddlewares,  handleSetGroupEvent)
 
   bot.onText(/\/start/, await startHandler(['command', 'start']))
 
   bot.onText(/\/lesson/, await lessonHandler(['command', 'lesson']))
+  bot.onText(/\/schedule/, await scheduleHandler(['command', 'schedule']))
   bot.onText(WHAT_IS_LESSON_REGEXP, await lessonHandler(['text', 'which_lesson']))
   bot.onText(SET_GROUP_REGEXP, await setGroupHandler(['text', 'set_group']))
 }

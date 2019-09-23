@@ -18,5 +18,6 @@
   "groupSet": "Група \"{groupText}\" встановлена",
   "currentLessonIs": "Поточна пара \"{lessonName}\" в аудиторії \"{auditory}\", викладач \"{teacherName}\" почалася {minutes} хвилин тому",
   "currentLessonIsLast": "Ця пара остання сьогодні, ура, додому!",
-  "nextLessonIs": "Наступна пара \"{lessonName}\" в аудиторії \"{auditory}\", викладач \"{teacherName}\" буде через {hours} годин та {minutes} хвилин"
+  "nextLessonIs": "Наступна пара \"{lessonName}\" в аудиторії \"{auditory}\", викладач \"{teacherName}\" буде через {hours} годин та {minutes} хвилин",
+  "scheduleFileName": "Розклад {name}_{subgroupNumber}"
 }

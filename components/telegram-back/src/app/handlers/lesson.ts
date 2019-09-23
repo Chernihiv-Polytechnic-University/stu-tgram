@@ -21,7 +21,7 @@ import {
 
 const weekDays = ['ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ', 'НД']
 
-export const handleLessonEvent: Handler = async (bot: telegram, msg: Message) => {
+export const handleGetLessonEvent: Handler = async (bot: telegram, msg: Message) => {
   const { telegram: { firstName, lastName }, groupId } = msg.locals.user
   const now = moment()
   const currentWeek = getCurrentWeekNumber()
