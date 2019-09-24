@@ -13,7 +13,8 @@ import { handleGetScheduleEvent } from './schedule'
 import { buildText } from '../utils/text-builder'
 
 const SET_GROUP_REGEXP = /Моя группа:(.+)/
-const WHAT_IS_LESSON_REGEXP = new RegExp(buildText('whichLesson'))
+const GET_NEXT_LESSON = new RegExp(buildText('whichLesson'))
+const GET_SCHEDULE = new RegExp(buildText('schedule'))
 
 const baseMiddlewares = [
   showTypingMiddleware,
@@ -35,6 +36,7 @@ export default async (bot) => {
 
   bot.onText(/\/lesson/, await lessonHandler(['command', 'lesson']))
   bot.onText(/\/schedule/, await scheduleHandler(['command', 'schedule']))
-  bot.onText(WHAT_IS_LESSON_REGEXP, await lessonHandler(['text', 'which_lesson']))
+  bot.onText(GET_SCHEDULE, await scheduleHandler(['text', 'schedule']))
+  bot.onText(GET_NEXT_LESSON, await lessonHandler(['text', 'which_lesson']))
   bot.onText(SET_GROUP_REGEXP, await setGroupHandler(['text', 'set_group']))
 }
