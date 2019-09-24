@@ -1,5 +1,5 @@
 {
-  "T_BOT_TOKEN": "964311977:AAEZZizZQuNnhcOH4ozfl-toZ-g4_Dq9C74",
+  "T_BOT_TOKEN": "",
   "MONGODB": {
     "HOST": "localhost",
     "DATABASE": "CNTU_UCSDOSSG",
