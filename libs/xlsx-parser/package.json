@@ -1,0 +1,35 @@
+{
+  "name": "xlsx-parser",
+  "version": "0.0.1",
+  "description": "See README.md",
+  "main": "dist/index.js",
+  "scripts": {
+    "clean": "rm -rf dist node_modules",
+    "clean-libs": "rm -rf node_modules/libs",
+    "compile": "npm run clean && npm i && npm run compile-libs && npm run compile-component",
+    "compile-component": "tsc -p tsconfig.json",
+    "compile-libs": "npm run clean-libs && ../../overlord/compile-libs.sh libs/xlsx-parser domain-model",
+    "test": "jest --passWithNoTests '^((?!\\\\.int\\\\.spec\\\\.ts).)*$' -u"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://iskryzhytskyi@bitbucket.org/iskryzhytskyi/utb.git"
+  },
+  "author": "a.iskryzhytskyi",
+  "license": "UNLICENSED",
+  "homepage": "https://bitbucket.org/iskryzhytskyi/utb#readme",
+  "devDependencies": {
+    "@types/jest": "^24.0.18",
+    "@types/lodash": "^4.14.138",
+    "@types/mongoose": "^5.5.16",
+    "@types/node": "^12.7.3",
+    "@types/xlsx": "^0.0.36",
+    "jest": "^24.9.0",
+    "ts-jest": "^24.1.0",
+    "typescript": "^3.5.3"
+  },
+  "dependencies": {
+    "lodash": "^4.17.15",
+    "xlsx": "^0.15.1"
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "name": "telegram-back",
+  "version": "0.0.1",
+  "description": "See README.md",
+  "main": "dist/main.js",
+  "scripts": {
+    "clean": "rm -rf dist node_modules",
+    "compile": "npm run clean && npm i && npm run compile-libs && npm run compile-component",
+    "compile-component": "tsc -p tsconfig.json",
+    "compile-libs": "../../overlord/compile-libs.sh components/telegram-back logger metrics bus domain-model",
+    "dev": "./node_modules/.bin/nodemon -e ts --watch 'src/app' --exec 'npm run compile-component && node dist/main.js'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://iskryzhytskyi@bitbucket.org/iskryzhytskyi/utb.git"
+  },
+  "author": "a.iskryzhytskyi",
+  "license": "UNLICENSED",
+  "homepage": "https://bitbucket.org/iskryzhytskyi/utb#readme",
+  "devDependencies": {
+    "@types/bluebird": "^3.5.27",
+    "@types/config": "0.0.34",
+    "@types/lodash": "^4.14.137",
+    "@types/moment": "^2.13.0",
+    "@types/moment-timezone": "^0.5.12",
+    "@types/mongoose": "^5.5.17",
+    "@types/node": "^12.7.2",
+    "@types/node-telegram-bot-api": "^0.31.0",
+    "nodemon": "^1.19.1",
+    "typescript": "^3.5.3"
+  },
+  "dependencies": {
+    "bluebird": "^3.5.5",
+    "config": "^3.2.2",
+    "lodash": "^4.17.15",
+    "moment": "^2.24.0",
+    "moment-timezone": "^0.5.26",
+    "mongoose": "^5.6.12",
+    "node-telegram-bot-api": "^0.30.0"
+  }
+}

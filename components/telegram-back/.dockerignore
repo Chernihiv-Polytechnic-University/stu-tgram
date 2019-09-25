@@ -1,0 +1,12 @@
+.dockerignore
+**
+!package.json
+!gulpfile.js
+!tsconfig.json
+!yarn.lock
+!dist
+!build/*.zip
+!explore
+!test
+!src
+!tasks
