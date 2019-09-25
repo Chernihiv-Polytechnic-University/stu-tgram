@@ -6,9 +6,9 @@ import { Handler, Message } from '../types'
 
 const getKeyboardByTUserStatus = (status: TelegramUserStatus) => {
   const mapper = {
-    [TelegramUserStatus.unknown]: ['whichLesson', 'schedule', 'questionAnswer', 'letsGetAcquainted', 'whyIShouldGetAcquainted', 'aboutBot'],
-    [TelegramUserStatus.partialKnown]: ['whichLesson', 'schedule', 'questionAnswer', 'letsGetAcquainted', 'whyIShouldGetAcquainted', 'aboutBot'],
-    [TelegramUserStatus.fullKnown]: ['whichLesson', 'schedule', 'questionAnswer', 'requests', 'settings', 'feedback', 'aboutBot'],
+    [TelegramUserStatus.unknown]: ['whichLesson', 'schedule'], // , 'questionAnswer', 'letsGetAcquainted', 'whyIShouldGetAcquainted', 'aboutBot'],
+    [TelegramUserStatus.partialKnown]: ['whichLesson', 'schedule'], // 'questionAnswer', 'letsGetAcquainted', 'whyIShouldGetAcquainted', 'aboutBot'],
+    [TelegramUserStatus.fullKnown]: ['whichLesson', 'schedule'], // 'questionAnswer', 'requests', 'settings', 'feedback', 'aboutBot'],
   }
 
   const buttonsData: ButtonData[] =  mapper[status].map(textId => ({ textId }))
