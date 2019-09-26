@@ -2,7 +2,7 @@ import * as telegram from 'node-telegram-bot-api'
 import { minBy, filter, flow } from 'lodash/fp'
 import { get, isNil, find } from 'lodash'
 import * as moment from 'moment-timezone'
-import { Lesson, LessonModel } from 'libs/domain-model'
+import { Lesson, LessonModel, SystemSettingsModel } from 'libs/domain-model'
 import { Handler, Message } from '../types'
 import { buildText } from '../utils/text-builder'
 
@@ -23,11 +23,12 @@ const weekDays = ['ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ', 'НД']
 
 export const handleGetLessonEvent: Handler = async (bot: telegram, msg: Message) => {
   const { telegram: { firstName, lastName }, groupId } = msg.locals.user
+  const systemSettings = await SystemSettingsModel.findOne({})
   const now = moment()
-  const currentWeek = getCurrentWeekNumber()
+  const currentWeek = getCurrentWeekNumber(systemSettings.firstOddWeekMondayDate)
   const currentDay = getCurrentDay()
   const nextDay = getNextDayOf(now)
-  const nextDayWeek = getNextDayWeekNumberOf(now)
+  const nextDayWeek = getNextDayWeekNumberOf(now, systemSettings.firstOddWeekMondayDate)
   const currentLessonNumber = getCurrentLessonNumber()
 
   const where = { groupId, day: { $in: [currentDay, nextDay] }, week: { $in: [currentWeek % 2, nextDayWeek % 2] }, isExist: true }

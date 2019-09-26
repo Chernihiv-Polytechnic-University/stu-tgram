@@ -1,14 +1,18 @@
 {
   "hello": "Привіт, {username}, будемо знайомі!",
   "whichLesson": "Яка пара?",
-  "schedule": "Який Розклад?",
+  "whichSchedule": "Який Розклад?",
+  "whichWeek":  "Який тиждень?",
+  "whichCallSchedule":  "Який розклад дзвінків?",
+  "aboutSystem":  "Про систему.",
+  "claimAttestation": "Створити запит на довідку.",
   "questionAnswer": "Питання та відповіді.",
   "aboutBot": "Що за бот такий?",
   "letsGetAcquainted": "Давай познайомимось!",
   "whyIShouldGetAcquainted": "Чому я повинен знайомитися?",
   "requests": "Запит до деканату.",
   "settings": "Налаштування.",
-  "feedback": "Залишити відгук.",
+  "leftFeedback": "Залишити відгук.",
   "notEnoughInfoToGiveInfoAboutLesson": "Мені невідома ваша група (код та номер підгрупи) що б дати інформацію про те, яка у вас зараз пара. Будь ласка, вкажіть код вашої групи і номер підгрупи в такому форматі - \"Моя группа: код:підгрупа\". Приклад:",
   "sayYourGroupExample": "Моя группа: ПІ-161:2",
   "noLessonsSoonHaveRest": "Ніяких пар сьогодні та завтра! Відпочинь, {name}!",
@@ -19,5 +23,9 @@
   "currentLessonIs": "Поточна пара \"{lessonName}\" в аудиторії \"{auditory}\", викладач \"{teacherName}\" почалася {minutes} хвилин тому",
   "currentLessonIsLast": "Ця пара остання сьогодні, ура, додому!",
   "nextLessonIs": "Наступна пара \"{lessonName}\" в аудиторії \"{auditory}\", викладач \"{teacherName}\" буде через {hours} годин та {minutes} хвилин",
-  "scheduleFileName": "Розклад_{name}_{subgroupNumber}.pdf"
+  "scheduleFileName": "Розклад_{name}_{subgroupNumber}.pdf",
+  "callScheduleHeader": "Номер   Початок   Кінець   Перерва до, хв",
+  "callScheduleRecord": "    {number}           {start}        {end}               {break}",
+  "oddWeek": "Непарний тиждень",
+  "evenWeek": "Парний тиждень"
 }
