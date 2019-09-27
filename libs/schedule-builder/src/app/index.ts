@@ -33,8 +33,8 @@ const buildScheduleData = (lessons: LessonAttributes[]) => {
     ...dayTemplate,
     lessons: dayTemplate.lessons.map(lessonTemplate => ({
       ...lessonTemplate,
-      oddData: buildLessonData(findLessonBy({ day: dayTemplate.name as LessonDay, number: lessonTemplate.number - 1, week: ODD_WEEK_NUM })),
-      evenData: buildLessonData(findLessonBy({ day: dayTemplate.name as LessonDay, number: lessonTemplate.number - 1, week: EVEN_WEEK_NUM })),
+      oddData: buildLessonData(findLessonBy({ day: dayTemplate.name as LessonDay, number: lessonTemplate.number, week: ODD_WEEK_NUM })),
+      evenData: buildLessonData(findLessonBy({ day: dayTemplate.name as LessonDay, number: lessonTemplate.number, week: EVEN_WEEK_NUM })),
     })),
   }))
 }

@@ -149,7 +149,7 @@ const buildLessons = (groups) => {
           const lesson = {
             auditory,
             course: 0,
-            number: i,
+            number: i + 1,
             isExist: true,
             group:  { subgroupNumber: 1, name: group.name && group.name.replace(/ /g, '') },
             week: day.isOdd ? 0 : 1,
@@ -164,7 +164,7 @@ const buildLessons = (groups) => {
           const lesson = {
             auditory,
             course: 0,
-            number: i,
+            number: i + 1,
             isExist: true,
             group:  { subgroupNumber: 2, name: group.name && group.name.replace(/ /g, '') },
             week: day.isOdd ? 0 : 1,
