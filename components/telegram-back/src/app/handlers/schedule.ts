@@ -8,12 +8,17 @@ export const handleGetScheduleEvent: Handler = async (bot: telegram, msg: Messag
   const { groupId } = msg.locals.user
   const { id: chatId } = msg.tMessage.chat
 
-  const group = await StudentsGroupModel.findOne({ _id: groupId }).exec()
-  await bot.sendDocument(
-    chatId, group.schedulePDF,
-    {},
-    { contentType: 'application/pdf', filename: buildText('scheduleFileName', { name: group.name, subgroupNumber: group.subgroupNumber }) },
-  )
+  // const group = await StudentsGroupModel.findOne({ _id: groupId }).exec()
+  const groups = await StudentsGroupModel.find({}).exec()
+  for (let i = 0; i < groups.length; i += 1) {
+    const group = groups[i]
+    await bot.sendDocument(
+      chatId,
+      group.schedulePDF,
+      {},
+      { contentType: 'application/pdf', filename: buildText('scheduleFileName', { name: group.name, subgroupNumber: group.subgroupNumber }) },
+    )
+  }
 }
 
 export const handleGetCallScheduleEvent: Handler = async (bot: telegram, msg: Message) => {
