@@ -110,7 +110,7 @@ Array [
     "name": "Фізичне виховання",
     "number": 2,
     "teacher": Object {
-      "name": "хтозна-хто",
+      "name": "Викладач",
     },
     "week": 0,
   },
@@ -126,7 +126,7 @@ Array [
     "name": "Фізичне виховання",
     "number": 2,
     "teacher": Object {
-      "name": "хтозна-хто",
+      "name": "Викладач",
     },
     "week": 0,
   },
@@ -190,7 +190,7 @@ Array [
     "name": "Комп'ютерна графіка",
     "number": 4,
     "teacher": Object {
-      "name": "Проф. Шелест М.Є.",
+      "name": "Проф. Шелест М.Є. а",
     },
     "week": 0,
   },
@@ -222,7 +222,7 @@ Array [
     "name": "Комп'ютерна графіка",
     "number": 5,
     "teacher": Object {
-      "name": "Проф. Шелест М.Є.",
+      "name": "Проф. Шелест М.Є. а",
     },
     "week": 0,
   },
@@ -238,7 +238,7 @@ Array [
     "name": "Фізичне виховання",
     "number": 2,
     "teacher": Object {
-      "name": "хтозна-хто",
+      "name": "Викладач",
     },
     "week": 0,
   },
@@ -254,7 +254,7 @@ Array [
     "name": "Фізичне виховання",
     "number": 2,
     "teacher": Object {
-      "name": "хтозна-хто",
+      "name": "Викладач",
     },
     "week": 0,
   },
@@ -270,7 +270,7 @@ Array [
     "name": "Іноземна мова (пр)",
     "number": 3,
     "teacher": Object {
-      "name": "Викл. Кормільцина С.Ю.",
+      "name": "Викл. Кормільцина С.Ю.  б",
     },
     "week": 0,
   },
@@ -286,7 +286,7 @@ Array [
     "name": "Іноземна мова (пр)",
     "number": 3,
     "teacher": Object {
-      "name": "Викл. Кормільцина С.Ю.",
+      "name": "Викл. Кормільцина С.Ю.  б",
     },
     "week": 0,
   },
@@ -302,7 +302,7 @@ Array [
     "name": "Інформаційна безпека держави (лек)",
     "number": 4,
     "teacher": Object {
-      "name": "Проф. Гур'єв В.І",
+      "name": "Проф. Гур'єв В.І    б",
     },
     "week": 0,
   },
@@ -318,7 +318,7 @@ Array [
     "name": "Інформаційна безпека держави (лек)",
     "number": 4,
     "teacher": Object {
-      "name": "Проф. Гур'єв В.І",
+      "name": "Проф. Гур'єв В.І    б",
     },
     "week": 0,
   },
@@ -462,7 +462,7 @@ Array [
     "name": "Фізичне виховання",
     "number": 2,
     "teacher": Object {
-      "name": "хтозна-хто",
+      "name": "Викладач",
     },
     "week": 1,
   },
@@ -478,7 +478,7 @@ Array [
     "name": "Фізичне виховання",
     "number": 2,
     "teacher": Object {
-      "name": "хтозна-хто",
+      "name": "Викладач",
     },
     "week": 1,
   },
@@ -558,7 +558,7 @@ Array [
     "name": "Вища математика (лек)",
     "number": 4,
     "teacher": Object {
-      "name": "Доц. Ткач Ю.М.",
+      "name": "Доц. Ткач Ю.М. а",
     },
     "week": 1,
   },
@@ -574,7 +574,7 @@ Array [
     "name": "Вища математика (лек)",
     "number": 4,
     "teacher": Object {
-      "name": "Доц. Ткач Ю.М.",
+      "name": "Доц. Ткач Ю.М. а",
     },
     "week": 1,
   },
@@ -590,7 +590,7 @@ Array [
     "name": "Вища математика (пр)",
     "number": 5,
     "teacher": Object {
-      "name": "Доц. Ткач Ю.М.",
+      "name": "Доц. Ткач Ю.М. а",
     },
     "week": 1,
   },
@@ -606,7 +606,7 @@ Array [
     "name": "Вища математика (пр)",
     "number": 5,
     "teacher": Object {
-      "name": "Доц. Ткач Ю.М.",
+      "name": "Доц. Ткач Ю.М. а",
     },
     "week": 1,
   },
@@ -622,7 +622,7 @@ Array [
     "name": "Фізичне виховання",
     "number": 2,
     "teacher": Object {
-      "name": "хтозна-хто",
+      "name": "Викладач",
     },
     "week": 1,
   },
@@ -638,7 +638,7 @@ Array [
     "name": "Фізичне виховання",
     "number": 2,
     "teacher": Object {
-      "name": "хтозна-хто",
+      "name": "Викладач",
     },
     "week": 1,
   },
@@ -942,7 +942,7 @@ Array [
     "name": "Фізичне виховання",
     "number": 4,
     "teacher": Object {
-      "name": "хтозна-хто",
+      "name": "Викладач",
     },
     "week": 0,
   },
@@ -958,7 +958,7 @@ Array [
     "name": "Фізичне виховання",
     "number": 4,
     "teacher": Object {
-      "name": "хтозна-хто",
+      "name": "Викладач",
     },
     "week": 0,
   },
@@ -1022,7 +1022,7 @@ Array [
     "name": "Фізичне виховання",
     "number": 4,
     "teacher": Object {
-      "name": "хтозна-хто",
+      "name": "Викладач",
     },
     "week": 0,
   },
@@ -1038,7 +1038,7 @@ Array [
     "name": "Фізичне виховання",
     "number": 4,
     "teacher": Object {
-      "name": "хтозна-хто",
+      "name": "Викладач",
     },
     "week": 0,
   },
@@ -1166,7 +1166,7 @@ Array [
     "name": "Організаційне забезпечення захисту інформації (лек)",
     "number": 1,
     "teacher": Object {
-      "name": "Доц. Петренко Т.А.",
+      "name": "Доц. Петренко Т.А.  а",
     },
     "week": 0,
   },
@@ -1182,7 +1182,7 @@ Array [
     "name": "Організаційне забезпечення захисту інформації (лек)",
     "number": 1,
     "teacher": Object {
-      "name": "Доц. Петренко Т.А.",
+      "name": "Доц. Петренко Т.А.  а",
     },
     "week": 0,
   },
@@ -1198,7 +1198,7 @@ Array [
     "name": "Організаційне забезпечення захисту інформації (пр)",
     "number": 2,
     "teacher": Object {
-      "name": "Доц. Петренко Т.А.",
+      "name": "Доц. Петренко Т.А.  а",
     },
     "week": 0,
   },
@@ -1214,7 +1214,7 @@ Array [
     "name": "Організаційне забезпечення захисту інформації (пр)",
     "number": 2,
     "teacher": Object {
-      "name": "Доц. Петренко Т.А.",
+      "name": "Доц. Петренко Т.А.  а",
     },
     "week": 0,
   },
@@ -1294,7 +1294,7 @@ Array [
     "name": "Фізичне виховання",
     "number": 4,
     "teacher": Object {
-      "name": "хтозна-хто",
+      "name": "Викладач",
     },
     "week": 1,
   },
@@ -1310,7 +1310,7 @@ Array [
     "name": "Фізичне виховання",
     "number": 4,
     "teacher": Object {
-      "name": "хтозна-хто",
+      "name": "Викладач",
     },
     "week": 1,
   },
@@ -1374,7 +1374,7 @@ Array [
     "name": "Комп'ютерні мережі",
     "number": 2,
     "teacher": Object {
-      "name": "Доц. Базилевич В.М.",
+      "name": "Доц. Базилевич В.М. а",
     },
     "week": 1,
   },
@@ -1454,7 +1454,7 @@ Array [
     "name": "Фізичне виховання",
     "number": 4,
     "teacher": Object {
-      "name": "хтозна-хто",
+      "name": "Викладач",
     },
     "week": 1,
   },
@@ -1470,7 +1470,7 @@ Array [
     "name": "Фізичне виховання",
     "number": 4,
     "teacher": Object {
-      "name": "хтозна-хто",
+      "name": "Викладач",
     },
     "week": 1,
   },
@@ -1518,7 +1518,7 @@ Array [
     "name": "Вища математика (лек)",
     "number": 3,
     "teacher": Object {
-      "name": "Доц. Мехед Д.Б.",
+      "name": "Доц. Мехед Д.Б. а",
     },
     "week": 1,
   },
@@ -1534,7 +1534,7 @@ Array [
     "name": "Вища математика (лек)",
     "number": 3,
     "teacher": Object {
-      "name": "Доц. Мехед Д.Б.",
+      "name": "Доц. Мехед Д.Б. а",
     },
     "week": 1,
   },
@@ -1710,7 +1710,7 @@ Array [
     "name": "Системи штучного інтелекту",
     "number": 4,
     "teacher": Object {
-      "name": "Доц. Петренко Т.А.",
+      "name": "Доц. Петренко Т.А. а",
     },
     "week": 0,
   },
@@ -1854,7 +1854,7 @@ Array [
     "name": "Основи технічного захисту",
     "number": 3,
     "teacher": Object {
-      "name": "Доц. Черниш Л.Г.",
+      "name": "Доц. Черниш Л.Г. а",
     },
     "week": 0,
   },
@@ -1982,7 +1982,7 @@ Array [
     "name": "Прогнозув та моделювання",
     "number": 3,
     "teacher": Object {
-      "name": "Доц. Ткач Ю.М",
+      "name": "Доц. Ткач Ю.М а",
     },
     "week": 1,
   },
@@ -1998,7 +1998,7 @@ Array [
     "name": "Основи технічного захисту",
     "number": 4,
     "teacher": Object {
-      "name": "Доц. Черниш Л.Г.",
+      "name": "Доц. Черниш Л.Г. а",
     },
     "week": 1,
   },
@@ -2014,7 +2014,7 @@ Array [
     "name": "Прогнозув та моделювання",
     "number": 5,
     "teacher": Object {
-      "name": "Доц. Ткач Ю.М",
+      "name": "Доц. Ткач Ю.М а",
     },
     "week": 1,
   },
@@ -2211,70 +2211,6 @@ Array [
     "week": 1,
   },
   Object {
-    "auditory": "хтозна-де",
-    "course": 0,
-    "day": "СБ",
-    "group": Object {
-      "name": "КБ-171",
-      "subgroupNumber": 1,
-    },
-    "isExist": true,
-    "name": "Провідний фахівець НВ _________ О.С.Зінюк",
-    "number": 2,
-    "teacher": Object {
-      "name": "хтозна-хто",
-    },
-    "week": 1,
-  },
-  Object {
-    "auditory": "хтозна-де",
-    "course": 0,
-    "day": "СБ",
-    "group": Object {
-      "name": "КБ-171",
-      "subgroupNumber": 2,
-    },
-    "isExist": true,
-    "name": "Провідний фахівець НВ _________ О.С.Зінюк",
-    "number": 2,
-    "teacher": Object {
-      "name": "хтозна-хто",
-    },
-    "week": 1,
-  },
-  Object {
-    "auditory": "хтозна-де",
-    "course": 0,
-    "day": "СБ",
-    "group": Object {
-      "name": "КБ-171",
-      "subgroupNumber": 1,
-    },
-    "isExist": true,
-    "name": "підпис",
-    "number": 3,
-    "teacher": Object {
-      "name": "хтозна-хто",
-    },
-    "week": 1,
-  },
-  Object {
-    "auditory": "хтозна-де",
-    "course": 0,
-    "day": "СБ",
-    "group": Object {
-      "name": "КБ-171",
-      "subgroupNumber": 2,
-    },
-    "isExist": true,
-    "name": "підпис",
-    "number": 3,
-    "teacher": Object {
-      "name": "хтозна-хто",
-    },
-    "week": 1,
-  },
-  Object {
     "auditory": "1-106",
     "course": 0,
     "day": "ПН",
@@ -2286,7 +2222,7 @@ Array [
     "name": "Нормативно-правове забезпечення інф безпеки (лек)",
     "number": 3,
     "teacher": Object {
-      "name": "Доц. Петренко Т.А.",
+      "name": "Доц. Петренко Т.А.  а",
     },
     "week": 0,
   },
@@ -2318,7 +2254,7 @@ Array [
     "name": "Програмний захист інформ",
     "number": 4,
     "teacher": Object {
-      "name": "Проф. Шелест М.Є..",
+      "name": "Проф. Шелест М.Є.. а",
     },
     "week": 0,
   },
@@ -2350,7 +2286,7 @@ Array [
     "name": "Програмний захист інформації (лек)",
     "number": 5,
     "teacher": Object {
-      "name": "Проф. Шелест М.Є.",
+      "name": "Проф. Шелест М.Є. а",
     },
     "week": 0,
   },
@@ -2382,7 +2318,7 @@ Array [
     "name": "Електронний документообіг (пр)",
     "number": 1,
     "teacher": Object {
-      "name": "Доц Петренко Т.А.",
+      "name": "Доц Петренко Т.А. а",
     },
     "week": 0,
   },
@@ -2398,7 +2334,7 @@ Array [
     "name": "Електронний документообіг (лек)",
     "number": 2,
     "teacher": Object {
-      "name": "Доц Петренко Т.А.",
+      "name": "Доц Петренко Т.А. а",
     },
     "week": 0,
   },
@@ -2494,7 +2430,7 @@ Array [
     "name": "Комплексні сист захисту інформ",
     "number": 1,
     "teacher": Object {
-      "name": "Проф. Шелест М.Є.",
+      "name": "Проф. Шелест М.Є. а",
     },
     "week": 0,
   },
@@ -2558,7 +2494,7 @@ Array [
     "name": "Методи побудови (пр)",
     "number": 4,
     "teacher": Object {
-      "name": "Доц. Ткач Ю.М.",
+      "name": "Доц. Ткач Ю.М.  а",
     },
     "week": 0,
   },
@@ -2574,7 +2510,7 @@ Array [
     "name": "Стандартизація (пр)",
     "number": 5,
     "teacher": Object {
-      "name": "Доц. Ткач Ю.М.",
+      "name": "Доц. Ткач Ю.М.  а",
     },
     "week": 0,
   },
@@ -2590,7 +2526,7 @@ Array [
     "name": "Організація спеціального діловодства (лек)",
     "number": 4,
     "teacher": Object {
-      "name": "Проф. Шелест М.Є.",
+      "name": "Проф. Шелест М.Є.  а",
     },
     "week": 0,
   },
@@ -2606,7 +2542,7 @@ Array [
     "name": "Організація спеціального діловодства (пр)",
     "number": 5,
     "teacher": Object {
-      "name": "Доц Петренко Т.А.",
+      "name": "Доц Петренко Т.А.  а",
     },
     "week": 0,
   },
@@ -2622,7 +2558,7 @@ Array [
     "name": "Нормативно-правове забезпечення інф безпеки (лек)",
     "number": 3,
     "teacher": Object {
-      "name": "Доц. Петренко Т.А.",
+      "name": "Доц. Петренко Т.А.  а",
     },
     "week": 1,
   },
@@ -2654,7 +2590,7 @@ Array [
     "name": "Програмний захист інформ",
     "number": 4,
     "teacher": Object {
-      "name": "Проф. Шелест М.Є..",
+      "name": "Проф. Шелест М.Є..  а",
     },
     "week": 1,
   },
@@ -2686,7 +2622,7 @@ Array [
     "name": "Програмний захист інформації  (лек)",
     "number": 5,
     "teacher": Object {
-      "name": "Проф. Шелест М.Є.",
+      "name": "Проф. Шелест М.Є. а",
     },
     "week": 1,
   },
@@ -2718,7 +2654,7 @@ Array [
     "name": "Комплексні сист захисту інформ",
     "number": 1,
     "teacher": Object {
-      "name": "Проф. Шелест М.Є..",
+      "name": "Проф. Шелест М.Є.. а",
     },
     "week": 1,
   },
@@ -2750,7 +2686,7 @@ Array [
     "name": "Комплексні сист захисту інформ (лек)",
     "number": 2,
     "teacher": Object {
-      "name": "Проф. Шелест М.Є.",
+      "name": "Проф. Шелест М.Є. а",
     },
     "week": 1,
   },
@@ -2830,7 +2766,7 @@ Array [
     "name": "Стандартизація (пр)",
     "number": 3,
     "teacher": Object {
-      "name": "Доц. Ткач Ю.М.",
+      "name": "Доц. Ткач Ю.М.  а",
     },
     "week": 1,
   },
@@ -2926,7 +2862,7 @@ Array [
     "name": "Організація спеціального діловодства (лек)",
     "number": 4,
     "teacher": Object {
-      "name": "Проф. Шелест М.Є.",
+      "name": "Проф. Шелест М.Є. а",
     },
     "week": 1,
   },
@@ -2942,7 +2878,7 @@ Array [
     "name": "Організація спеціального діловодства (пр)",
     "number": 5,
     "teacher": Object {
-      "name": "Доц. Петренко Т.А.",
+      "name": "Доц. Петренко Т.А. а",
     },
     "week": 1,
   },
@@ -2958,71 +2894,7 @@ Array [
     "name": "Електронний документообіг (пр)",
     "number": 5,
     "teacher": Object {
-      "name": "Доц.. Петренко Т.А.",
-    },
-    "week": 1,
-  },
-  Object {
-    "auditory": "хтозна-де",
-    "course": 0,
-    "day": "СБ",
-    "group": Object {
-      "name": "МКБп-191",
-      "subgroupNumber": 1,
-    },
-    "isExist": true,
-    "name": "Провідний фахівець НВ _________ О.С.Зінюк",
-    "number": 2,
-    "teacher": Object {
-      "name": "хтозна-хто",
-    },
-    "week": 1,
-  },
-  Object {
-    "auditory": "хтозна-де",
-    "course": 0,
-    "day": "СБ",
-    "group": Object {
-      "name": "МКБп-191",
-      "subgroupNumber": 2,
-    },
-    "isExist": true,
-    "name": "Провідний фахівець НВ _________ О.С.Зінюк",
-    "number": 2,
-    "teacher": Object {
-      "name": "хтозна-хто",
-    },
-    "week": 1,
-  },
-  Object {
-    "auditory": "хтозна-де",
-    "course": 0,
-    "day": "СБ",
-    "group": Object {
-      "name": "МКБп-191",
-      "subgroupNumber": 1,
-    },
-    "isExist": true,
-    "name": "підпис",
-    "number": 3,
-    "teacher": Object {
-      "name": "хтозна-хто",
-    },
-    "week": 1,
-  },
-  Object {
-    "auditory": "хтозна-де",
-    "course": 0,
-    "day": "СБ",
-    "group": Object {
-      "name": "МКБп-191",
-      "subgroupNumber": 2,
-    },
-    "isExist": true,
-    "name": "підпис",
-    "number": 3,
-    "teacher": Object {
-      "name": "хтозна-хто",
+      "name": "Доц.. Петренко Т.А. а",
     },
     "week": 1,
   },
@@ -3038,7 +2910,7 @@ Array [
     "name": "Програмний захист інформ",
     "number": 4,
     "teacher": Object {
-      "name": "Проф. Шелест М.Є..",
+      "name": "Проф. Шелест М.Є.. а",
     },
     "week": 0,
   },
@@ -3054,7 +2926,7 @@ Array [
     "name": "Програмний захист інформації (лек)",
     "number": 5,
     "teacher": Object {
-      "name": "Проф. Шелест М.Є.",
+      "name": "Проф. Шелест М.Є. а",
     },
     "week": 0,
   },
@@ -3070,7 +2942,7 @@ Array [
     "name": "Програмний захист інформації (лек)",
     "number": 5,
     "teacher": Object {
-      "name": "Проф. Шелест М.Є.",
+      "name": "Проф. Шелест М.Є. а",
     },
     "week": 0,
   },
@@ -3086,7 +2958,7 @@ Array [
     "name": "Програмний захист інформ",
     "number": 6,
     "teacher": Object {
-      "name": "Проф. Шелест М.Є.",
+      "name": "Проф. Шелест М.Є. а",
     },
     "week": 0,
   },
@@ -3102,7 +2974,7 @@ Array [
     "name": "Електронний документообіг (пр)",
     "number": 1,
     "teacher": Object {
-      "name": "Доц Петренко Т.А.",
+      "name": "Доц Петренко Т.А. а",
     },
     "week": 0,
   },
@@ -3118,7 +2990,7 @@ Array [
     "name": "Електронний документообіг (лек)",
     "number": 2,
     "teacher": Object {
-      "name": "Доц Петренко Т.А.",
+      "name": "Доц Петренко Т.А. а",
     },
     "week": 0,
   },
@@ -3134,7 +3006,7 @@ Array [
     "name": "Електронний документообіг (лек)",
     "number": 2,
     "teacher": Object {
-      "name": "Доц Петренко Т.А.",
+      "name": "Доц Петренко Т.А. а",
     },
     "week": 0,
   },
@@ -3150,7 +3022,7 @@ Array [
     "name": "Електронний документообіг (пр)",
     "number": 3,
     "teacher": Object {
-      "name": "Доц Петренко Т.А.",
+      "name": "Доц Петренко Т.А. а",
     },
     "week": 0,
   },
@@ -3230,7 +3102,7 @@ Array [
     "name": "Комплексні сист захисту інформ",
     "number": 1,
     "teacher": Object {
-      "name": "Проф. Шелест М.Є.",
+      "name": "Проф. Шелест М.Є. а",
     },
     "week": 0,
   },
@@ -3278,7 +3150,7 @@ Array [
     "name": "Комплексні сист захисту інформ",
     "number": 3,
     "teacher": Object {
-      "name": "Проф. Шелест М.Є",
+      "name": "Проф. Шелест М.Є а",
     },
     "week": 0,
   },
@@ -3294,7 +3166,7 @@ Array [
     "name": "Організація спеціального діловодства (лек)",
     "number": 4,
     "teacher": Object {
-      "name": "Проф. Шелест М.Є.",
+      "name": "Проф. Шелест М.Є.  а",
     },
     "week": 0,
   },
@@ -3310,7 +3182,7 @@ Array [
     "name": "Організація спеціального діловодства (лек)",
     "number": 4,
     "teacher": Object {
-      "name": "Проф. Шелест М.Є.",
+      "name": "Проф. Шелест М.Є.  а",
     },
     "week": 0,
   },
@@ -3326,7 +3198,7 @@ Array [
     "name": "Організація спеціального діловодства (пр)",
     "number": 5,
     "teacher": Object {
-      "name": "Доц Петренко Т.А.",
+      "name": "Доц Петренко Т.А.  а",
     },
     "week": 0,
   },
@@ -3342,7 +3214,7 @@ Array [
     "name": "Організація спеціального діловодства (пр)",
     "number": 5,
     "teacher": Object {
-      "name": "Доц Петренко Т.А.",
+      "name": "Доц Петренко Т.А.  а",
     },
     "week": 0,
   },
@@ -3358,7 +3230,7 @@ Array [
     "name": "Програмний захист інформ",
     "number": 4,
     "teacher": Object {
-      "name": "Проф. Шелест М.Є..",
+      "name": "Проф. Шелест М.Є..  а",
     },
     "week": 1,
   },
@@ -3374,7 +3246,7 @@ Array [
     "name": "Програмний захист інформації  (лек)",
     "number": 5,
     "teacher": Object {
-      "name": "Проф. Шелест М.Є.",
+      "name": "Проф. Шелест М.Є. а",
     },
     "week": 1,
   },
@@ -3390,7 +3262,7 @@ Array [
     "name": "Програмний захист інформації  (лек)",
     "number": 5,
     "teacher": Object {
-      "name": "Проф. Шелест М.Є.",
+      "name": "Проф. Шелест М.Є. а",
     },
     "week": 1,
   },
@@ -3406,7 +3278,7 @@ Array [
     "name": "Програмний захист інформ",
     "number": 6,
     "teacher": Object {
-      "name": "Проф. Шелест М.Є..",
+      "name": "Проф. Шелест М.Є.. а",
     },
     "week": 1,
   },
@@ -3422,7 +3294,7 @@ Array [
     "name": "Комплексні сист захисту інформ",
     "number": 1,
     "teacher": Object {
-      "name": "Проф. Шелест М.Є..",
+      "name": "Проф. Шелест М.Є.. а",
     },
     "week": 1,
   },
@@ -3454,7 +3326,7 @@ Array [
     "name": "Комплексні сист захисту інформ (лек)",
     "number": 2,
     "teacher": Object {
-      "name": "Проф. Шелест М.Є.",
+      "name": "Проф. Шелест М.Є. а",
     },
     "week": 1,
   },
@@ -3470,7 +3342,7 @@ Array [
     "name": "Комплексні сист захисту інформ (лек)",
     "number": 2,
     "teacher": Object {
-      "name": "Проф. Шелест М.Є.",
+      "name": "Проф. Шелест М.Є. а",
     },
     "week": 1,
   },
@@ -3518,7 +3390,7 @@ Array [
     "name": "Комплексні сист захисту інформ",
     "number": 4,
     "teacher": Object {
-      "name": "Проф. Шелест М.Є...",
+      "name": "Проф. Шелест М.Є... а",
     },
     "week": 1,
   },
@@ -3614,7 +3486,7 @@ Array [
     "name": "Організація спеціального діловодства (лек)",
     "number": 4,
     "teacher": Object {
-      "name": "Проф. Шелест М.Є.",
+      "name": "Проф. Шелест М.Є. а",
     },
     "week": 1,
   },
@@ -3630,7 +3502,7 @@ Array [
     "name": "Організація спеціального діловодства (лек)",
     "number": 4,
     "teacher": Object {
-      "name": "Проф. Шелест М.Є.",
+      "name": "Проф. Шелест М.Є. а",
     },
     "week": 1,
   },
@@ -3646,7 +3518,7 @@ Array [
     "name": "Організація спеціального діловодства (пр)",
     "number": 5,
     "teacher": Object {
-      "name": "Доц. Петренко Т.А.",
+      "name": "Доц. Петренко Т.А. а",
     },
     "week": 1,
   },
@@ -3662,7 +3534,7 @@ Array [
     "name": "Організація спеціального діловодства (пр)",
     "number": 5,
     "teacher": Object {
-      "name": "Доц. Петренко Т.А.",
+      "name": "Доц. Петренко Т.А. а",
     },
     "week": 1,
   },
@@ -3678,7 +3550,7 @@ Array [
     "name": "Електронний документообіг (пр)",
     "number": 4,
     "teacher": Object {
-      "name": "Доц... Петренко Т.А.",
+      "name": "Доц... Петренко Т.А. а",
     },
     "week": 1,
   },
@@ -3694,71 +3566,7 @@ Array [
     "name": "Електронний документообіг (пр)",
     "number": 5,
     "teacher": Object {
-      "name": "Доц.. Петренко Т.А.",
-    },
-    "week": 1,
-  },
-  Object {
-    "auditory": "хтозна-де",
-    "course": 0,
-    "day": "СБ",
-    "group": Object {
-      "name": "КБ-161",
-      "subgroupNumber": 1,
-    },
-    "isExist": true,
-    "name": "Провідний фахівець НВ _________ О.С.Зінюк",
-    "number": 2,
-    "teacher": Object {
-      "name": "хтозна-хто",
-    },
-    "week": 1,
-  },
-  Object {
-    "auditory": "хтозна-де",
-    "course": 0,
-    "day": "СБ",
-    "group": Object {
-      "name": "КБ-161",
-      "subgroupNumber": 2,
-    },
-    "isExist": true,
-    "name": "Провідний фахівець НВ _________ О.С.Зінюк",
-    "number": 2,
-    "teacher": Object {
-      "name": "хтозна-хто",
-    },
-    "week": 1,
-  },
-  Object {
-    "auditory": "хтозна-де",
-    "course": 0,
-    "day": "СБ",
-    "group": Object {
-      "name": "КБ-161",
-      "subgroupNumber": 1,
-    },
-    "isExist": true,
-    "name": "підпис",
-    "number": 3,
-    "teacher": Object {
-      "name": "хтозна-хто",
-    },
-    "week": 1,
-  },
-  Object {
-    "auditory": "хтозна-де",
-    "course": 0,
-    "day": "СБ",
-    "group": Object {
-      "name": "КБ-161",
-      "subgroupNumber": 2,
-    },
-    "isExist": true,
-    "name": "підпис",
-    "number": 3,
-    "teacher": Object {
-      "name": "хтозна-хто",
+      "name": "Доц.. Петренко Т.А. а",
     },
     "week": 1,
   },
@@ -6366,7 +6174,7 @@ Array [
     "name": "Хімія (лб)",
     "number": 2,
     "teacher": Object {
-      "name": "Доц. Гуменюк О.Л.",
+      "name": "Доц. Гуменюк О.Л. /2",
     },
     "week": 1,
   },
@@ -6910,7 +6718,7 @@ Array [
     "name": "Вища математика (лек)",
     "number": 1,
     "teacher": Object {
-      "name": "Доц. Балюнов О.О.",
+      "name": "Доц. Балюнов О.О.  б",
     },
     "week": 1,
   },
@@ -6942,7 +6750,7 @@ Array [
     "name": "Вища математика (лек)",
     "number": 2,
     "teacher": Object {
-      "name": "Доц. Балюнов О.О.",
+      "name": "Доц. Балюнов О.О.  б",
     },
     "week": 1,
   },
@@ -7022,7 +6830,7 @@ Array [
     "name": "Хімія (лб)",
     "number": 2,
     "teacher": Object {
-      "name": "Доц. Гуменюк О.Л.",
+      "name": "Доц. Гуменюк О.Л. /2",
     },
     "week": 1,
   },
@@ -7215,38 +7023,6 @@ Array [
     "number": 3,
     "teacher": Object {
       "name": "Ст.викл. Журко В.П.",
-    },
-    "week": 1,
-  },
-  Object {
-    "auditory": "хтозна-де",
-    "course": 0,
-    "day": "СБ",
-    "group": Object {
-      "name": "ПЕ-191",
-      "subgroupNumber": 2,
-    },
-    "isExist": true,
-    "name": "Провідний фахівець НВ_________________О.С.Зінюк",
-    "number": 2,
-    "teacher": Object {
-      "name": "хтозна-хто",
-    },
-    "week": 1,
-  },
-  Object {
-    "auditory": "хтозна-де",
-    "course": 0,
-    "day": "СБ",
-    "group": Object {
-      "name": "ПЕ-191",
-      "subgroupNumber": 2,
-    },
-    "isExist": true,
-    "name": "підпис",
-    "number": 3,
-    "teacher": Object {
-      "name": "хтозна-хто",
     },
     "week": 1,
   },
@@ -7630,7 +7406,7 @@ Array [
     "name": "Вища математика (лек)",
     "number": 1,
     "teacher": Object {
-      "name": "Доц. Балюнов О.О.",
+      "name": "Доц. Балюнов О.О.  б",
     },
     "week": 1,
   },
@@ -7646,7 +7422,7 @@ Array [
     "name": "Вища математика (лек)",
     "number": 1,
     "teacher": Object {
-      "name": "Доц. Балюнов О.О.",
+      "name": "Доц. Балюнов О.О.  б",
     },
     "week": 1,
   },
@@ -7662,7 +7438,7 @@ Array [
     "name": "Вища математика (лек)",
     "number": 2,
     "teacher": Object {
-      "name": "Доц. Балюнов О.О.",
+      "name": "Доц. Балюнов О.О.  б",
     },
     "week": 1,
   },
@@ -7678,7 +7454,7 @@ Array [
     "name": "Вища математика (лек)",
     "number": 2,
     "teacher": Object {
-      "name": "Доц. Балюнов О.О.",
+      "name": "Доц. Балюнов О.О.  б",
     },
     "week": 1,
   },
@@ -7870,7 +7646,7 @@ Array [
     "name": "Хімія (лб)",
     "number": 3,
     "teacher": Object {
-      "name": "Доц. Гуменюк О.Л",
+      "name": "Доц. Гуменюк О.Л/2",
     },
     "week": 1,
   },
@@ -7951,70 +7727,6 @@ Array [
     "number": 3,
     "teacher": Object {
       "name": "Ст.викл. Журко В.П.",
-    },
-    "week": 1,
-  },
-  Object {
-    "auditory": "хтозна-де",
-    "course": 0,
-    "day": "СБ",
-    "group": Object {
-      "name": "РА-191",
-      "subgroupNumber": 1,
-    },
-    "isExist": true,
-    "name": "Провідний фахівець НВ_________________О.С.Зінюк",
-    "number": 2,
-    "teacher": Object {
-      "name": "хтозна-хто",
-    },
-    "week": 1,
-  },
-  Object {
-    "auditory": "хтозна-де",
-    "course": 0,
-    "day": "СБ",
-    "group": Object {
-      "name": "РА-191",
-      "subgroupNumber": 2,
-    },
-    "isExist": true,
-    "name": "Провідний фахівець НВ_________________О.С.Зінюк",
-    "number": 2,
-    "teacher": Object {
-      "name": "хтозна-хто",
-    },
-    "week": 1,
-  },
-  Object {
-    "auditory": "хтозна-де",
-    "course": 0,
-    "day": "СБ",
-    "group": Object {
-      "name": "РА-191",
-      "subgroupNumber": 1,
-    },
-    "isExist": true,
-    "name": "підпис",
-    "number": 3,
-    "teacher": Object {
-      "name": "хтозна-хто",
-    },
-    "week": 1,
-  },
-  Object {
-    "auditory": "хтозна-де",
-    "course": 0,
-    "day": "СБ",
-    "group": Object {
-      "name": "РА-191",
-      "subgroupNumber": 2,
-    },
-    "isExist": true,
-    "name": "підпис",
-    "number": 3,
-    "teacher": Object {
-      "name": "хтозна-хто",
     },
     "week": 1,
   },
@@ -8206,7 +7918,7 @@ Array [
     "name": "Вища математика (лек)",
     "number": 1,
     "teacher": Object {
-      "name": "Доц. Балюнов О.О.",
+      "name": "Доц. Балюнов О.О.  б",
     },
     "week": 1,
   },
@@ -8222,7 +7934,7 @@ Array [
     "name": "Вища математика (лек)",
     "number": 2,
     "teacher": Object {
-      "name": "Доц. Балюнов О.О.",
+      "name": "Доц. Балюнов О.О.  б",
     },
     "week": 1,
   },
@@ -8318,7 +8030,7 @@ Array [
     "name": "Хімія (лб)",
     "number": 3,
     "teacher": Object {
-      "name": "Доц. Гуменюк О.Л",
+      "name": "Доц. Гуменюк О.Л/2",
     },
     "week": 1,
   },
@@ -8355,54 +8067,6 @@ Array [
     "week": 1,
   },
   Object {
-    "auditory": "хтозна-де",
-    "course": 0,
-    "day": "СБ",
-    "group": Object {
-      "name": "ВТ-191",
-      "subgroupNumber": 1,
-    },
-    "isExist": true,
-    "name": "Провідний фахівець НВ_________________О.С.Зінюк",
-    "number": 2,
-    "teacher": Object {
-      "name": "хтозна-хто",
-    },
-    "week": 1,
-  },
-  Object {
-    "auditory": "хтозна-де",
-    "course": 0,
-    "day": "СБ",
-    "group": Object {
-      "name": "ВТ-191",
-      "subgroupNumber": 1,
-    },
-    "isExist": true,
-    "name": "підпис",
-    "number": 3,
-    "teacher": Object {
-      "name": "хтозна-хто",
-    },
-    "week": 1,
-  },
-  Object {
-    "auditory": "хтозна-де",
-    "course": 0,
-    "day": "СБ",
-    "group": Object {
-      "name": "ВТ-191",
-      "subgroupNumber": 2,
-    },
-    "isExist": true,
-    "name": "підпис",
-    "number": 3,
-    "teacher": Object {
-      "name": "хтозна-хто",
-    },
-    "week": 1,
-  },
-  Object {
     "auditory": "1-330",
     "course": 0,
     "day": "ПН",
@@ -10654,7 +10318,7 @@ Array [
     "name": "Теоретична механіка",
     "number": 2,
     "teacher": Object {
-      "name": "Кайдаш",
+      "name": "Кайдаш ,208",
     },
     "week": 0,
   },
@@ -10702,7 +10366,7 @@ Array [
     "name": "Теоретична механіка",
     "number": 4,
     "teacher": Object {
-      "name": "Кайдаш",
+      "name": "Кайдаш ,208",
     },
     "week": 0,
   },
@@ -10718,7 +10382,7 @@ Array [
     "name": "Вища математика (лек)",
     "number": 2,
     "teacher": Object {
-      "name": "Доц. Балюнов О.О.",
+      "name": "Доц. Балюнов О.О.  б",
     },
     "week": 0,
   },
@@ -10734,7 +10398,7 @@ Array [
     "name": "Вища математика (лек)",
     "number": 2,
     "teacher": Object {
-      "name": "Доц. Балюнов О.О.",
+      "name": "Доц. Балюнов О.О.  б",
     },
     "week": 0,
   },
@@ -10878,7 +10542,7 @@ Array [
     "name": "ТОЕ",
     "number": 1,
     "teacher": Object {
-      "name": "хтозна-хто",
+      "name": "Діхтярук/Красножон",
     },
     "week": 1,
   },
@@ -10926,7 +10590,7 @@ Array [
     "name": "ТОЕ",
     "number": 3,
     "teacher": Object {
-      "name": "хтозна-хто",
+      "name": "Діхтярук/Красножон",
     },
     "week": 1,
   },
@@ -11166,7 +10830,7 @@ Array [
     "name": "Основи метрології",
     "number": 2,
     "teacher": Object {
-      "name": "Приступа",
+      "name": "Приступа  и 124",
     },
     "week": 1,
   },
@@ -11214,7 +10878,7 @@ Array [
     "name": "Основи метрології",
     "number": 4,
     "teacher": Object {
-      "name": "Приступа",
+      "name": "Приступа  и 124",
     },
     "week": 1,
   },
@@ -11859,22 +11523,6 @@ Array [
     "week": 1,
   },
   Object {
-    "auditory": "хтозна-де",
-    "course": 0,
-    "day": "ЧТ",
-    "group": Object {
-      "name": "ПЕ-181",
-      "subgroupNumber": 1,
-    },
-    "isExist": true,
-    "name": "хтозна-що",
-    "number": 5,
-    "teacher": Object {
-      "name": "хтозна-хто",
-    },
-    "week": 1,
-  },
-  Object {
     "auditory": "1-314",
     "course": 0,
     "day": "ПТ",
@@ -11935,70 +11583,6 @@ Array [
     "number": 2,
     "teacher": Object {
       "name": "Доц. Сатюков А.І.",
-    },
-    "week": 1,
-  },
-  Object {
-    "auditory": "хтозна-де",
-    "course": 0,
-    "day": "СБ",
-    "group": Object {
-      "name": "ПЕ-181",
-      "subgroupNumber": 1,
-    },
-    "isExist": true,
-    "name": "хтозна-що",
-    "number": 2,
-    "teacher": Object {
-      "name": "хтозна-хто",
-    },
-    "week": 1,
-  },
-  Object {
-    "auditory": "хтозна-де",
-    "course": 0,
-    "day": "СБ",
-    "group": Object {
-      "name": "ПЕ-181",
-      "subgroupNumber": 2,
-    },
-    "isExist": true,
-    "name": "хтозна-що",
-    "number": 2,
-    "teacher": Object {
-      "name": "хтозна-хто",
-    },
-    "week": 1,
-  },
-  Object {
-    "auditory": "хтозна-де",
-    "course": 0,
-    "day": "СБ",
-    "group": Object {
-      "name": "ПЕ-181",
-      "subgroupNumber": 1,
-    },
-    "isExist": true,
-    "name": "підпис",
-    "number": 3,
-    "teacher": Object {
-      "name": "хтозна-хто",
-    },
-    "week": 1,
-  },
-  Object {
-    "auditory": "хтозна-де",
-    "course": 0,
-    "day": "СБ",
-    "group": Object {
-      "name": "ПЕ-181",
-      "subgroupNumber": 2,
-    },
-    "isExist": true,
-    "name": "підпис",
-    "number": 3,
-    "teacher": Object {
-      "name": "хтозна-хто",
     },
     "week": 1,
   },
@@ -12398,7 +11982,7 @@ Array [
     "name": "Основи радіоелектроніки (лб)",
     "number": 4,
     "teacher": Object {
-      "name": "Ст.викл. Савенко О.В.",
+      "name": "Ст.викл. Савенко О.В.  та 33",
     },
     "week": 1,
   },
@@ -12414,7 +11998,7 @@ Array [
     "name": "Основи радіоелектроніки (лб)",
     "number": 4,
     "teacher": Object {
-      "name": "Ст.викл. Савенко О.В.",
+      "name": "Ст.викл. Савенко О.В.  та 33",
     },
     "week": 1,
   },
@@ -12462,7 +12046,7 @@ Array [
     "name": "Основи метрології (лб)",
     "number": 3,
     "teacher": Object {
-      "name": "Доц. Приступа А.Л.",
+      "name": "Доц. Приступа А.Л. , 124",
     },
     "week": 1,
   },
@@ -12478,7 +12062,7 @@ Array [
     "name": "Основи метрології (лб)",
     "number": 3,
     "teacher": Object {
-      "name": "Доц. Приступа А.Л.",
+      "name": "Доц. Приступа А.Л. , 124",
     },
     "week": 1,
   },
@@ -12703,70 +12287,6 @@ Array [
     "number": 4,
     "teacher": Object {
       "name": "Доц. Гордієнко В.В.",
-    },
-    "week": 1,
-  },
-  Object {
-    "auditory": "хтозна-де",
-    "course": 0,
-    "day": "СБ",
-    "group": Object {
-      "name": "РА-181",
-      "subgroupNumber": 1,
-    },
-    "isExist": true,
-    "name": "хтозна-що",
-    "number": 2,
-    "teacher": Object {
-      "name": "хтозна-хто",
-    },
-    "week": 1,
-  },
-  Object {
-    "auditory": "хтозна-де",
-    "course": 0,
-    "day": "СБ",
-    "group": Object {
-      "name": "РА-181",
-      "subgroupNumber": 2,
-    },
-    "isExist": true,
-    "name": "хтозна-що",
-    "number": 2,
-    "teacher": Object {
-      "name": "хтозна-хто",
-    },
-    "week": 1,
-  },
-  Object {
-    "auditory": "хтозна-де",
-    "course": 0,
-    "day": "СБ",
-    "group": Object {
-      "name": "РА-181",
-      "subgroupNumber": 1,
-    },
-    "isExist": true,
-    "name": "підпис",
-    "number": 3,
-    "teacher": Object {
-      "name": "хтозна-хто",
-    },
-    "week": 1,
-  },
-  Object {
-    "auditory": "хтозна-де",
-    "course": 0,
-    "day": "СБ",
-    "group": Object {
-      "name": "РА-181",
-      "subgroupNumber": 2,
-    },
-    "isExist": true,
-    "name": "підпис",
-    "number": 3,
-    "teacher": Object {
-      "name": "хтозна-хто",
     },
     "week": 1,
   },
@@ -16878,7 +16398,7 @@ Array [
     "name": "Осн теор автомат управл (лб)",
     "number": 3,
     "teacher": Object {
-      "name": "Доц. Гордієнко В.В.",
+      "name": "Доц. Гордієнко В.В.  та 43",
     },
     "week": 1,
   },
@@ -16894,7 +16414,7 @@ Array [
     "name": "Осн теор автомат управл (лб)",
     "number": 3,
     "teacher": Object {
-      "name": "Доц. Гордієнко В.В.",
+      "name": "Доц. Гордієнко В.В.  та 43",
     },
     "week": 1,
   },
@@ -17023,70 +16543,6 @@ Array [
     "number": 3,
     "teacher": Object {
       "name": "Доц. Сатюков А.І.",
-    },
-    "week": 1,
-  },
-  Object {
-    "auditory": "хтозна-де",
-    "course": 0,
-    "day": "СБ",
-    "group": Object {
-      "name": "ВТ-171",
-      "subgroupNumber": 1,
-    },
-    "isExist": true,
-    "name": "Провідний фахівець НВ_____________О.С.Зінюк",
-    "number": 2,
-    "teacher": Object {
-      "name": "хтозна-хто",
-    },
-    "week": 1,
-  },
-  Object {
-    "auditory": "хтозна-де",
-    "course": 0,
-    "day": "СБ",
-    "group": Object {
-      "name": "ВТ-171",
-      "subgroupNumber": 2,
-    },
-    "isExist": true,
-    "name": "Провідний фахівець НВ_____________О.С.Зінюк",
-    "number": 2,
-    "teacher": Object {
-      "name": "хтозна-хто",
-    },
-    "week": 1,
-  },
-  Object {
-    "auditory": "хтозна-де",
-    "course": 0,
-    "day": "СБ",
-    "group": Object {
-      "name": "ВТ-171",
-      "subgroupNumber": 1,
-    },
-    "isExist": true,
-    "name": "підпис",
-    "number": 3,
-    "teacher": Object {
-      "name": "хтозна-хто",
-    },
-    "week": 1,
-  },
-  Object {
-    "auditory": "хтозна-де",
-    "course": 0,
-    "day": "СБ",
-    "group": Object {
-      "name": "ВТ-171",
-      "subgroupNumber": 2,
-    },
-    "isExist": true,
-    "name": "підпис",
-    "number": 3,
-    "teacher": Object {
-      "name": "хтозна-хто",
     },
     "week": 1,
   },
@@ -17663,70 +17119,6 @@ Array [
     "number": 3,
     "teacher": Object {
       "name": "Доц. Хоменко м.А.",
-    },
-    "week": 1,
-  },
-  Object {
-    "auditory": "хтозна-де",
-    "course": 0,
-    "day": "СБ",
-    "group": Object {
-      "name": "РА-171",
-      "subgroupNumber": 1,
-    },
-    "isExist": true,
-    "name": "Провідний фахівець НВ_____________О.С.Зінюк",
-    "number": 2,
-    "teacher": Object {
-      "name": "хтозна-хто",
-    },
-    "week": 1,
-  },
-  Object {
-    "auditory": "хтозна-де",
-    "course": 0,
-    "day": "СБ",
-    "group": Object {
-      "name": "РА-171",
-      "subgroupNumber": 2,
-    },
-    "isExist": true,
-    "name": "Провідний фахівець НВ_____________О.С.Зінюк",
-    "number": 2,
-    "teacher": Object {
-      "name": "хтозна-хто",
-    },
-    "week": 1,
-  },
-  Object {
-    "auditory": "хтозна-де",
-    "course": 0,
-    "day": "СБ",
-    "group": Object {
-      "name": "РА-171",
-      "subgroupNumber": 1,
-    },
-    "isExist": true,
-    "name": "підпис",
-    "number": 3,
-    "teacher": Object {
-      "name": "хтозна-хто",
-    },
-    "week": 1,
-  },
-  Object {
-    "auditory": "хтозна-де",
-    "course": 0,
-    "day": "СБ",
-    "group": Object {
-      "name": "РА-171",
-      "subgroupNumber": 2,
-    },
-    "isExist": true,
-    "name": "підпис",
-    "number": 3,
-    "teacher": Object {
-      "name": "хтозна-хто",
     },
     "week": 1,
   },
@@ -20718,7 +20110,7 @@ Array [
     "name": "Системи ел постач заг призн (лб)",
     "number": 2,
     "teacher": Object {
-      "name": "Ст.викл. Кулик Б.І.",
+      "name": "Ст.викл. Кулик Б.І.   та 1-124",
     },
     "week": 0,
   },
@@ -20734,7 +20126,7 @@ Array [
     "name": "Системи ел постач заг призн (лб)",
     "number": 2,
     "teacher": Object {
-      "name": "Ст.викл. Кулик Б.І.",
+      "name": "Ст.викл. Кулик Б.І.   та 1-124",
     },
     "week": 0,
   },
@@ -21198,7 +20590,7 @@ Array [
     "name": "Електронні системи (лб)",
     "number": 3,
     "teacher": Object {
-      "name": "Доц. Гордієнко В.В.",
+      "name": "Доц. Гордієнко В.В.  та 35",
     },
     "week": 0,
   },
@@ -21214,7 +20606,7 @@ Array [
     "name": "Електронні системи (лб)",
     "number": 3,
     "teacher": Object {
-      "name": "Доц. Гордієнко В.В.",
+      "name": "Доц. Гордієнко В.В.  та 35",
     },
     "week": 0,
   },
@@ -22403,70 +21795,6 @@ Array [
     "week": 1,
   },
   Object {
-    "auditory": "хтозна-де",
-    "course": 0,
-    "day": "СБ",
-    "group": Object {
-      "name": "РА-161",
-      "subgroupNumber": 1,
-    },
-    "isExist": true,
-    "name": "Провідний фахівець НВ________________О.С.Зінюк",
-    "number": 2,
-    "teacher": Object {
-      "name": "хтозна-хто",
-    },
-    "week": 1,
-  },
-  Object {
-    "auditory": "хтозна-де",
-    "course": 0,
-    "day": "СБ",
-    "group": Object {
-      "name": "РА-161",
-      "subgroupNumber": 2,
-    },
-    "isExist": true,
-    "name": "Провідний фахівець НВ________________О.С.Зінюк",
-    "number": 2,
-    "teacher": Object {
-      "name": "хтозна-хто",
-    },
-    "week": 1,
-  },
-  Object {
-    "auditory": "хтозна-де",
-    "course": 0,
-    "day": "СБ",
-    "group": Object {
-      "name": "РА-161",
-      "subgroupNumber": 1,
-    },
-    "isExist": true,
-    "name": "підпис",
-    "number": 3,
-    "teacher": Object {
-      "name": "хтозна-хто",
-    },
-    "week": 1,
-  },
-  Object {
-    "auditory": "хтозна-де",
-    "course": 0,
-    "day": "СБ",
-    "group": Object {
-      "name": "РА-161",
-      "subgroupNumber": 2,
-    },
-    "isExist": true,
-    "name": "підпис",
-    "number": 3,
-    "teacher": Object {
-      "name": "хтозна-хто",
-    },
-    "week": 1,
-  },
-  Object {
     "auditory": "1 - 128",
     "course": 0,
     "day": "ПН",
@@ -23039,70 +22367,6 @@ Array [
     "number": 4,
     "teacher": Object {
       "name": "Доц. Безручко В.М.",
-    },
-    "week": 1,
-  },
-  Object {
-    "auditory": "хтозна-де",
-    "course": 0,
-    "day": "СБ",
-    "group": Object {
-      "name": "ВТ-161",
-      "subgroupNumber": 1,
-    },
-    "isExist": true,
-    "name": "Провідний фахівець НВ________________О.С.Зінюк",
-    "number": 2,
-    "teacher": Object {
-      "name": "хтозна-хто",
-    },
-    "week": 1,
-  },
-  Object {
-    "auditory": "хтозна-де",
-    "course": 0,
-    "day": "СБ",
-    "group": Object {
-      "name": "ВТ-161",
-      "subgroupNumber": 2,
-    },
-    "isExist": true,
-    "name": "Провідний фахівець НВ________________О.С.Зінюк",
-    "number": 2,
-    "teacher": Object {
-      "name": "хтозна-хто",
-    },
-    "week": 1,
-  },
-  Object {
-    "auditory": "хтозна-де",
-    "course": 0,
-    "day": "СБ",
-    "group": Object {
-      "name": "ВТ-161",
-      "subgroupNumber": 1,
-    },
-    "isExist": true,
-    "name": "підпис",
-    "number": 3,
-    "teacher": Object {
-      "name": "хтозна-хто",
-    },
-    "week": 1,
-  },
-  Object {
-    "auditory": "хтозна-де",
-    "course": 0,
-    "day": "СБ",
-    "group": Object {
-      "name": "ВТ-161",
-      "subgroupNumber": 2,
-    },
-    "isExist": true,
-    "name": "підпис",
-    "number": 3,
-    "teacher": Object {
-      "name": "хтозна-хто",
     },
     "week": 1,
   },
@@ -25662,7 +24926,7 @@ Array [
     "name": "Електронні промислові пристрої (лб)",
     "number": 1,
     "teacher": Object {
-      "name": "Ст.викл. Городній О.М.",
+      "name": "Ст.викл. Городній О.М.  та 35",
     },
     "week": 0,
   },
@@ -25678,7 +24942,7 @@ Array [
     "name": "Електронні промислові пристрої (лб)",
     "number": 1,
     "teacher": Object {
-      "name": "Ст.викл. Городній О.М.",
+      "name": "Ст.викл. Городній О.М.  та 35",
     },
     "week": 0,
   },
@@ -26643,38 +25907,6 @@ Array [
     "week": 1,
   },
   Object {
-    "auditory": "хтозна-де",
-    "course": 0,
-    "day": "СБ",
-    "group": Object {
-      "name": "МВТп-191",
-      "subgroupNumber": 1,
-    },
-    "isExist": true,
-    "name": "Фахівець НВ______________О.С.Зінюк",
-    "number": 2,
-    "teacher": Object {
-      "name": "хтозна-хто",
-    },
-    "week": 1,
-  },
-  Object {
-    "auditory": "хтозна-де",
-    "course": 0,
-    "day": "СБ",
-    "group": Object {
-      "name": "МВТп-191",
-      "subgroupNumber": 2,
-    },
-    "isExist": true,
-    "name": "Фахівець НВ______________О.С.Зінюк",
-    "number": 2,
-    "teacher": Object {
-      "name": "хтозна-хто",
-    },
-    "week": 1,
-  },
-  Object {
     "auditory": "4-53",
     "course": 0,
     "day": "ПН",
@@ -26718,7 +25950,7 @@ Array [
     "name": "Сенсори та виконавчи механізми радіоел систем",
     "number": 4,
     "teacher": Object {
-      "name": "Савенко",
+      "name": "Савенко  та 45",
     },
     "week": 0,
   },
@@ -26798,7 +26030,7 @@ Array [
     "name": "Сенсори та виконавчи механізми радіоел систем",
     "number": 3,
     "teacher": Object {
-      "name": "Савенко",
+      "name": "Савенко  та 45",
     },
     "week": 0,
   },
@@ -26846,7 +26078,7 @@ Array [
     "name": "Сучасні технології конструювання РЕА (лб)",
     "number": 5,
     "teacher": Object {
-      "name": "Доц. Велігорський О.А.",
+      "name": "Доц. Велігорський О.А.  та 45",
     },
     "week": 0,
   },
@@ -26862,7 +26094,7 @@ Array [
     "name": "Сучасні технології конструювання РЕА (лб)",
     "number": 5,
     "teacher": Object {
-      "name": "Доц. Велігорський О.А.",
+      "name": "Доц. Велігорський О.А.  та 45",
     },
     "week": 0,
   },
@@ -27195,10 +26427,10 @@ Array [
       "subgroupNumber": 2,
     },
     "isExist": true,
-    "name": "Сенсори та виконавчи механізми радіоел систем Савенко",
+    "name": "Сенсори та виконавчи механізми радіоел систем Савенко   та 45",
     "number": 5,
     "teacher": Object {
-      "name": "хтозна-хто",
+      "name": "Викладач",
     },
     "week": 1,
   },
@@ -27211,10 +26443,10 @@ Array [
       "subgroupNumber": 1,
     },
     "isExist": true,
-    "name": "Сенсори та виконавчи механізми радіоел систем Савенко",
+    "name": "Сенсори та виконавчи механізми радіоел систем Савенко   та 45",
     "number": 2,
     "teacher": Object {
-      "name": "хтозна-хто",
+      "name": "Викладач",
     },
     "week": 1,
   },
@@ -27279,38 +26511,6 @@ Array [
     "number": 4,
     "teacher": Object {
       "name": "Проф. Денисов Ю.О.",
-    },
-    "week": 1,
-  },
-  Object {
-    "auditory": "хтозна-де",
-    "course": 0,
-    "day": "СБ",
-    "group": Object {
-      "name": "МРАп-191",
-      "subgroupNumber": 1,
-    },
-    "isExist": true,
-    "name": "Фахівець НВ______________О.С.Зінюк",
-    "number": 2,
-    "teacher": Object {
-      "name": "хтозна-хто",
-    },
-    "week": 1,
-  },
-  Object {
-    "auditory": "хтозна-де",
-    "course": 0,
-    "day": "СБ",
-    "group": Object {
-      "name": "МРАп-191",
-      "subgroupNumber": 2,
-    },
-    "isExist": true,
-    "name": "Фахівець НВ______________О.С.Зінюк",
-    "number": 2,
-    "teacher": Object {
-      "name": "хтозна-хто",
     },
     "week": 1,
   },
@@ -28079,70 +27279,6 @@ Array [
     "number": 4,
     "teacher": Object {
       "name": "Доц. Трунова О.В.",
-    },
-    "week": 1,
-  },
-  Object {
-    "auditory": "хтозна-де",
-    "course": 0,
-    "day": "СБ",
-    "group": Object {
-      "name": "МПІн-181",
-      "subgroupNumber": 1,
-    },
-    "isExist": true,
-    "name": "Провідний фахівець НВ____________О.С.Зінюк",
-    "number": 2,
-    "teacher": Object {
-      "name": "хтозна-хто",
-    },
-    "week": 1,
-  },
-  Object {
-    "auditory": "хтозна-де",
-    "course": 0,
-    "day": "СБ",
-    "group": Object {
-      "name": "МПІн-181",
-      "subgroupNumber": 2,
-    },
-    "isExist": true,
-    "name": "Провідний фахівець НВ____________О.С.Зінюк",
-    "number": 2,
-    "teacher": Object {
-      "name": "хтозна-хто",
-    },
-    "week": 1,
-  },
-  Object {
-    "auditory": "хтозна-де",
-    "course": 0,
-    "day": "СБ",
-    "group": Object {
-      "name": "МПІн-181",
-      "subgroupNumber": 1,
-    },
-    "isExist": true,
-    "name": "підпис",
-    "number": 3,
-    "teacher": Object {
-      "name": "хтозна-хто",
-    },
-    "week": 1,
-  },
-  Object {
-    "auditory": "хтозна-де",
-    "course": 0,
-    "day": "СБ",
-    "group": Object {
-      "name": "МПІн-181",
-      "subgroupNumber": 2,
-    },
-    "isExist": true,
-    "name": "підпис",
-    "number": 3,
-    "teacher": Object {
-      "name": "хтозна-хто",
     },
     "week": 1,
   },

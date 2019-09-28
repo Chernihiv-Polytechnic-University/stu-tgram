@@ -1,15 +1,18 @@
 // TODO rewrite, with only excel
 import * as xlsx from 'xlsx'
 import * as Excel from 'exceljs/modern.nodejs'
-import { range, get, isString } from 'lodash'
+import { range, get, isString, min, flatMap, map, filter, isEqual } from 'lodash'
 
 const DAYS = ['ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ']
 const GROUP_NUMBER_REGEXP = /^([0-9]{2,3})$/
 const GROUP_CODE_REGEXP = /^([а-щА-ЩЬьЮюЯяЇїІіЄєҐґ]{2,4})$/
 const AUDITORY_REGEXP = /[0-9]{1}[ ]{0,1}-[ ]{0,1}[0-9]{1,3}/
 const GROUP_CODE_NUMBER_SEPARATOR = '-'
-const LESSON_IS_COMMON_IXFE_THRESHOLD = 200
 const DAYS_IN_WEEK = 6
+
+const DEFAULT_AUDITORY = 'хтозна-де'
+const DEFAULT_TEACHER_NAME = 'Викладач'
+const DEFAULT_LESSON_NAME = 'Пара'
 
 export interface Lesson {
   isExist: boolean,
@@ -23,18 +26,22 @@ export interface Lesson {
   teacher?: { name: string }
 }
 
-const findCourse = (data) => {
-  let course = null
-  for (let i = 0; !course && i < data.length; i += 1) {
-    const row = data[i]
-    Object.values(row).forEach((value: string) => {
-      if (value && value.trim().endsWith('курс')) {
-        course = value.trim()
-      }
-    })
-  }
-  return course
-}
+const filterNoLessons = (lessons: Lesson[]) =>
+  filter(lessons, (e) => {
+    // in this case, almost completely that this is a mistake of the current parsing
+    return (
+      e.week !== 1 // last week
+      || e.day !== 'СБ' // last day
+      || e.auditory !== DEFAULT_AUDITORY // unknown place
+      || e.teacher.name !== DEFAULT_TEACHER_NAME // unknown teacher
+    )
+      &&
+    (
+      e.auditory !== DEFAULT_AUDITORY
+      || e.teacher.name !== DEFAULT_TEACHER_NAME
+      || e.name !== DEFAULT_LESSON_NAME
+    )
+  })
 
 const checkValueIsGroup = (value) => {
   if (!value.includes(GROUP_CODE_NUMBER_SEPARATOR)) {
@@ -109,20 +116,26 @@ const findGroupLessons = (data, groups, days, sheet, excelWorksheet: Excel.Works
   }))
   groups.forEach((group) => { group.days = [] })
   Object.values(days).forEach((day: any) => {
-    const dayRows = day.rows.map(rowIndex => data[rowIndex])
+    const groupColumns = flatMap(groups, 'columns')
+    const minColumn = min(map(groupColumns, Number))
+    const dayRows = day.rows.map(rowIndex => data[rowIndex]).map(e => Object.entries(e).reduce((acc, [key, value]) => {
+      const cellName = get(sheetValues.find((e: any) => isString(e.v) && e.v === value), 'cell')
+      const cell = isString(cellName) ? excelWorksheet.getCell(cellName) : {}
+      if (Number(key) < minColumn || !cell.isMerged) {
+        return { ...acc, [key]: value }
+      }
+      // use `${value} ` to make new value different from original
+      const update = range(Number(key), Number(key) + cell._mergeCount + 1).reduce((acc, k) => ({ ...acc, [k]: `${value} ` }), {})
+      return {
+        ...acc,
+        ...update,
+      }
+    }, {}))
+    // const correctedDayRows = dayRows.map(d)
+    console.log(dayRows)
     groups.forEach((group) => {
       const groupDay: any = { name: day.name, isOdd: day.isOdd }
-      groupDay.lessons = dayRows.map(dayRow => group.columns.reduce((acc, column, i) => {
-        const data =  dayRow[column]
-        if (i === 0) {
-          const cellName = get(sheetValues.find((e: any) => isString(e.v) && e.v === data), 'cell')
-          const cell = excelWorksheet.getCell(cellName)
-          return cell.isMerged
-            ? [data, data]
-            : [data]
-        }
-        return [...acc, dayRow[column]]
-      }, []))
+      groupDay.lessons = dayRows.map(dayRow => group.columns.reduce((acc, column) => [...acc, dayRow[column]], []))
       group.days.push(groupDay)
     })
   })
@@ -131,17 +144,23 @@ const findGroupLessons = (data, groups, days, sheet, excelWorksheet: Excel.Works
 
 const parseLessonData = (lessonData) => {
   if (!lessonData) {
-    return [null, null, null]
+    return [DEFAULT_LESSON_NAME, DEFAULT_TEACHER_NAME, DEFAULT_AUDITORY]
   }
   const auditoryData = lessonData.match(AUDITORY_REGEXP)
   const auditoryIndex = get(auditoryData, 'index', Number.MAX_SAFE_INTEGER)
-  const auditoryName = get(auditoryData, '0', null)
-  const splittedOne = lessonData.substr(0, auditoryIndex).split('\n')
+  const auditoryName = get(auditoryData, '0', DEFAULT_AUDITORY)
+  const lessonDataWithoutAuditory = lessonData.replace(auditoryName, '')
+  const splittedOne = lessonDataWithoutAuditory.split('\n')
   if (splittedOne.length > 1) {
     return [...splittedOne.map(str => str.trim()), auditoryName]
   }
-  const splittedTwo = lessonData.substr(0, auditoryIndex).split('     ')
-  return [...splittedTwo.map(str => str.trim()).filter(str => str.length > 1), auditoryName]
+  const splittedTwo = lessonDataWithoutAuditory
+    .split('     ')
+    .map(str => str.trim())
+    .filter(str => str.length > 1)
+  const lessonName = get(splittedTwo, '0', DEFAULT_LESSON_NAME)
+  const teacherName = get(splittedTwo, '1', DEFAULT_TEACHER_NAME)
+  return [lessonName, teacherName, auditoryName]
 }
 
 const buildLessons = (groups) => {
@@ -182,7 +201,7 @@ const buildLessons = (groups) => {
       })
     })
   })
-  return lessons
+  return filterNoLessons(lessons)
 }
 
 export const parse = async (fileBuffer) => {
