@@ -1,5 +1,6 @@
-// TODO rewrite, test
+// TODO rewrite, with only excel
 import * as xlsx from 'xlsx'
+import * as Excel from 'exceljs/modern.nodejs'
 import { range, get, isString } from 'lodash'
 
 const DAYS = ['ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ']
@@ -101,8 +102,11 @@ const findDays = (data) => {
   return days
 }
 
-const findGroupLessons = (data, groups, days, sheet) => {
-  const sheetValues = Object.values(sheet)
+const findGroupLessons = (data, groups, days, sheet, excelWorksheet: Excel.Worksheet) => {
+  const sheetValues = Object.entries(sheet).map(([key, value]) => ({
+    ...value,
+    cell: key,
+  }))
   groups.forEach((group) => { group.days = [] })
   Object.values(days).forEach((day: any) => {
     const dayRows = day.rows.map(rowIndex => data[rowIndex])
@@ -111,8 +115,9 @@ const findGroupLessons = (data, groups, days, sheet) => {
       groupDay.lessons = dayRows.map(dayRow => group.columns.reduce((acc, column, i) => {
         const data =  dayRow[column]
         if (i === 0) {
-          const size = get(sheetValues.find((e: any) => e.v === data), 'ixfe')
-          return size > LESSON_IS_COMMON_IXFE_THRESHOLD
+          const cellName = get(sheetValues.find((e: any) => isString(e.v) && e.v === data), 'cell')
+          const cell = excelWorksheet.getCell(cellName)
+          return cell.isMerged
             ? [data, data]
             : [data]
         }
@@ -180,14 +185,16 @@ const buildLessons = (groups) => {
   return lessons
 }
 
-export const parse = (fileBuffer) => {
+export const parse = async (fileBuffer) => {
   const workbook = xlsx.read(fileBuffer)
+  const excelWorkbook = new Excel.Workbook()
+  await excelWorkbook.xlsx.load(fileBuffer)
   const result = []
   Object.values(workbook.Sheets).forEach((sheet, i) => {
     const data = xlsx.utils.sheet_to_json(sheet, { header: range(100).map(e => String(e)) })
     const groupsData = findGroups(data)
     const days = findDays(data)
-    const groups = findGroupLessons(data, groupsData, days, sheet)
+    const groups = findGroupLessons(data, groupsData, days, sheet, excelWorkbook.getWorksheet(i + 1))
     result.push(...buildLessons(groups))
   })
   return result

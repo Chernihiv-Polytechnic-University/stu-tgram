@@ -9,7 +9,7 @@
     "compile": "npm run clean && npm i && npm run compile-libs && npm run compile-component",
     "compile-component": "tsc -p tsconfig.json",
     "compile-libs": "npm run clean-libs && ../../overlord/compile-libs.sh libs/xlsx-parser domain-model",
-    "test": "jest --passWithNoTests '^((?!\\\\.int\\\\.spec\\\\.ts).)*$' -u"
+    "test": "jest --passWithNoTests '^((?!\\\\.int\\\\.spec\\\\.ts).)*$'"
   },
   "repository": {
     "type": "git",
@@ -19,6 +19,7 @@
   "license": "UNLICENSED",
   "homepage": "https://bitbucket.org/iskryzhytskyi/utb#readme",
   "devDependencies": {
+    "@types/exceljs": "^0.5.3",
     "@types/jest": "^24.0.18",
     "@types/lodash": "^4.14.138",
     "@types/mongoose": "^5.5.16",
@@ -29,7 +30,8 @@
     "typescript": "^3.5.3"
   },
   "dependencies": {
+    "exceljs": "^2.0.1",
     "lodash": "^4.17.15",
-    "xlsx": "^0.15.1"
+    "xlsx": "^0.8.8"
   }
 }
