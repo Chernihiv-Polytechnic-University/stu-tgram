@@ -40,6 +40,7 @@ export const handleGetLessonEvent: Handler = async (bot: telegram, msg: Message)
     const afterStartInMinutes = getDiffBetweenNowAndLessonStartInMinutes(currentLessonNumber).toString()
     const textOne = buildText('currentLessonIs', {
       minutes: afterStartInMinutes,
+      // number: currentLessonNumber,
       lessonName: get(currentLesson, 'name', '*'),
       auditory: get(currentLesson, 'auditory', '*'),
       teacherName: get(currentLesson, 'teacher.name', '*'),
@@ -62,6 +63,8 @@ export const handleGetLessonEvent: Handler = async (bot: telegram, msg: Message)
     const text = buildText('nextLessonIs', {
       hours,
       minutes,
+      // start,
+      // number,
       lessonName: get(nextLesson, 'name', '*'),
       auditory: get(nextLesson, 'auditory', '*'),
       teacherName: get(nextLesson, 'teacher.name', '*'),

@@ -10,6 +10,7 @@ import { handleGetLessonEvent } from './lesson'
 import { handleSetGroupEvent } from './setGroup'
 import { handleGetScheduleEvent, handleGetCallScheduleEvent } from './schedule'
 import { handleGetWeekEvent } from './week'
+import { handleAboutSystemEvent } from './system'
 
 import { buildText } from '../utils/text-builder'
 
@@ -39,6 +40,7 @@ export default async (bot) => {
   const setGroupHandler = buildHandler(bot, ...baseMiddlewares,  handleSetGroupEvent)
   const callScheduleHandler = buildHandler(bot, ...baseMiddlewares,  handleGetCallScheduleEvent)
   const weekHandler = buildHandler(bot, ...baseMiddlewares,  handleGetWeekEvent)
+  const aboutSystemHandler = buildHandler(bot, ...baseMiddlewares,  handleAboutSystemEvent)
 
   bot.onText(/\/start/, await startHandler(['command', 'start']))
 
@@ -51,4 +53,5 @@ export default async (bot) => {
   bot.onText(SET_GROUP_REGEXP, await setGroupHandler(['text', 'set_group']))
   bot.onText(GET_CALL_SCHEDULE, await callScheduleHandler(['text', 'get_call_schedule']))
   bot.onText(GET_WEEK, await weekHandler(['text', 'get_week']))
+  bot.onText(ABOUT_SYSTEM, await aboutSystemHandler(['text', 'about_system']))
 }
