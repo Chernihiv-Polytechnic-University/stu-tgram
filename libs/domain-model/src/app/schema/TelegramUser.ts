@@ -11,11 +11,21 @@ export enum TelegramUserStatus {
   fullKnown = 'f',
 }
 
+export enum TelegramUserSessionAction {
+  feedback = 'fb',
+  setGroup = 'sg',
+}
+
 export interface TelegramData {
   id: number
   firstName: string
   lastName: string
   username: string
+}
+
+export interface TelegramUserSession {
+  action: TelegramUserSessionAction,
+  step: number
 }
 
 export interface TelegramUserAttributes {
@@ -25,6 +35,7 @@ export interface TelegramUserAttributes {
   code?: string
   telegram: TelegramData
   role?: TelegramUserRole
+  session?: TelegramUserSession
 }
 
 export interface TelegramUser extends TelegramUserAttributes, mongoose.Document {}
@@ -40,6 +51,10 @@ const schema = new mongoose.Schema({
     firstName: { type: String },
     lastName: { type: String },
     username: { type: String },
+  },
+  session: {
+    action: { type: String },
+    step: { type: Number },
   },
 }, {
   collection: 'TelegramUser',

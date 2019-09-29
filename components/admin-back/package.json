@@ -28,7 +28,8 @@
     "lodash": "^4.17.15",
     "mongoose": "^5.7.1",
     "multer": "^1.4.2",
-    "xlsx": "^0.8.8"
+    "xlsx": "^0.8.8",
+    "exceljs": "^2.0.1"
   },
   "devDependencies": {
     "@types/bluebird": "^3.5.27",

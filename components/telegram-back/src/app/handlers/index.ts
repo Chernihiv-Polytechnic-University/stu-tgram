@@ -1,42 +1,111 @@
-import { TelegramUserStatus } from 'libs/domain-model'
+import * as telegram from 'node-telegram-bot-api'
+import { TelegramUserStatus, TelegramUserSessionAction } from 'libs/domain-model'
 
 import buildHandler from '../middleware/buildHandler'
 import showTypingMiddleware from '../middleware/showTyping'
 import findOrCreateUserMiddleware from '../middleware/findOrCreateUser'
 import createCheckUserStatusMiddleware from '../middleware/checkUserStatus'
+import clearSessionMiddleware from '../middleware/clearSession'
+import createChooseHandlerBySession from '../middleware/chooseHandlerBySession'
 
 import { handleStartEvent } from './start'
 import { handleGetLessonEvent } from './lesson'
 import { handleSetGroupEvent } from './setGroup'
-import { handleGetScheduleEvent } from './schedule'
+import { handleGetScheduleEvent, handleGetCallScheduleEvent } from './schedule'
+import { handleGetWeekEvent } from './week'
+import { handleAboutSystemTextEvent, handleAttestationTextEvent } from './texts'
+import { handleCreateFeedbackEvent, handleFeedbackCreatingEvent } from './feedback'
 
 import { buildText } from '../utils/text-builder'
+import {Handler} from '#types'
 
 const SET_GROUP_REGEXP = /Моя группа:(.+)/
 const GET_NEXT_LESSON = new RegExp(buildText('whichLesson'))
-const GET_SCHEDULE = new RegExp(buildText('schedule'))
+const GET_SCHEDULE = new RegExp(buildText('whichSchedule'))
+const GET_WEEK = new RegExp(buildText('whichWeek'))
+const GET_CALL_SCHEDULE = new RegExp(buildText('whichCallSchedule'))
+const LEFT_FEEDBACK = new RegExp(buildText('leftFeedback'))
+const ABOUT_SYSTEM = new RegExp(buildText('aboutSystem'))
+const CLAIM_ATTESTATION = new RegExp(buildText('claimAttestation'))
 
-const baseMiddlewares = [
-  showTypingMiddleware,
-  findOrCreateUserMiddleware,
+// we should skip all handled events while processing session
+const HANDLED_EVENTS_REGEXP: RegExp[] = [
+  SET_GROUP_REGEXP,
+  GET_NEXT_LESSON,
+  GET_SCHEDULE,
+  GET_WEEK,
+  GET_CALL_SCHEDULE,
+  LEFT_FEEDBACK,
+  ABOUT_SYSTEM,
+  CLAIM_ATTESTATION,
+  /\/start/,
+  /\/lesson/,
+  /\/schedule/,
+  /\/callschedule/,
+  /\/week/,
 ]
 
-const checkUserStatusMiddlewareForLesson = createCheckUserStatusMiddleware(
-  [TelegramUserStatus.fullKnown, TelegramUserStatus.partialKnown],
-  ['notEnoughInfoToGiveInfoAboutLesson', 'sayYourGroupExample', 'setGroupAndGoBack'],
-)
+const isHandledEvent = (text: string): boolean => HANDLED_EVENTS_REGEXP.reduce((res, regexp) => {
+  return res || regexp.test(text)
+}, false)
 
-export default async (bot) => {
-  const startHandler = buildHandler(bot, ...baseMiddlewares, handleStartEvent)
-  const lessonHandler = buildHandler(bot, ...baseMiddlewares, checkUserStatusMiddlewareForLesson, handleGetLessonEvent)
-  const scheduleHandler = buildHandler(bot, ...baseMiddlewares, checkUserStatusMiddlewareForLesson, handleGetScheduleEvent)
-  const setGroupHandler = buildHandler(bot, ...baseMiddlewares,  handleSetGroupEvent)
+const pickMiddlewares = ({ withCheckUserStatus = false, withoutClearSession = false, withSessionHandler = false } = {}) => {
+  const middlewares: Handler[] = [
+    showTypingMiddleware,
+    findOrCreateUserMiddleware,
+  ]
+  if (withCheckUserStatus) {
+    middlewares.push(
+      createCheckUserStatusMiddleware(
+        [TelegramUserStatus.fullKnown, TelegramUserStatus.partialKnown],
+        ['notEnoughInfoToGiveInfoAboutLesson', 'sayYourGroupExample', 'setGroupAndGoBack'],
+      ),
+    )
+  }
+  if (!withoutClearSession) {
+    middlewares.push(clearSessionMiddleware)
+  }
+  if (withSessionHandler) {
+    middlewares.push(
+      createChooseHandlerBySession({
+        [TelegramUserSessionAction.feedback]: handleCreateFeedbackEvent,
+      }),
+    )
+  }
+  return middlewares
+}
+
+export default async (bot: telegram) => {
+  const startHandler = buildHandler(bot, ...pickMiddlewares(), handleStartEvent)
+  const lessonHandler = buildHandler(bot, ...pickMiddlewares({ withCheckUserStatus: true }), handleGetLessonEvent)
+  const scheduleHandler = buildHandler(bot, ...pickMiddlewares({ withCheckUserStatus: true }), handleGetScheduleEvent)
+  const setGroupHandler = buildHandler(bot, ...pickMiddlewares(),  handleSetGroupEvent)
+  const callScheduleHandler = buildHandler(bot, ...pickMiddlewares(),  handleGetCallScheduleEvent)
+  const weekHandler = buildHandler(bot, ...pickMiddlewares(),  handleGetWeekEvent)
+  const aboutSystemTextHandler = buildHandler(bot, ...pickMiddlewares(),  handleAboutSystemTextEvent)
+  const attestationTextHandler = buildHandler(bot, ...pickMiddlewares(),  handleAttestationTextEvent)
+  const feedbackCreatingHandler = buildHandler(bot, ...pickMiddlewares(),  handleFeedbackCreatingEvent)
+  const sessionHandler = await buildHandler(bot, ...pickMiddlewares({ withoutClearSession: true, withSessionHandler: true }))(['text', 'session'])
 
   bot.onText(/\/start/, await startHandler(['command', 'start']))
 
-  bot.onText(/\/lesson/, await lessonHandler(['command', 'lesson']))
-  bot.onText(/\/schedule/, await scheduleHandler(['command', 'schedule']))
-  bot.onText(GET_SCHEDULE, await scheduleHandler(['text', 'schedule']))
-  bot.onText(GET_NEXT_LESSON, await lessonHandler(['text', 'which_lesson']))
+  bot.onText(/\/lesson/, await lessonHandler(['command', 'get_lesson']))
+  bot.onText(/\/schedule/, await scheduleHandler(['command', 'get_schedule']))
+  bot.onText(/\/callschedule/, await callScheduleHandler(['command', 'get_call_schedule']))
+  bot.onText(/\/week/, await weekHandler(['command', 'get_week']))
+  bot.onText(GET_SCHEDULE, await scheduleHandler(['text', 'get_schedule']))
+  bot.onText(GET_NEXT_LESSON, await lessonHandler(['text', 'get_lesson']))
   bot.onText(SET_GROUP_REGEXP, await setGroupHandler(['text', 'set_group']))
+  bot.onText(GET_CALL_SCHEDULE, await callScheduleHandler(['text', 'get_call_schedule']))
+  bot.onText(GET_WEEK, await weekHandler(['text', 'get_week']))
+  bot.onText(ABOUT_SYSTEM, await aboutSystemTextHandler(['text', 'about_system']))
+  bot.onText(CLAIM_ATTESTATION, await attestationTextHandler(['text', 'attestations']))
+  bot.onText(LEFT_FEEDBACK, await feedbackCreatingHandler(['text', 'feedback_creating']))
+
+  bot.on('text', async (msg) => {
+    if (isHandledEvent(msg.text)) {
+      return
+    }
+    await sessionHandler(msg)
+  })
 }
