@@ -20,3 +20,11 @@ IMPORTANT - libs don't support versions, so you can't make  not backward-compati
     * api - API for admin UI
     * telegram-handler - app responsible for handling telegram bot
     * ui - Web app for admins
+### Change log
+* v1.0.0
+    * telegram bot: lesson schedule 
+    * telegram bot: calls schedule 
+    * telegram bot: current week 
+    * telegram bot: current / next lesson 
+    * telegram bot: get links on attestations 
+    * telegram bot: leave feedback
