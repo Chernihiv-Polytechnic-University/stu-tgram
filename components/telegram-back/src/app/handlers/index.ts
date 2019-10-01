@@ -17,9 +17,10 @@ import { handleAboutSystemTextEvent, handleAttestationTextEvent } from './texts'
 import { handleCreateFeedbackEvent, handleFeedbackCreatingEvent } from './feedback'
 
 import { buildText } from '../utils/text-builder'
-import {Handler} from '#types'
+import { Handler } from '#types'
 
-const SET_GROUP_REGEXP = /Моя группа:(.+)/
+// TODO should be stored in one place.
+const SET_GROUP_REGEXP = /Моя група(.+)/
 const GET_NEXT_LESSON = new RegExp(buildText('whichLesson'))
 const GET_SCHEDULE = new RegExp(buildText('whichSchedule'))
 const GET_WEEK = new RegExp(buildText('whichWeek'))
@@ -87,6 +88,7 @@ export default async (bot: telegram) => {
   const feedbackCreatingHandler = buildHandler(bot, ...pickMiddlewares(),  handleFeedbackCreatingEvent)
   const sessionHandler = await buildHandler(bot, ...pickMiddlewares({ withoutClearSession: true, withSessionHandler: true }))(['text', 'session'])
 
+  // TODO set all regexp as constants
   bot.onText(/\/start/, await startHandler(['command', 'start']))
 
   bot.onText(/\/lesson/, await lessonHandler(['command', 'get_lesson']))
