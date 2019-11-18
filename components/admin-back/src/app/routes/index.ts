@@ -2,6 +2,7 @@ import { Instance as MulterInstance } from 'multer'
 import { Router } from 'express'
 
 import { initRoutes as initFilesRoutes } from './files'
+import { initRoutes as initUserRoutes } from './users'
 
 export interface InitRoutesOptions {
   uploader?: MulterInstance,
@@ -15,6 +16,7 @@ export const initRoutes: InitRoutes = async (options) => {
   const router = Router()
 
   router.use('/files', await initFilesRoutes(options))
+  router.use('/users', await initUserRoutes(options))
 
   return router
 }
