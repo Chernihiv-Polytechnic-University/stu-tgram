@@ -13,6 +13,8 @@ export * from './schema/StudentsGroup'
 export * from './schema/SystemSettings'
 export * from './schema/Feedback'
 
+export * from './api-pagination'
+
 export interface ConnectConfig {
   host: string
   database: string
