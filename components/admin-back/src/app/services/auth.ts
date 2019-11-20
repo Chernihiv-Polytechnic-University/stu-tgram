@@ -11,7 +11,6 @@ const logger = createLogger(`#services/${__filename}`)
 export interface JWTPayload {
   _id: string
   agent?: string
-  ip?: string
   expiresIn: number
   hash: string
 }
@@ -25,10 +24,6 @@ const comparePass = (password: string, hash: string): Promise<boolean> => bcrypt
 const getHashPart = (user: UserAttributes) => {
   return user.password.slice(-12)
 }
-
-const getIp = (expressRequest: Request): string => config.get('USE_PROXY')
-  ? expressRequest.header(config.get('IP_PROXY_HEADER_NAME')).toString()
-  : expressRequest.connection.remoteAddress as string
 
 const signJWT = async (data: JWTPayload): Promise<string> => new Promise((resolve, reject) => {
   jwt.sign(data, config.get('JWT_SECRET'), {}, (err, res) => {
@@ -55,7 +50,6 @@ export const getToken = async (login: string, password: string, expressRequest: 
   }
   const payload: JWTPayload = {
     _id: user._id,
-    ip: getIp(expressRequest),
     agent: expressRequest.header('user-agent'),
     expiresIn: Date.now() + (config.get('JWT_LIFE_TIME') as number),
     hash: getHashPart(user),
@@ -64,28 +58,27 @@ export const getToken = async (login: string, password: string, expressRequest: 
 }
 
 const isValidToken = (payload: JWTPayload, expressRequest: Request, user: UserAttributes): boolean => {
-  const ip = getIp(expressRequest)
   const agent = expressRequest.header('user-agent')
-  return ip === payload.ip
-    && agent === payload.agent
+  return agent === payload.agent
     && payload.hash === getHashPart(user)
     && payload.expiresIn > Date.now()
 }
 
 export const authMiddleware: RequestHandler = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const authHeader = req.headers.authorization
-    if (!authHeader) {
+    const authorization = req.cookies.authorization
+    if (!authorization) {
       res.status(401).send({ message: 'Not Authorized' })
       return
     }
-    const payload: JWTPayload = await verifyJWT(authHeader.replace('Bearer ', ''))
+    const payload: JWTPayload = await verifyJWT(authorization)
     const user = await UserModel.findById(payload._id)
     if (!isValidToken(payload, req, user)) {
       res.status(401).send({ message: 'Not Authorized' })
       return
     }
     res.locals.user = user
+    res.cookie(config.get<string>('AUTH_COOKIES_NAME'), authorization, { httpOnly: true, expires: new Date(Date.now() + config.get<string>('AUTH_COOKIES_LIFETIME')) })
     next()
   } catch (e) {
     res.status(401).send({ message: 'Not Authorized' })

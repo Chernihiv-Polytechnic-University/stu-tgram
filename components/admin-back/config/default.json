@@ -9,6 +9,8 @@
     "PASSWORD": "zxc123zxc123plkjn"
   },
   "USE_PROXY": false,
-  "JWT_LIFE_TIME": 3600000,
+  "AUTH_COOKIES_LIFETIME": 3600000,
+  "AUTH_COOKIES_NAME": "authorization",
+  "JWT_LIFE_TIME": 36000000,
   "JWT_SECRET": "jcs89aw7hf09gquavizvby7q9-9gfauvnImkjdUJNDHSBu8Hnh&E&N)8un8c^#bhchsbahbc*bjnkncdnhUYABDAHj38742dnsajNCNHChFBSE78w3uic)"
 }

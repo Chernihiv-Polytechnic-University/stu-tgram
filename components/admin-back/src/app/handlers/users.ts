@@ -1,9 +1,9 @@
 import { set, isString } from 'lodash'
 import { Request, Response } from 'express'
+import * as config from 'config'
 import { createLogger } from 'libs/logger'
-import { UserAttributes, UserModel, findAndPaginate } from 'libs/domain-model'
+import {  UserModel, findAndPaginate } from 'libs/domain-model'
 import { getToken, hashPass } from '../services/auth'
-
 const logger = createLogger(`#handlers/${__filename}`)
 
 export const login = async (req: Request, res: Response, next) => {
@@ -12,7 +12,9 @@ export const login = async (req: Request, res: Response, next) => {
 
     const token = await getToken(login, password, req)
 
-    res.send({ token })
+    res.cookie(config.get<string>('AUTH_COOKIES_NAME'), token, { httpOnly: true, expires: new Date(Date.now() + config.get<string>('AUTH_COOKIES_LIFETIME')) })
+      .status(204)
+      .send()
   } catch (e) {
     if (e.message === 'Wrong email or password') {
       res.status(401).send({ message: e.message })
@@ -40,8 +42,6 @@ export const create = async (req: Request, res: Response, next) => {
     next(e)
   }
 }
-
-// getOne, getList
 
 export const update = async (req: Request, res: Response, next) => {
   try {
