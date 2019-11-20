@@ -2,7 +2,9 @@ import * as express from 'express'
 import * as compress from 'compression'
 import * as multer from 'multer'
 import * as cors from 'cors'
+import * as helmet from 'helmet'
 import * as bodyParser from 'body-parser'
+import * as cookieParser from 'cookie-parser'
 import * as config from 'config'
 
 import { connect } from 'libs/domain-model'
@@ -27,10 +29,12 @@ const connectToDb = () => connect({
 
 const runApp = () => {
   app.use(compress())
+  app.use(helmet())
+  app.use(cookieParser())
   app.use(cors())
   app.use(bodyParser.json({ limit: config.get('JSON_SIZE_LIMIT') }))
   initRoutes({ uploader })
-    .then(router => app.use(router))
+    .then(router => app.use('/api/v1', router))
     .then(connectToDb)
     .then(() => new Promise((resolve, reject) => app.listen(config.get('APP_PORT'), (err) => { if (err) return reject(err); resolve() })))
     .then(() => logger.info([], `Server running on *:${config.get('APP_PORT')}`))

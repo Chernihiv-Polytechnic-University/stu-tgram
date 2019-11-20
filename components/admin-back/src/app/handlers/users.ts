@@ -6,6 +6,8 @@ import {  UserModel, findAndPaginate } from 'libs/domain-model'
 import { getToken, hashPass } from '../services/auth'
 const logger = createLogger(`#handlers/${__filename}`)
 
+const FIELDS_TO_SELECT = '_id name login role createdAt updatedAt'
+
 export const login = async (req: Request, res: Response, next) => {
   try {
     const { login, password } = req.body
@@ -78,14 +80,13 @@ export const remove = async (req: Request, res: Response, next) => {
 }
 
 export const get = async (req: Request, res: Response, next) => {
-  const select = '_id name login role createdAt updatedAt'
   try {
     const { id } = req.params
 
     if (req.path === '/me') {
       const user = await UserModel
         .findById(res.locals.user._id)
-        .select(select)
+        .select(FIELDS_TO_SELECT)
         .exec()
       res.send(user)
       return
@@ -94,14 +95,14 @@ export const get = async (req: Request, res: Response, next) => {
     if (isString(id)) {
       const user = await UserModel
         .findById(id)
-        .select(select)
+        .select(FIELDS_TO_SELECT)
         .exec()
       res.send(user)
       return
     }
 
     const additionalOptions = {
-      select,
+      select: FIELDS_TO_SELECT,
       pickCount: true,
       pickCountAll: true,
       sort: req.query.ordering ? req.query.ordering.replace(/,/g, ' ') : 'name',
