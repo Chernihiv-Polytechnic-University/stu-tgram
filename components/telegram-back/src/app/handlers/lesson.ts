@@ -1,7 +1,6 @@
 import * as telegram from 'node-telegram-bot-api'
 import { minBy, filter, flow } from 'lodash/fp'
 import { get, isNil, find } from 'lodash'
-import * as moment from 'moment-timezone'
 import { Lesson, LessonModel, SystemSettingsModel } from 'libs/domain-model'
 import { Handler, Message } from '../types'
 import { buildText } from '../utils/text-builder'
@@ -9,6 +8,7 @@ import { buildText } from '../utils/text-builder'
 import {
   LAST_LESSON_NUMBER,
   Day,
+  getNow,
   getCurrentWeekNumber,
   getNextDayWeekNumberOf,
   getNextDayOf,
@@ -21,10 +21,17 @@ import {
 
 const weekDays = ['ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ', 'НД']
 
+const isLessonsEqualByDay = (first: Lesson, second: Lesson): boolean => {
+  if (isNil(first) || isNil(second)) {
+    return false
+  }
+  return first.day === second.day
+}
+
 export const handleGetLessonEvent: Handler = async (bot: telegram, msg: Message) => {
   const { telegram: { firstName, lastName }, groupId } = msg.locals.user
   const systemSettings = await SystemSettingsModel.findOne({})
-  const now = moment()
+  const now = getNow()
   const currentWeek = getCurrentWeekNumber(systemSettings.firstOddWeekMondayDate)
   const currentDay = getCurrentDay()
   const nextDay = getNextDayOf(now)
@@ -33,6 +40,7 @@ export const handleGetLessonEvent: Handler = async (bot: telegram, msg: Message)
 
   const where = { groupId, day: { $in: [currentDay, nextDay] }, week: { $in: [currentWeek % 2, nextDayWeek % 2] }, isExist: true }
   const lessons: Lesson[] = await LessonModel.find(where)
+
   const currentLesson: Lesson = find(lessons, { number: currentLessonNumber, day: currentDay } as Partial<Lesson>)
 
   // now
@@ -50,13 +58,19 @@ export const handleGetLessonEvent: Handler = async (bot: telegram, msg: Message)
 
   // closest next lesson
   const nextLesson: Lesson = flow(
-    filter((e: Lesson) => isNil(currentLesson) || (e.number !== currentLesson.number && e.day !== currentLesson.day)), // filter current lesson
-    filter((e: Lesson) => !(nowIsAfterLessonsToday() && currentDay === e.day)), // filter today lessons if now is after lessons
-    filter((e: Lesson) => !(e.day === currentDay && e.number <= currentLessonNumber)), // filter today lessons before current
+    filter((lesson: Lesson) => isNil(currentLesson) || lesson._id !== currentLesson._id), // filter current lesson if exists
+    filter((lesson: Lesson) => !(nowIsAfterLessonsToday() && currentDay === lesson.day)), // filter today lessons if now is after lessons
+    filter((lesson: Lesson) => !(lesson.day === currentDay && lesson.number <= currentLessonNumber)), // filter today lessons before current
     minBy((e: Lesson) => weekDays.indexOf(e.day) * LAST_LESSON_NUMBER + e.number),
   )(lessons)
 
-  if (!isNil(nextLesson))  {
+  const showNextLesson = !isNil(nextLesson)
+    && (
+      isNil(currentLesson)
+      || isLessonsEqualByDay(currentLesson, nextLesson)
+    )
+
+  if (showNextLesson)  {
     const { h, m } = getDiffBetweenLessonStartAndNow(nextLesson.day as Day, nextLesson.number)
     const hours = String(h)
     const minutes = String(m)
@@ -73,7 +87,7 @@ export const handleGetLessonEvent: Handler = async (bot: telegram, msg: Message)
   }
 
   // current is last
-  if (!isNil(currentLesson) && isNil(nextLesson)) {
+  if (!isNil(currentLesson) && !showNextLesson) {
     const text = buildText('currentLessonIsLast')
     await bot.sendMessage(msg.tMessage.chat.id, text)
   }

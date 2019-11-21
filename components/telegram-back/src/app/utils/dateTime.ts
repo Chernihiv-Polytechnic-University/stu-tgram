@@ -32,6 +32,8 @@ export const callSchedule = [
 
 const getMinutesNumber = (hours: number, minutes: number): number => hours * minutesPerHour + minutes
 
+export const getNow = (): moment.Moment => moment()
+
 export const getCurrentWeekNumber = (firstOddWeekMondayDate: string): number => {
   const current = moment().format('w')
   const firstOdd = moment(firstOddWeekMondayDate).format('w')

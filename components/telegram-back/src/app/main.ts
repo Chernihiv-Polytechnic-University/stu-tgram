@@ -2,7 +2,6 @@ import * as config from 'config'
 import * as TelegramBot from 'node-telegram-bot-api'
 import { connect as connectToDb } from 'libs/domain-model'
 import initHandlers from './handlers'
-import { buildText } from './utils/text-builder'
 
 // replace the value below with the Telegram token you receive from @BotFather
 const T_BOT_TOKEN: string = config.get('T_BOT_TOKEN')
