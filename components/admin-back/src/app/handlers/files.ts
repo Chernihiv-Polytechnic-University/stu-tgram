@@ -1,8 +1,8 @@
 // TODO fix
 import { Handler } from 'express'
 import { mapSeries } from 'bluebird'
-import { map, values, find, groupBy, flow, pick, omit, filter } from 'lodash/fp'
-import { parseSchedule, Lesson as ParsedLesson } from 'libs/xlsx-parser'
+import { map, values, entries, find, groupBy, flow, omit, filter } from 'lodash/fp'
+import { parseLessonsSchedule, parseEducationSchedule, Lesson as ParsedLesson, EducationSchedule } from 'libs/xlsx-parser'
 import { creteSchedulePDF } from 'libs/schedule-builder'
 import {
   StudentsGroupAttributes,
@@ -28,13 +28,18 @@ const extractGroups = (lessons: ParsedLesson[]): any[] => flow(
   map('0'),
 )(lessons)
 
-export const uploadSchedule: Handler = async (req, res, next) => {
+const groupByGroup = flow(
+  groupBy('group'),
+  entries,
+)
+
+export const uploadLessonsSchedule: Handler = async (req, res, next) => {
   try {
     const { buffer: fileBuffer } = req.file
 
     await LessonModel.remove({}).exec()
 
-    const lessons: ParsedLesson[] = await parseSchedule(fileBuffer)
+    const lessons: ParsedLesson[] = await parseLessonsSchedule(fileBuffer)
     const parsedGroups = extractGroups(lessons)
     const groupsBulkWriteOptions = buildGroupsUpdateOptions(parsedGroups)
 
@@ -50,12 +55,30 @@ export const uploadSchedule: Handler = async (req, res, next) => {
   }
 }
 
+export const uploadEducationProcessSchedule: Handler = async (req, res, next) => {
+  try {
+    const { buffer: fileBuffer } = req.file
+
+    const educationSchedule: EducationSchedule = await parseEducationSchedule(fileBuffer)
+
+    const groups = await StudentsGroupModel.find().select('_id name').exec()
+
+    await mapSeries(groups, async ({ name, _id }) => {
+      await StudentsGroupModel.updateOne({ _id, name }, { educationSchedule: educationSchedule.groupsSchedule.filter(g => g.group === name) })
+    })
+
+    res.status(204).send()
+  } catch (e) {
+    next(e)
+  }
+}
+
 export const compileSchedulePDFs: Handler = async (req, res, next) => {
   try {
     const groups = await StudentsGroupModel.find().exec()
     const lessons = await LessonModel.find().exec()
 
-    await mapSeries(groups, async (g: StudentsGroup, i: number) => {
+    await mapSeries(groups, async (g: StudentsGroup) => {
       const groupLessons = filter({ groupId: g._id.toString(), isExist: true } as Partial<LessonAttributes>)(lessons)
       const schedulePDF: Buffer = await creteSchedulePDF(groupLessons, g.name, g.subgroupNumber)
       g.set('schedulePDF', schedulePDF)

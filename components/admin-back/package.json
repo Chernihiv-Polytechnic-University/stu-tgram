@@ -8,6 +8,7 @@
     "compile": "npm run clean && npm i && npm run compile-libs && npm run compile-component",
     "compile-component": "tsc -p tsconfig.json",
     "compile-libs": "../../overlord/compile-libs.sh components/admin-back logger metrics bus domain-model xlsx-parser schedule-builder",
+    "compile-domain": "../../overlord/compile-libs.sh components/admin-back domain-model",
     "dev": "./node_modules/.bin/nodemon -e ts --watch 'src/app' --exec 'npm run compile-component && node dist/index.js'"
   },
   "repository": {
@@ -31,6 +32,7 @@
     "helmet": "^3.21.2",
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.15",
+    "moment": "^2.24.0",
     "mongoose": "^5.7.1",
     "multer": "^1.4.2",
     "xlsx": "^0.8.8"

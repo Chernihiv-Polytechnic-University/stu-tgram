@@ -1,6 +1,6 @@
 import { readFileSync } from 'fs'
 import { resolve as resolvePath } from 'path'
-import { parse } from '#parsers/scheduleParser'
+import { parse } from '../src/app/parsers/lesson-schedule'
 
 describe('scheduleParser', () => {
   describe('snapshots', () => {
