@@ -131,8 +131,7 @@ const findGroupLessons = (data, groups, days, sheet, excelWorksheet: Excel.Works
         ...update,
       }
     }, {}))
-    // const correctedDayRows = dayRows.map(d)
-    console.log(dayRows)
+
     groups.forEach((group) => {
       const groupDay: any = { name: day.name, isOdd: day.isOdd }
       groupDay.lessons = dayRows.map(dayRow => group.columns.reduce((acc, column) => [...acc, dayRow[column]], []))
