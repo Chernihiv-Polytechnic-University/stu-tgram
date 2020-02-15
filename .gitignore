@@ -1,6 +1,6 @@
 dist
 x-local
-.env*
+.env
 .npmrc
 .vscode
 

@@ -3,13 +3,14 @@ import { minBy, filter, flow } from 'lodash/fp'
 import { get, isNil, find } from 'lodash'
 import { Lesson, LessonModel, SystemSettingsModel } from 'libs/domain-model'
 import { Handler, Message } from '../types'
-import { buildText } from '../utils/text-builder'
-
+import { buildText, getTimeUnitEnding } from '../utils/text-builder'
 import {
   LAST_LESSON_NUMBER,
   Day,
   getNow,
   getCurrentWeekNumber,
+  getLessonStartTimeAsStr,
+  getLessonEndTimeAsStr,
   getNextDayWeekNumberOf,
   getNextDayOf,
   getCurrentDay,
@@ -45,9 +46,18 @@ export const handleGetLessonEvent: Handler = async (bot: telegram, msg: Message)
 
   // now
   if (!isNil(currentLesson)) {
-    const afterStartInMinutes = getDiffBetweenNowAndLessonStartInMinutes(currentLessonNumber).toString()
-    const textOne = buildText('currentLessonIs', {
-      minutes: afterStartInMinutes,
+    let minutes = getDiffBetweenNowAndLessonStartInMinutes(currentLessonNumber)
+    let textId = 'currentLessonIs'
+    if (minutes < 0) {
+      minutes = minutes * -1
+      textId = 'currentLessonStarting'
+    }
+    const textOne = buildText(textId, {
+      minutes,
+      lessonNumber: currentLessonNumber,
+      startTime: getLessonStartTimeAsStr(currentLessonNumber),
+      endTime: getLessonEndTimeAsStr(currentLessonNumber),
+      minutesEnd: getTimeUnitEnding(minutes),
       // number: currentLessonNumber,
       lessonName: get(currentLesson, 'name', '*'),
       auditory: get(currentLesson, 'auditory', '*'),
@@ -77,6 +87,11 @@ export const handleGetLessonEvent: Handler = async (bot: telegram, msg: Message)
     const text = buildText('nextLessonIs', {
       hours,
       minutes,
+      lessonNumber: currentLessonNumber,
+      startTime: getLessonStartTimeAsStr(currentLessonNumber),
+      endTime: getLessonEndTimeAsStr(currentLessonNumber),
+      minutesEnd: getTimeUnitEnding(m),
+      hoursEnd: getTimeUnitEnding(h),
       // start,
       // number,
       lessonName: get(nextLesson, 'name', '*'),

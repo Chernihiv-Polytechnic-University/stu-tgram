@@ -8,7 +8,6 @@ export const NO_LESSON_NUMBER = -1
 export const LAST_LESSON_NUMBER = 7
 
 export const ODD_WEEK = 0
-export const EVEN_WEEK = 1
 
 export type Day = 'ПН' | 'ВТ' | 'СР' | 'ЧТ' | 'ПТ' | 'СБ' | 'НД'
 
@@ -35,15 +34,23 @@ const getMinutesNumber = (hours: number, minutes: number): number => hours * min
 export const getNow = (): moment.Moment => moment()
 
 export const getCurrentWeekNumber = (firstOddWeekMondayDate: string): number => {
-  const current = moment().format('w')
-  const firstOdd = moment(firstOddWeekMondayDate).format('w')
-  return (Number(current) - Number(firstOdd)) % 2
+  const currentMoment = moment()
+  const firstOddWeekMondayMoment = moment(firstOddWeekMondayDate)
+
+  if (currentMoment.year() > firstOddWeekMondayMoment.year()) {
+    return ((firstOddWeekMondayMoment.isoWeeksInYear() + currentMoment.isoWeek()) - firstOddWeekMondayMoment.isoWeek()) % 2
+  }
+  return (currentMoment.isoWeek() - firstOddWeekMondayMoment.isoWeek()) % 2
 }
 
 export const getNextDayWeekNumberOf = (dateTime: moment.Moment, firstOddWeekMondayDate: string): number => {
-  const next = dateTime.clone().add(1, 'd').format('w')
-  const firstOdd = moment(firstOddWeekMondayDate).format('w')
-  return (Number(next) - Number(firstOdd)) % 2
+  const nextDayMoment = dateTime.clone().add(1, 'd')
+  const firstOddWeekMondayMoment = moment(firstOddWeekMondayDate)
+
+  if (nextDayMoment.year() > firstOddWeekMondayMoment.year()) {
+    return ((firstOddWeekMondayMoment.isoWeeksInYear() + nextDayMoment.isoWeek()) - firstOddWeekMondayMoment.isoWeek()) % 2
+  }
+  return (nextDayMoment.isoWeek() - firstOddWeekMondayMoment.isoWeek()) % 2
 }
 
 export const getCurrentDay = (): Day => {
@@ -59,7 +66,7 @@ export const getNextDayOf = (dateTime: moment.Moment): Day => {
 export const getCurrentLessonNumber = (): number => {
   const formatted = moment().format('HH:mm')
   const [h, m] = formatted.split(':').map(Number)
-  console.log({ h, m })
+
   const lessonData = callSchedule.find((e) => {
     return (getMinutesNumber(e.start.h, e.start.m) <= getMinutesNumber(h, m))
     && (getMinutesNumber(e.end.h, e.end.m) > getMinutesNumber(h, m))
@@ -79,6 +86,16 @@ export const getDiffBetweenLessonStartAndNow = (day: Day, lesson: number): TimeM
   const lessonStartMoment = moment().day(day).set(lessonData.workStart)
   const differenceInMinutes = lessonStartMoment.diff(moment(), 'm')
   return { h: Math.floor(differenceInMinutes / minutesPerHour), m: differenceInMinutes % minutesPerHour }
+}
+
+export const getLessonStartTimeAsStr = (lesson: number): string => {
+  const lessonData = callSchedule.find(e => e.number === lesson)
+  return moment(lessonData.workStart).format('HH:mm')
+}
+
+export const getLessonEndTimeAsStr = (lesson: number): string => {
+  const lessonData = callSchedule.find(e => e.number === lesson)
+  return moment(lessonData.end).format('HH:mm')
 }
 
 export const getDiffBetweenNowAndLessonStartInMinutes = (lesson: number): number => {
