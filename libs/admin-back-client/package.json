@@ -20,6 +20,7 @@
   "devDependencies": {
     "@types/node": "^12.7.2",
     "@types/body-parser": "^1.17.1",
+    "@types/mongoose": "^5.5.17",
     "typescript": "^3.7.5"
   },
   "dependencies": {
