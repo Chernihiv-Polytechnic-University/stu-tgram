@@ -1,9 +1,21 @@
-#!/bin/sh
+#!/usr/bin/env bash
+
+set -ex
 
 rootPath=$(git rev-parse --show-toplevel)
-git pull
 
-npm run compile --prefix $rootPath/components/admin-back/
-npm run compile --prefix $rootPath/components/telegram-back
+if [[ "$1" == *pm2* ]]
+then
+    git pull
 
-pm2 restart all
+    npm run compile --prefix $rootPath/components/admin-back/
+    npm run compile --prefix $rootPath/components/telegram-back
+
+    pm2 restart all
+fi
+
+if [[ "$1" == *compilemanager* ]]
+then
+
+    docker build -t compilemanager:latest -f "$rootPath"/overlord/docker/dockerfile-compilemanager "$rootPath"/overlord/docker
+fi
