@@ -4,11 +4,10 @@
   "description": "See README.md",
   "main": "dist/index.js",
   "scripts": {
-    "clean": "rm -rf dist node_modules",
-    "clean-libs": "rm -rf node_modules/libs",
+    "clean": "node ../../overlord/nodescripts/rmdir.js dist node_modules",
     "compile": "npm run clean && npm i && npm run compile-libs && npm run compile-component",
     "compile-component": "tsc -p tsconfig.json",
-    "compile-libs": "npm run clean-libs && ../../overlord/compile-libs.sh libs/metrics domain-model"
+    "compile-libs": "node ../../overlord/nodescripts/compile-libs.js libs/metrics domain-model"
   },
   "repository": {
     "type": "git",
