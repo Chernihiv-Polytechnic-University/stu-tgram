@@ -37,9 +37,10 @@ const copyFolder = async (from, to) => {
     }))
 }
 
-const addLib = async (libName) => {
+const addLib = async (libName, i, arr) => {
     await exec(`npm run --prefix ${resolve(libsDir, libName)} compile`).catch(console.error)
     await copyFolder(resolve(libsDir, libName, 'dist'), resolve(process.cwd(), 'node_modules', 'libs', libName)).catch(console.error)
+    console.log(`[ ${arr.length}:${i + 1} ]. Lib: ${libName} compiled.`)
 }
 
 findLibsToAdd().then(mapSeries(addLib))

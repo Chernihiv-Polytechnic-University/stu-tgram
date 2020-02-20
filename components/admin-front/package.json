@@ -5,7 +5,7 @@
   "dependencies": {
     "@material-ui/core": "^4.8.3",
     "@material-ui/icons": "^4.5.1",
-    "axios": "^0.19.1",
+    "axios": "^0.19.2",
     "lodash": "^4.17.15",
     "react": "^16.12.0",
     "react-dom": "^16.12.0"
@@ -28,13 +28,13 @@
     "typescript": "~3.7.2"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "clean": "rm -rf ./build ./node_modules",
-    "compile": "npm run clean && npm i && npm run build",
-    "compile-doc": "npm i && npm run build"
+    "start": "node ./node_modules/react-scripts/bin/react-scripts.js start",
+    "build": "node ./node_modules/react-scripts/bin/react-scripts.js react-scripts build",
+    "test": "node ./node_modules/react-scripts/bin/react-scripts.js react-scripts test",
+    "eject": "node ./node_modules/react-scripts/bin/react-scripts.js react-scripts eject",
+    "clean": "node ../../overlord/nodescripts/rmdir.js dist node_modules",
+    "compile": "npm run compile-libs",
+    "compile-libs": "node ../../overlord/nodescripts/compile-libs.js domain-model admin-back-client"
   },
   "eslintConfig": {
     "extends": "react-app"
