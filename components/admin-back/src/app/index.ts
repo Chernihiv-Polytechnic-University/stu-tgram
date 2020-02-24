@@ -28,10 +28,10 @@ const connectToDb = () => connect({
 })
 
 const runApp = () => {
-  app.use(compress())
+  app.use(cors({ credentials: true, origin: config.get('FRONT_URLS') }))
   app.use(helmet())
   app.use(cookieParser())
-  app.use(cors())
+  app.use(compress())
   app.use(bodyParser.json({ limit: config.get('JSON_SIZE_LIMIT') }))
   initRoutes({ uploader })
     .then(router => app.use('/api/v1', router))
