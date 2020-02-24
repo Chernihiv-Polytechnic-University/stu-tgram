@@ -4,16 +4,32 @@ import { buildText } from '../utils/text-builder'
 import { Handler, Message } from '../types'
 import { callSchedule, getTime } from '../utils/dateTime'
 
-export const handleGetScheduleEvent: Handler = async (bot: telegram, msg: Message) => {
+const scheduleTypeMapper = {
+  lessons: { imagePath: 'lessonsScheduleImage', textId: 'scheduleFileName' },
+  education: { imagePath:'educationScheduleImage', textId: 'educationScheduleFileName' },
+}
+
+export const createGetScheduleEventHandler = (scheduleType: 'lessons' | 'education'): Handler => async (bot: telegram, msg: Message) => {
   const { groupId } = msg.locals.user
   const { id: chatId } = msg.tMessage.chat
 
   const group = await StudentsGroupModel.findOne({ _id: groupId }).exec()
+
+  if (!group[scheduleTypeMapper[scheduleType].imagePath]) {
+    await bot.sendMessage(chatId, buildText('resourceNotFound', { name: group.name, subgroupNumber: group.subgroupNumber }))
+
+    return
+  }
+
   await bot.sendDocument(
     chatId,
-    group.schedulePDF,
+    group[scheduleTypeMapper[scheduleType].imagePath],
     {},
-    { contentType: 'application/pdf', filename: buildText('scheduleFileName', { name: group.name, subgroupNumber: group.subgroupNumber }) },
+    {
+      contentType: 'image/png',
+      filename: buildText(scheduleTypeMapper[scheduleType].textId,
+        { name: group.name, subgroupNumber: group.subgroupNumber }),
+    },
   )
 }
 

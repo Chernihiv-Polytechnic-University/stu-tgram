@@ -2,6 +2,7 @@
   "hello": "Привіт, {username}, будемо знайомі!",
   "whichLesson": "Яка пара?",
   "whichSchedule": "Який Розклад?",
+  "whichEducationSchedule": "Який графік освітнього процесу?",
   "whichWeek":  "Який тиждень?",
   "whichCallSchedule":  "Який розклад дзвінків?",
   "aboutSystem":  "Про систему.",
@@ -24,7 +25,8 @@
   "currentLessonStarting": "Поточна пара № {lessonNumber} ({startTime} - {endTime})\n\"{lessonName}\" в аудиторії \"{auditory}\", викладач \"{teacherName}\"\nпочинається через {minutes} хвилин{minutesEnd}",
   "currentLessonIsLast": "Ця пара остання сьогодні, ура, додому!",
   "nextLessonIs": "Наступна пара № {lessonNumber} ({startTime} - {endTime})\n\"{lessonName}\" в аудиторії \"{auditory}\", викладач \"{teacherName}\"\nбуде через {hours} годин{hoursEnd} та {minutes} хвилин{minutesEnd}",
-  "scheduleFileName": "Розклад_{name}_{subgroupNumber}.pdf",
+  "scheduleFileName": "Розклад_{name}_{subgroupNumber}.png",
+  "educationScheduleFileName": "Графік_освітнього_процесу_{name}_{subgroupNumber}.png",
   "callScheduleHeader": "Номер   Початок   Кінець   Перерва до, хв",
   "callScheduleRecord": "    {number}           {start}        {end}               {break}",
   "oddWeek": "Непарний тиждень",
@@ -32,6 +34,7 @@
   "unknownMessage": "Незрозуміле питання / команда. Мені нема чого сказати у відповідь",
   "feedbackCreatingText": "Дотримуйтеся такого формату повідомлення:\n- тип (Повідомлення про помилку, пропозиція, побажання, скарга)\n- тема\n- текст\n- ПІБ, група/посада (якщо вважаєте за потрібне)\nУведіть повідомлення та натисніть відправити",
   "feedbackAcceptedText": "Відгук прийнято, дякуємо!",
+  "resourceNotFound": "Вибачте, для вашої групи ({name}:{subgroupNumber}) нічого не знайшлося :(, працюємо над виправленням!",
   "attestationText": "Оберіть потрібну довідку, перейдіть за лінком на гугл форму та заповніть її. Ось які довідки ви можете отримати:\nДовідка про навчання - https://docs.google.com/forms/d/e/1FAIpQLSf4vxWlp6hN5go3v5znwh-Y1OwssdcukV0sgJOnzmF2hJmg5Q/viewform?usp=pp_url\nВиклик на сесію - https://docs.google.com/forms/d/e/1FAIpQLSeD6cZOzeamZWsK4h9-TW2S3KaqiTLctQHLqXZvw94vC5RbNQ/viewform?usp=pp_url\nAкадемічна довідка - https://docs.google.com/forms/d/1b6GxDKPlUQLbMfc717wZRIF4H8oOlbxboTq7-6NPAuw/edit?usp=drivesdk&chromeless=1",
   "aboutSystemText": "Бот призначений для отримання основної інформації про навчання в Чернігівському національному технологічному університеті та замовлення студентами довідок з деканату.\n\nСистема знаходиться в розробці, ПІЛОТНИЙ, НЕСТАБІЛЬНИЙ варіант працює тільки для ННІ електронних та інформаційних технологій.\n\nАктуальні функції:\n- Розклад пар\n- Розклад дзвінків\n- Поточний тиждень\n- Поточна \\ наступна пара \n- Посилання для запиту на довідку\n- Зворотній зв'язок\nПри виникненні зауважень або пропозицій обов'язково повідомляйте, натискайте кнопку зворотного зв'язку і дотримуйтесь інструкцій.\nКоманда розробки: Іскрижицький А.М., Іскрижицька О.К.\nКоманда інформаційної підтримки: Іванець С.А., Трунова О.В.\nCopyright © 2019 All rights reserved\n"
 }

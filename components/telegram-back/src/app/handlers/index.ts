@@ -11,7 +11,7 @@ import createChooseHandlerBySession from '../middleware/chooseHandlerBySession'
 import { handleStartEvent } from './start'
 import { handleGetLessonEvent } from './lesson'
 import { handleSetGroupEvent } from './setGroup'
-import { handleGetScheduleEvent, handleGetCallScheduleEvent } from './schedule'
+import { createGetScheduleEventHandler, handleGetCallScheduleEvent } from './schedule'
 import { handleGetWeekEvent } from './week'
 import { handleAboutSystemTextEvent, handleAttestationTextEvent } from './texts'
 import { handleCreateFeedbackEvent, handleFeedbackCreatingEvent } from './feedback'
@@ -22,7 +22,8 @@ import { Handler } from '#types'
 // TODO should be stored in one place.
 const SET_GROUP_REGEXP = /Моя група(.+)/
 const GET_NEXT_LESSON = new RegExp(buildText('whichLesson'))
-const GET_SCHEDULE = new RegExp(buildText('whichSchedule'))
+const GET_LESSON_SCHEDULE = new RegExp(buildText('whichSchedule'))
+const GET_EDUCATION_SCHEDULE = new RegExp(buildText('whichEducationSchedule'))
 const GET_WEEK = new RegExp(buildText('whichWeek'))
 const GET_CALL_SCHEDULE = new RegExp(buildText('whichCallSchedule'))
 const LEFT_FEEDBACK = new RegExp(buildText('leftFeedback'))
@@ -33,7 +34,8 @@ const CLAIM_ATTESTATION = new RegExp(buildText('claimAttestation'))
 const HANDLED_EVENTS_REGEXP: RegExp[] = [
   SET_GROUP_REGEXP,
   GET_NEXT_LESSON,
-  GET_SCHEDULE,
+  GET_EDUCATION_SCHEDULE,
+  GET_LESSON_SCHEDULE,
   GET_WEEK,
   GET_CALL_SCHEDULE,
   LEFT_FEEDBACK,
@@ -79,7 +81,8 @@ const pickMiddlewares = ({ withCheckUserStatus = false, withoutClearSession = fa
 export default async (bot: telegram) => {
   const startHandler = buildHandler(bot, ...pickMiddlewares(), handleStartEvent)
   const lessonHandler = buildHandler(bot, ...pickMiddlewares({ withCheckUserStatus: true }), handleGetLessonEvent)
-  const scheduleHandler = buildHandler(bot, ...pickMiddlewares({ withCheckUserStatus: true }), handleGetScheduleEvent)
+  const lessonsScheduleHandler = buildHandler(bot, ...pickMiddlewares({ withCheckUserStatus: true }), createGetScheduleEventHandler('lessons'))
+  const educationScheduleHandler = buildHandler(bot, ...pickMiddlewares({ withCheckUserStatus: true }), createGetScheduleEventHandler('education'))
   const setGroupHandler = buildHandler(bot, ...pickMiddlewares(),  handleSetGroupEvent)
   const callScheduleHandler = buildHandler(bot, ...pickMiddlewares(),  handleGetCallScheduleEvent)
   const weekHandler = buildHandler(bot, ...pickMiddlewares(),  handleGetWeekEvent)
@@ -92,10 +95,11 @@ export default async (bot: telegram) => {
   bot.onText(/\/start/, await startHandler(['command', 'start']))
 
   bot.onText(/\/lesson/, await lessonHandler(['command', 'get_lesson']))
-  bot.onText(/\/schedule/, await scheduleHandler(['command', 'get_schedule']))
+  bot.onText(/\/schedule/, await lessonsScheduleHandler(['command', 'get_schedule']))
   bot.onText(/\/callschedule/, await callScheduleHandler(['command', 'get_call_schedule']))
   bot.onText(/\/week/, await weekHandler(['command', 'get_week']))
-  bot.onText(GET_SCHEDULE, await scheduleHandler(['text', 'get_schedule']))
+  bot.onText(GET_LESSON_SCHEDULE, await lessonsScheduleHandler(['text', 'get_schedule']))
+  bot.onText(GET_EDUCATION_SCHEDULE, await educationScheduleHandler(['text', 'get_education_schedule']))
   bot.onText(GET_NEXT_LESSON, await lessonHandler(['text', 'get_lesson']))
   bot.onText(SET_GROUP_REGEXP, await setGroupHandler(['text', 'set_group']))
   bot.onText(GET_CALL_SCHEDULE, await callScheduleHandler(['text', 'get_call_schedule']))
