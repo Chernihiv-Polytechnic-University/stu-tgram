@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction, RequestHandler } from 'express'
 import * as jwt from 'jsonwebtoken'
-import * as bcrypt from 'bcryptjs'
+import * as bcrypt from 'bcrypt'
 import * as config from 'config'
 
 import { createLogger } from 'libs/logger'
