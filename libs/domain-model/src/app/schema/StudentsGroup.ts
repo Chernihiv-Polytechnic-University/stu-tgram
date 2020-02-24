@@ -15,7 +15,8 @@ export interface EducationWeekData {
 }
 
 export interface StudentsGroupAttributes extends Group {
-  schedulePDF?: Buffer
+  lessonsScheduleImage?: Buffer
+  educationScheduleImage?: Buffer
   educationSchedule?: EducationWeekData[]
 }
 
@@ -24,7 +25,8 @@ export interface StudentsGroup extends StudentsGroupAttributes, mongoose.Documen
 const schema = new mongoose.Schema({
   name: { type: String, required: true },
   subgroupNumber: { type: Number, required: true, enum: [1, 2] },
-  schedulePDF: { type: Buffer },
+  lessonsScheduleImage: { type: Buffer },
+  educationScheduleImage: { type: Buffer },
   educationSchedule: [{
     _id: false,
     start: Number,
