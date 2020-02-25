@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+
+    <style>
+        #calendarBig { /* весь календарь */
+            width: 100%;
+            max-width: 700px;
+            margin: 0 auto;
+            border-spacing: 0 1.5em;
+        }
+        #calendarBig td {
+            vertical-align: top;
+            padding: 6px
+        }
+        #calendarBig, #calendarBig table {
+            font-family: 'Roboto',sans-serif;
+            text-align: center;
+        }
+        #calendarBig table { /* таблицы с месяцами выравнены по верхней границе, горизонтально — по центру */
+            display: inline-table;
+            -webkit-border-horizontal-spacing: unset;
+        }
+        #calendarBig table thead tr:nth-child(1) { /* названия месяцев */
+            letter-spacing: 2px;
+            font-size: 20px;
+            font-weight: 700;
+        }
+        #calendarBig table thead tr:last-child { /* название дней недели */
+            font-size: 14px;
+            font-weight: 400;
+        }
+        #calendarBig table tbody td { /* дни */
+            font-weight: 300;
+            font-size: 14px
+        }
+        #calendarBig table tbody td:nth-child(n+6){ /* выходные */
+            color: rgba(0, 0, 0, 0.4);
+        }
+        .examination-period {
+            border-bottom: 3px solid red;
+        }
+        .theory-lessons {
+            border-bottom: 3px solid lightgrey;
+        }
+        .practice {
+            border-bottom: 3px solid rgba(255, 255, 0, 0.79);
+        }
+        .holiday {
+            border-bottom: 3px solid forestgreen;
+        }
+        .internship {
+            border-bottom: 3px solid #0028d3;
+        }
+        .constituent-session {
+            border-bottom: 3px solid #00d3c5;
+        }
+        .installation-session {
+            border-bottom: 3px solid #82d38c;
+        }
+        .test-week {
+            border-bottom: 3px solid #d37000;
+        }
+        .preparation-for-attestation {
+            border-bottom: 3px solid #7c79d3;
+        }
+        .attestation {
+            border-bottom: 3px solid #d3001e;
+        }
+        .unknown {
+            border-bottom: 3px solid #0300d3;
+        }
+        #legend {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-family: Roboto, sans-serif;
+            font-weight: 400;
+            font-size: 16px;
+        }
+        #legend div {
+            display: flex;
+            flex-direction: row;
+        }
+        #legend div div {
+            margin: 15px;
+            padding: 6px;
+        }
+    </style>
+</head>
+<body>
+<table id="calendarBig">
+    <tbody>
+</table>
+
+<div id="legend">
+    <div>
+        <div class="theory-lessons">Теоретичні заняття</div>
+        <div class="examination-period">Екзаменаційна сесія</div>
+        <div class="holiday">Канікули</div>
+        <div class="constituent-session">Установча сесія</div>
+
+    </div>
+    <div>
+        <div class="installation-session">Настановча сесія</div>
+        <div class="internship">Стажування</div>
+        <div class="test-week">Заліковий тиждень</div>
+        <div class="unknown">Невідомо що</div>
+    </div>
+    <div>
+        <div class="practice">Практика</div>
+        <div class="preparation-for-attestation">Підготовка до атестації</div>
+        <div class="attestation">Атестація</div>
+    </div>
+
+</div>
+</body>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment-with-locales.min.js"></script>
+<script>
+    const dayInfoList = '{{{dayInfoList}}}'
+
+    const dayStyleClassMapper = {
+        'THEORY_LESSONS': 'theory-lessons',
+        'EXAMINATION_PERIOD': 'examination-period',
+        'PRACTICE': 'practice',
+        'HOLIDAY': 'holiday',
+        'ATTESTATION': 'attestation',
+        'INTERNSHIP': 'internship',
+        'CONSTITUENT_SESSION': 'constituent-session',
+        'PREPARATION_FOR_ATTESTATION': 'preparation-for-attestation',
+        'INSTALLATION_SESSION': 'installation-session',
+        'TEST_WEEK': 'test-week',
+        'UNKNOWN': 'unknown'
+    }
+
+    const fillCalendar = (firstWeekDate) => {
+        const cursor = moment(firstWeekDate)
+        const firstMonthNumber = cursor.get('month')
+        const stopDate = cursor.clone().add(1, 'year').startOf('month')
+        const dates = []
+
+        while (cursor.isBefore(stopDate)) {
+            dates.push(cursor.clone())
+            cursor.add(1, 'day')
+        }
+
+        const { html } = dates.reduce(({ prev, html }, date) => {
+            // inner month
+            if (prev === null || date.get('month') !== prev.get('month')) {
+                const monthName = date.locale('uk').format('MMMM')
+                html += `
+                ${prev !== null ? '</table>' : ''}
+    ${(date.get('month') - firstMonthNumber) % 3 === 0 ? '<tr>' : '' }
+        <td>
+            <table data-m="${date.get('month')}">
+                <thead>
+                <tr><td colspan="7">${monthName[0].toUpperCase() + monthName.slice(1)}
+                <tr><td>Пн<td>Вт<td>Ср<td>Чт<td>Пт<td>Сб<td>Нд
+                <tbody>
+                `
+            }
+            if (prev === null || date.get('month') !== prev.get('month') || date.isoWeek() !== prev.isoWeek()) {
+                html += '<tr>'
+                for (let i = 1; i < date.isoWeekday(); i++) {
+                    html += '<td>'
+                }
+            }
+            const dayInfo = dayInfoList.find(d => d.date === date.format('YYYY-MM-DD'))
+            if (dayInfo) {
+                const { definition } = dayInfo
+                const dayStyleClass = dayStyleClassMapper[definition]
+                html += `<td class="${dayStyleClass}">${date.get('date')}`
+
+            } else {
+                html += `<td>${date.get('date')}`
+            }
+
+
+            return { prev: date, html }
+        }, { prev: null, html: '' })
+
+        document.querySelector('#calendarBig tbody').innerHTML = html;
+    }
+
+    fillCalendar('{{{firstOddWeekMonday}}}')
+</script>

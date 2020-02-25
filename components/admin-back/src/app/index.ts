@@ -6,6 +6,7 @@ import * as helmet from 'helmet'
 import * as bodyParser from 'body-parser'
 import * as cookieParser from 'cookie-parser'
 import * as config from 'config'
+import { timeout } from './middlewares/timeout'
 
 import { connect } from 'libs/domain-model'
 import { createLogger } from 'libs/logger'
@@ -32,6 +33,7 @@ const runApp = () => {
   app.use(helmet())
   app.use(cookieParser())
   app.use(compress())
+  app.use(timeout(60 * 30))
   app.use(bodyParser.json({ limit: config.get('JSON_SIZE_LIMIT') }))
   initRoutes({ uploader })
     .then(router => app.use('/api/v1', router))

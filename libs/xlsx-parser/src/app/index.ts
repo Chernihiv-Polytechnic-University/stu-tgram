@@ -1,13 +1,14 @@
 import * as lessonsScheduleParser from './parsers/lesson-schedule'
 import * as educationScheduleParser from './parsers/education-process-schedule'
+import { GroupSchedule } from './parsers/education-process-schedule/parse-schedule'
 
 export { Lesson } from './parsers/lesson-schedule'
-export { EducationSchedule } from './parsers/education-process-schedule'
+export { GroupSchedule } from './parsers/education-process-schedule/parse-schedule'
 
 export const parseLessonsSchedule = (fileBuffer: Buffer): Promise<lessonsScheduleParser.Lesson[]> => {
   return lessonsScheduleParser.parse(fileBuffer)
 }
 
-export const parseEducationSchedule = (fileBuffer: Buffer): Promise<educationScheduleParser.EducationSchedule> => {
+export const parseEducationSchedule = (fileBuffer: Buffer): Promise<GroupSchedule[]> => {
   return educationScheduleParser.parse(fileBuffer)
 }

@@ -5,33 +5,29 @@
     <title></title>
     <style>
         body {
-            font-family: "Roboto", helvetica, arial, sans-serif;
+            font-family: "Roboto", sans-serif;
             font-size: 1em;
             font-weight: 400;
             text-rendering: optimizeLegibility;
-            padding: 0px;
-            margin: 0px;
+            padding: 0;
+            margin: 0;
         }
 
         .table-fill {
             background: white;
             border-radius:3px;
             border-collapse: collapse;
-            height: 240px;
             width: 100%;
             padding:2px;
             margin: 0 0 2px 0;
             box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-            animation: float 5s infinite;
         }
 
         th {
-            color: #eff7ff;;
-            background:#1b1e24;
-            border-bottom:4px solid #9ea7af;
-            border-right: 1px solid #343a45;
+            color: #000000;;
+            background: rgba(0, 0, 0, 0.16);
             font-size: 1em;
-            font-weight: 200;
+            font-weight: 400;
             padding:12px;
             text-align:left;
             text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
@@ -48,12 +44,11 @@
         }
 
         tr {
-            border-top: 1px solid #C1C3D1;
-            border-bottom: 1px solid #C1C3D1;
             color: #33333e;
             font-size: 1em;
             font-weight:normal;
             text-shadow: 0 1px 1px rgba(256, 256, 256, 0.1);
+            border-bottom: 2px solid #efefef;
         }
 
         tr:first-child {
@@ -65,7 +60,7 @@
         }
 
         tr:nth-child(odd) td {
-            background:#EBEBEB;
+
         }
 
         tr:last-child td:first-child {
@@ -78,7 +73,7 @@
 
         td {
             background:#FFFFFF;
-            padding:6px;
+            padding:9px;
             text-align:left;
             vertical-align:middle;
             font-weight:300;
@@ -88,12 +83,12 @@
         }
 
         td:last-child {
-            border-right: 0px;
+            border-right: 0;
         }
 
         .text-left {
             width: 5%;
-            text-align: left;
+            text-align: center;
         }
 
         .text-center {
@@ -104,16 +99,12 @@
             text-align: center;
             padding: 7px;
             margin: 0;
-            font-size: 1.1em;
-            font-weight: 400;
-            background:#EBEBEB;
-            border-top: 2px solid #202026;
-            border-left: 2px solid #202026;
-            border-right: 2px solid #202026;
+            font-size: 16px;
+            font-weight: 300;
         }
 
         .border-for-right {
-            border-left: black solid 2px;
+            border-left: rgba(0, 0, 0, 0.17) solid 2px;
         }
     </style>
 </head>

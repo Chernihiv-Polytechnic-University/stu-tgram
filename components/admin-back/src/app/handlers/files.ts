@@ -1,10 +1,10 @@
-// TODO fix
 import { Handler } from 'express'
 import { mapSeries } from 'bluebird'
 import { map, values, entries, find, groupBy, flow, omit, filter } from 'lodash/fp'
-import { parseLessonsSchedule, parseEducationSchedule, Lesson as ParsedLesson, EducationSchedule } from 'libs/xlsx-parser'
-import { creteSchedulePDF } from 'libs/schedule-builder'
+import { parseLessonsSchedule, parseEducationSchedule, Lesson as ParsedLesson } from 'libs/xlsx-parser'
+import { createImageMaker } from 'libs/image-builder'
 import {
+  SystemSettingsModel,
   StudentsGroupAttributes,
   StudentsGroupModel,
   LessonAttributes,
@@ -59,12 +59,12 @@ export const uploadEducationProcessSchedule: Handler = async (req, res, next) =>
   try {
     const { buffer: fileBuffer } = req.file
 
-    const educationSchedule: EducationSchedule = await parseEducationSchedule(fileBuffer)
+    const groupsSchedule = await parseEducationSchedule(fileBuffer)
 
     const groups = await StudentsGroupModel.find().select('_id name').exec()
 
     await mapSeries(groups, async ({ name, _id }) => {
-      await StudentsGroupModel.updateOne({ _id, name }, { educationSchedule: educationSchedule.groupsSchedule.filter(g => g.group === name) })
+      await StudentsGroupModel.updateOne({ _id, name }, { educationSchedule: groupsSchedule.filter(g => new RegExp(g.group, 'i').test(name)) })
     })
 
     res.status(204).send()
@@ -73,17 +73,31 @@ export const uploadEducationProcessSchedule: Handler = async (req, res, next) =>
   }
 }
 
-export const compileSchedulePDFs: Handler = async (req, res, next) => {
+export const compileSchedulePNGs: Handler = async (req, res, next) => {
   try {
+    const settings = await SystemSettingsModel.findOne().exec()
     const groups = await StudentsGroupModel.find().exec()
     const lessons = await LessonModel.find().exec()
 
+    const imageMaker = await createImageMaker()
+
     await mapSeries(groups, async (g: StudentsGroup) => {
       const groupLessons = filter({ groupId: g._id.toString(), isExist: true } as Partial<LessonAttributes>)(lessons)
-      const schedulePDF: Buffer = await creteSchedulePDF(groupLessons, g.name, g.subgroupNumber)
-      g.set('schedulePDF', schedulePDF)
-      await g.save()
+      const lessonsScheduleImage: Buffer = await imageMaker.createLessonSchedulePNG(groupLessons, g.name, g.subgroupNumber)
+
+      if (!g.educationSchedule || !g.educationSchedule.length) {
+        return
+      }
+
+      const educationScheduleImage: Buffer = (!g.educationSchedule || !g.educationSchedule.length)
+        ? null
+        : await imageMaker.createEducationSchedulePNG(g.educationSchedule, settings.firstOddWeekMondayDate)
+
+      await StudentsGroupModel.updateOne({ _id: g._id }, { $set: { lessonsScheduleImage, educationScheduleImage } }).exec()
     })
+
+    await imageMaker.destruct()
+
     res.status(204).send()
   } catch (e) {
     next(e)
