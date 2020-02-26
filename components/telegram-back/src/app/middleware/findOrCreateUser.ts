@@ -1,7 +1,16 @@
 import * as telegram from 'node-telegram-bot-api'
 import { isString } from 'lodash'
-import { Handler, HandlerResult, Message } from '../types'
 import { TelegramUserAttributes, TelegramUserModel, TelegramUserStatus } from 'libs/domain-model'
+import { Handler, HandlerResult, Message } from '../types'
+import { buildText } from '../utils/text-builder'
+
+const extractUsername = (user: telegram.User): string => {
+  if (isString(user.username)) { return user.username }
+  if (isString(user.first_name) && isString(user.last_name)) { return `${user.first_name} ${user.last_name}` }
+  if (isString(user.first_name)) { return user.first_name }
+  if (isString(user.last_name)) { return user.last_name }
+  return buildText('anonymous')
+}
 
 const handler: Handler = async (bot: telegram, msg: Message) => {
   const chatId = msg.tMessage.chat.id
@@ -13,12 +22,11 @@ const handler: Handler = async (bot: telegram, msg: Message) => {
   const tUserId = from.id
   let user = await TelegramUserModel.findOne({ 'telegram.id': tUserId })
   if (!user) {
-    const username = isString(from.username) ? from.username : `${from.first_name} ${from.last_name}`.trim()
     const userData: TelegramUserAttributes = {
       status: TelegramUserStatus.unknown,
       telegram: {
-        username,
         id: tUserId,
+        username: extractUsername(from),
         firstName: from.first_name,
         lastName: from.last_name,
       },
