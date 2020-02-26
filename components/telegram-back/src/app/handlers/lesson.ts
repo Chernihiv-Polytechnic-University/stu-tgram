@@ -87,9 +87,9 @@ export const handleGetLessonEvent: Handler = async (bot: telegram, msg: Message)
     const text = buildText('nextLessonIs', {
       hours,
       minutes,
-      lessonNumber: currentLessonNumber,
-      startTime: getLessonStartTimeAsStr(currentLessonNumber),
-      endTime: getLessonEndTimeAsStr(currentLessonNumber),
+      lessonNumber: nextLesson.number,
+      startTime: getLessonStartTimeAsStr(nextLesson.number),
+      endTime: getLessonEndTimeAsStr(nextLesson.number),
       minutesEnd: getTimeUnitEnding(m),
       hoursEnd: getTimeUnitEnding(h),
       // start,
