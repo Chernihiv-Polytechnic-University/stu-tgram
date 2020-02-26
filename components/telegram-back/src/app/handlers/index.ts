@@ -7,6 +7,7 @@ import findOrCreateUserMiddleware from '../middleware/findOrCreateUser'
 import createCheckUserStatusMiddleware from '../middleware/checkUserStatus'
 import clearSessionMiddleware from '../middleware/clearSession'
 import createChooseHandlerBySession from '../middleware/chooseHandlerBySession'
+import updatePrivateChatIdMiddleware from '../middleware/updatePrivateChatId'
 
 import { handleStartEvent } from './start'
 import { handleGetLessonEvent } from './lesson'
@@ -56,6 +57,7 @@ const pickMiddlewares = ({ withCheckUserStatus = false, withoutClearSession = fa
   const middlewares: Handler[] = [
     showTypingMiddleware,
     findOrCreateUserMiddleware,
+    updatePrivateChatIdMiddleware,
   ]
   if (withCheckUserStatus) {
     middlewares.push(
