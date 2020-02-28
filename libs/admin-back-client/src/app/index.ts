@@ -1,6 +1,7 @@
 import * as axios from 'axios'
 import * as domain from 'libs/domain-model'
 import * as users from './users'
+import * as groups from './groups'
 
 export type BaseOptions = {
   baseURL: string,
@@ -26,10 +27,14 @@ const execRequest = <I, R>(specificFunc: (input: I) => axios.AxiosRequestConfig,
 
 export const initClient = (baseOptions: BaseOptions) => ({
   login: execRequest<users.LoginInput, null>(users.login, baseOptions),
+  logout: execRequest<{}, null>(users.logout, baseOptions),
   updateMe: execRequest<users.UpdateUserInput, null>(users.updateCurrentUser, baseOptions),
   getMe: execRequest<null, domain.UserAttributes>(users.getCurrentUser, baseOptions),
   getUser: execRequest<users.GetUserInput, domain.UserAttributes>(users.getUser, baseOptions),
   getUsers: execRequest<null, domain.UserAttributes[]>(users.getUsers, baseOptions),
   createUser: execRequest<users.CreateUserInput, null>(users.createUser, baseOptions),
   deleteUser: execRequest<users.DeleteUserInput, null>(users.deleteUser, baseOptions),
+
+  getGroup: execRequest<groups.GetGroupInput, domain.StudentsGroupAttributes>(groups.getGroup, baseOptions),
+  getGroups: execRequest<groups.GetGroupsInput, domain.StudentsGroupAttributes[]>(groups.getGroups, baseOptions),
 })

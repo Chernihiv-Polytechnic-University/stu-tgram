@@ -1,8 +1,5 @@
 import { AxiosRequestConfig } from 'axios'
-
-export type InputWithId = {
-  id: string,
-}
+import { InputWithId } from './shared'
 
 export type LoginInput = {
   login: string
@@ -30,6 +27,14 @@ export const login = ({ login, password }: LoginInput): AxiosRequestConfig => {
     method: 'post',
     url: '/users/login',
     data: { login, password },
+  }
+}
+
+export const logout = (): AxiosRequestConfig => {
+  return {
+    method: 'post',
+    url: '/users/logout',
+    data: {},
   }
 }
 
