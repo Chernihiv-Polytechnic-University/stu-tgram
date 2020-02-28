@@ -14,7 +14,7 @@ const buildPipeline = (page: number, limit: number, id: string) => {
     { $project: { text: 1, createdAt: 1, author: 1, authorGroupId: { $toObjectId: '$author.groupId' } } },
     { $lookup: { from: 'StudentsGroup', as: 'group', let: { groupId: '$authorGroupId' }, pipeline: [
           { $match: { $expr: { $eq: ['$_id', '$$groupId'] } } },
-          { $project: { schedulePDF: 0 } },
+          { $project: { name: 1, subgroupNumber: 1 } },
     ] } },
     { $unwind: '$group' },
   ]
@@ -27,7 +27,7 @@ const buildPipeline = (page: number, limit: number, id: string) => {
 export const get = async (req: Request, res: Response, next) => {
   try {
     const { id } = req.params
-    const { page, limit } = req.params
+    const { page, limit } = req.query
 
     if (isString(id)) {
       const result = await FeedbackModel.aggregate(buildPipeline(0, 1, id))
