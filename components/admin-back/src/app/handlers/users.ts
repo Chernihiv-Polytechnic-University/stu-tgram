@@ -4,6 +4,7 @@ import * as config from 'config'
 import { createLogger } from 'libs/logger'
 import {  UserModel, findAndPaginate } from 'libs/domain-model'
 import { getToken, hashPass } from '../services/auth'
+
 const logger = createLogger(`#handlers/${__filename}`)
 
 const FIELDS_TO_SELECT = '_id name login role createdAt updatedAt'
@@ -24,6 +25,17 @@ export const login = async (req: Request, res: Response, next) => {
     }
 
     logger.error(e)
+
+    next(e)
+  }
+}
+
+export const logout = async (req: Request, res: Response, next) => {
+  try {
+    res.clearCookie(config.get<string>('AUTH_COOKIES_NAME'))
+      .status(204)
+      .send()
+  } catch (e) {
 
     next(e)
   }
