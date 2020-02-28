@@ -4,7 +4,7 @@
   "description": "See README.md",
   "main": "dist/index.js",
   "scripts": {
-    "clean": "rm -rf dist node_modules",
+    "clean": "node ../../overlord/nodescripts/rmdir.js dist node_modules",
     "compile-component": "tsc -p tsconfig.json",
     "compile": "npm run clean && npm i && npm run compile-component"
   },
