@@ -1,6 +1,6 @@
 import * as telegram from 'node-telegram-bot-api'
 import { minBy, filter, flow } from 'lodash/fp'
-import { get, isNil, find } from 'lodash'
+import { get, isNil, find, isString } from 'lodash'
 import { Lesson, LessonModel, SystemSettingsModel } from 'libs/domain-model'
 import { Handler, Message } from '../types'
 import { buildText, getTimeUnitEnding } from '../utils/text-builder'
@@ -52,13 +52,15 @@ export const handleGetLessonEvent: Handler = async (bot: telegram, msg: Message)
       minutes = minutes * -1
       textId = 'currentLessonStarting'
     }
+
+    if (!isString(currentLesson.auditory)) { textId += 'WithoutAuditory' }
+
     const textOne = buildText(textId, {
       minutes,
       lessonNumber: currentLessonNumber,
       startTime: getLessonStartTimeAsStr(currentLessonNumber),
       endTime: getLessonEndTimeAsStr(currentLessonNumber),
       minutesEnd: getTimeUnitEnding(minutes),
-      // number: currentLessonNumber,
       lessonName: get(currentLesson, 'name', '*'),
       auditory: get(currentLesson, 'auditory', '*'),
       teacherName: get(currentLesson, 'teacher.name', '*'),
@@ -84,7 +86,10 @@ export const handleGetLessonEvent: Handler = async (bot: telegram, msg: Message)
     const { h, m } = getDiffBetweenLessonStartAndNow(nextLesson.day as Day, nextLesson.number)
     const hours = String(h)
     const minutes = String(m)
-    const text = buildText('nextLessonIs', {
+
+    const textId =  isString(nextLesson.auditory) ? 'nextLessonIs' : 'nextLessonIsWithoutAuditory'
+
+    const text = buildText(textId, {
       hours,
       minutes,
       lessonNumber: nextLesson.number,
@@ -92,8 +97,6 @@ export const handleGetLessonEvent: Handler = async (bot: telegram, msg: Message)
       endTime: getLessonEndTimeAsStr(nextLesson.number),
       minutesEnd: getTimeUnitEnding(m),
       hoursEnd: getTimeUnitEnding(h),
-      // start,
-      // number,
       lessonName: get(nextLesson, 'name', '*'),
       auditory: get(nextLesson, 'auditory', '*'),
       teacherName: get(nextLesson, 'teacher.name', '*'),

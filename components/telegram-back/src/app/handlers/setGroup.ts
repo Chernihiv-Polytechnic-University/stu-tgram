@@ -21,7 +21,7 @@ export const handleSetGroupEvent: Handler = async (bot: telegram, msg: Message) 
     await bot.sendMessage(msg.tMessage.chat.id, buildText('wrongGroup'))
     return
   }
-  const group = await getGroupByText(groupText)
+  const group = await getGroupByText(groupText.toUpperCase())
   if (isNil(group)) {
     await bot.sendMessage(msg.tMessage.chat.id, buildText('groupNotFound', { groupText }))
     return
