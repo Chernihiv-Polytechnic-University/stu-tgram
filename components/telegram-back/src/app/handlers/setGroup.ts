@@ -4,12 +4,13 @@ import { TelegramUserModel, StudentsGroupModel, StudentsGroup, TelegramUserStatu
 import { buildText } from '../utils/text-builder'
 import { Handler, Message } from '../types'
 
-// TODO should be stored in one place
-const SET_GROUP_REGEXP = /Моя група[ ]*(.+)/
+const SET_GROUP_REGEXP = buildText('myGroupParseRegexp')
 
 const getGroupByText = async (groupText: string): Promise<StudentsGroup | never> => {
   const [groupName, subgroupNumber] = groupText.split(':')
-  const group = await StudentsGroupModel.findOne({ subgroupNumber, name: groupName.replace(/ /g, '') }).exec()
+  const group = await StudentsGroupModel
+    .findOne({ subgroupNumber, name: groupName.replace(/ /g, '') }, { _id: 1 })
+    .exec()
   return group
 }
 

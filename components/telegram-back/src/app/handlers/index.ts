@@ -14,25 +14,33 @@ import { handleGetLessonEvent } from './lesson'
 import { handleSetGroupEvent } from './setGroup'
 import { createGetScheduleEventHandler, handleGetCallScheduleEvent } from './schedule'
 import { handleGetWeekEvent } from './week'
-import { handleAboutSystemTextEvent, handleAttestationTextEvent } from './texts'
+import { handleAboutSystemTextEvent, handleAttestationTextEvent, handleGoBackTextEvent } from './texts'
 import { handleCreateFeedbackEvent, handleFeedbackCreatingEvent } from './feedback'
+import { handleGetSettingsEvent, handleSetupUpdateKeyboard } from './settings'
 
 import { buildText } from '../utils/text-builder'
 import { Handler } from '#types'
 
-// TODO should be stored in one place.
-const SET_GROUP_REGEXP = /Моя група(.+)/
-const GET_NEXT_LESSON = new RegExp(buildText('whichLesson'))
-const GET_LESSON_SCHEDULE = new RegExp(buildText('whichSchedule'))
-const GET_EDUCATION_SCHEDULE = new RegExp(buildText('whichEducationSchedule'))
-const GET_WEEK = new RegExp(buildText('whichWeek'))
-const GET_CALL_SCHEDULE = new RegExp(buildText('whichCallSchedule'))
-const LEFT_FEEDBACK = new RegExp(buildText('leftFeedback'))
-const ABOUT_SYSTEM = new RegExp(buildText('aboutSystem'))
-const CLAIM_ATTESTATION = new RegExp(buildText('claimAttestation'))
+const SET_GROUP_REGEXP = new RegExp(buildText('myGroupMatchRegexp'))
+const ADD_KEY_REGEXP = new RegExp(buildText('addKeyMatchRegexp'))
+const REMOVE_KEY_REGEXP = new RegExp(buildText('removeKeyMatchRegexp'))
+const SET_TEACHER_REGEXP = new RegExp(buildText('teacherMatchRegexp'))
+const GET_NEXT_LESSON = new RegExp(`^${buildText('whichLesson')}$`)
+const GET_LESSON_SCHEDULE = new RegExp(`^${buildText('whichSchedule')}$`)
+const GET_EDUCATION_SCHEDULE = new RegExp(`^${buildText('whichEducationSchedule')}$`)
+const GET_WEEK = new RegExp(`^${buildText('whichWeek')}$`)
+const GET_CALL_SCHEDULE = new RegExp(`^${buildText('whichCallSchedule')}$`)
+const LEFT_FEEDBACK = new RegExp(`^${buildText('leftFeedback')}$`)
+const ABOUT_SYSTEM = new RegExp(`^${buildText('aboutSystem')}$`)
+const CLAIM_ATTESTATION = new RegExp(`^${buildText('claimAttestation')}$`)
+const GET_SETTINGS = new RegExp(`^${buildText('settings')}$`)
+const SET_KEYBOARD = new RegExp(`^${buildText('setKeyboard')}$`)
+const GO_BACK = new RegExp(`^${buildText('back')}$`)
 
 // we should skip all handled events while processing session
 const HANDLED_EVENTS_REGEXP: RegExp[] = [
+  ADD_KEY_REGEXP,
+  REMOVE_KEY_REGEXP,
   SET_GROUP_REGEXP,
   GET_NEXT_LESSON,
   GET_EDUCATION_SCHEDULE,
@@ -42,6 +50,9 @@ const HANDLED_EVENTS_REGEXP: RegExp[] = [
   LEFT_FEEDBACK,
   ABOUT_SYSTEM,
   CLAIM_ATTESTATION,
+  GET_SETTINGS,
+  SET_KEYBOARD,
+  GO_BACK,
   /\/start/,
   /\/lesson/,
   /\/schedule/,
@@ -82,6 +93,7 @@ const pickMiddlewares = ({ withCheckUserStatus = false, withoutClearSession = fa
 
 export default async (bot: telegram) => {
   const startHandler = buildHandler(bot, ...pickMiddlewares(), handleStartEvent)
+  const updateKeyboardHandler = buildHandler(bot, ...pickMiddlewares(),  handleSetupUpdateKeyboard(true))
   const lessonHandler = buildHandler(bot, ...pickMiddlewares({ withCheckUserStatus: true }), handleGetLessonEvent)
   const lessonsScheduleHandler = buildHandler(bot, ...pickMiddlewares({ withCheckUserStatus: true }), createGetScheduleEventHandler('lessons'))
   const educationScheduleHandler = buildHandler(bot, ...pickMiddlewares({ withCheckUserStatus: true }), createGetScheduleEventHandler('education'))
@@ -91,6 +103,9 @@ export default async (bot: telegram) => {
   const aboutSystemTextHandler = buildHandler(bot, ...pickMiddlewares(),  handleAboutSystemTextEvent)
   const attestationTextHandler = buildHandler(bot, ...pickMiddlewares(),  handleAttestationTextEvent)
   const feedbackCreatingHandler = buildHandler(bot, ...pickMiddlewares(),  handleFeedbackCreatingEvent)
+  const getSettingsHandler = buildHandler(bot, ...pickMiddlewares(),  handleGetSettingsEvent)
+  const setupKeyboardHandler = buildHandler(bot, ...pickMiddlewares(),  handleSetupUpdateKeyboard(false))
+  const goBackHandler = buildHandler(bot, ...pickMiddlewares(),  handleGoBackTextEvent)
   const sessionHandler = await buildHandler(bot, ...pickMiddlewares({ withoutClearSession: true, withSessionHandler: true }))(['text', 'session'])
 
   // TODO set all regexp as constants
@@ -109,6 +124,11 @@ export default async (bot: telegram) => {
   bot.onText(ABOUT_SYSTEM, await aboutSystemTextHandler(['text', 'about_system']))
   bot.onText(CLAIM_ATTESTATION, await attestationTextHandler(['text', 'attestations']))
   bot.onText(LEFT_FEEDBACK, await feedbackCreatingHandler(['text', 'feedback_creating']))
+  bot.onText(GET_SETTINGS, await getSettingsHandler(['text', 'get_settings']))
+  bot.onText(SET_KEYBOARD, await setupKeyboardHandler(['text', 'set_keyboard']))
+  bot.onText(ADD_KEY_REGEXP, await updateKeyboardHandler(['text', 'update_keyboard']))
+  bot.onText(REMOVE_KEY_REGEXP, await updateKeyboardHandler(['text', 'update_keyboard']))
+  bot.onText(GO_BACK, await goBackHandler(['text', 'go_back']))
 
   bot.on('text', async (msg) => {
     if (isHandledEvent(msg.text)) {
