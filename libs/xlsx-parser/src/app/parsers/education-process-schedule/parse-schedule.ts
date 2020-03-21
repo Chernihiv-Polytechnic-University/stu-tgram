@@ -141,7 +141,7 @@ const findGroupSchedule = (worksheet, weeks, legendCells) => (groupData): GroupS
     return {
       definition,
       row: groupData.rowNumber,
-      group: groupData.group,
+      group: groupData.group.toUpperCase(),
       realDefinition: get(legendDefinitions, definition, definition),
       ...week,
     }
