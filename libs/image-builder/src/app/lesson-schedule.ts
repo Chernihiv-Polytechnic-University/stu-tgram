@@ -1,7 +1,6 @@
 import * as path from 'path'
 import * as fs from 'fs'
-import { range, get, find, filter, maxBy } from 'lodash'
-import * as puppeteer from 'puppeteer'
+import { range, get, isString, find, filter, maxBy } from 'lodash'
 import * as handlebars from 'handlebars'
 import { LessonAttributes, LessonDay } from 'libs/domain-model'
 
@@ -21,14 +20,19 @@ const buildWeekTemplate = (lessons: LessonAttributes[]) => [
   { name: 'ЧТ', isHeader: false, lessons: range(1, getDayMaxLessonNumber('ЧТ', lessons) + 1).map(e => ({ number: e, oddData: '', evenData: '' })) },
   { name: 'ПТ', isHeader: false, lessons: range(1, getDayMaxLessonNumber('ПТ', lessons) + 1).map(e => ({ number: e, oddData: '', evenData: '' })) },
   { name: 'СБ', isHeader: false, lessons: range(1, getDayMaxLessonNumber('СБ', lessons) + 1).map(e => ({ number: e, oddData: '', evenData: '' })) },
+  { name: 'НД', isHeader: false, lessons: range(1, getDayMaxLessonNumber('НД', lessons) + 1).map(e => ({ number: e, oddData: '', evenData: '' })) },
 ]
 
 const createFindLessonBy = (lessons: LessonAttributes[]) => (condition: Partial<LessonAttributes>): LessonAttributes => {
   return find(lessons, condition) as LessonAttributes
 }
 
-const buildLessonData = (lesson: LessonAttributes) =>
-  lesson ? `${get(lesson, 'name', '*')}, ${get(lesson, 'teacher.name', '*')}, ауд ${get(lesson, 'auditory', '*')}` : ''
+const buildLessonData = (lesson: LessonAttributes) => {
+  if (!lesson) { return '' }
+  // tslint:disable-next-line:prefer-template
+  return `${get(lesson, 'name', '*')}, ${get(lesson, 'teacher.name', '*')}`
+    + (isString(lesson.auditory) ? `,ауд ${get(lesson, 'auditory', '*')}` : '')
+}
 
 const buildScheduleData = (lessons: LessonAttributes[]) => {
   const findLessonBy = createFindLessonBy(lessons)
@@ -44,10 +48,18 @@ const buildScheduleData = (lessons: LessonAttributes[]) => {
 
 export const createLessonScheduleHTML = (
   lessons: LessonAttributes[],
-  groupName: string,
-  subgroupNumber: number,
+  {
+    groupName,
+    subgroupNumber,
+    teacherName,
+  }:{
+    groupName?: string,
+    subgroupNumber?: number,
+    teacherName?: string,
+  },
 ): string => {
   const compileHTML = handlebars.compile(scheduleTemplate)
   const days = buildScheduleData(lessons)
-  return compileHTML({ days, groupName, subgroupNumber })
+  const name = teacherName ? teacherName : `${groupName}:${subgroupNumber}`
+  return compileHTML({ days, name })
 }

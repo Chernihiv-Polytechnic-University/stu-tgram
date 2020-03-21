@@ -39,6 +39,6 @@ export const createEducationScheduleHTML = (
   const dayInfoList = buildDays(weeks, firstOddWeekMondayData)
   const dayInfoListAsStr = stringifyDayInfoList(dayInfoList)
 
-  return scheduleTemplate.replace('\'{{{dayInfoList}}}\'', dayInfoListAsStr)
+  return scheduleTemplate.slice().replace('\'{{{dayInfoList}}}\'', dayInfoListAsStr)
     .replace('{{{firstOddWeekMonday}}}', firstOddWeekMondayData)
 }
