@@ -22,6 +22,7 @@ export interface TelegramData {
   lastName: string
   username: string
   privateChatId?: number
+  keyboard?: string[]
 }
 
 export interface TelegramUserSession {
@@ -53,6 +54,7 @@ const schema = new mongoose.Schema({
     lastName: { type: String },
     username: { type: String },
     privateChatId: { type: Number, index: true },
+    keyboard: [String],
   },
   session: {
     action: { type: String },
