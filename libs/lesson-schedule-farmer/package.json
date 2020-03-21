@@ -1,0 +1,30 @@
+{
+  "name": "lesson-schedule-farmer",
+  "version": "0.0.1",
+  "description": "See README.md",
+  "main": "dist/index.js",
+  "scripts": {
+    "clean": "node ../../overlord/nodescripts/rmdir.js dist node_modules",
+    "compile": "npm run clean && npm i && npm run compile-component",
+    "compile-component": "tsc -p tsconfig.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://iskryzhytskyi@bitbucket.org/iskryzhytskyi/utb.git"
+  },
+  "author": "a.iskryzhytskyi",
+  "license": "UNLICENSED",
+  "homepage": "https://bitbucket.org/iskryzhytskyi/utb#readme",
+  "devDependencies": {
+    "@types/bluebird": "^3.5.30",
+    "@types/lodash": "^4.14.149",
+    "@types/node": "12.12.6",
+    "typescript": "^3.8.3"
+  },
+  "dependencies": {
+    "axios": "^0.19.2",
+    "lodash": "^4.17.15",
+    "moment": "^2.24.0",
+    "bluebird": "^3.7.2"
+  }
+}
