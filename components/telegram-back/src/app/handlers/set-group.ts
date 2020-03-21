@@ -1,10 +1,10 @@
 import * as telegram from 'node-telegram-bot-api'
 import { get, isNil } from 'lodash'
-import { TelegramUserModel, StudentsGroupModel, StudentsGroup, TelegramUserStatus } from 'libs/domain-model'
+import { TelegramUserModel, StudentsGroupModel, StudentsGroup, TelegramUserStatus, TelegramUserRole } from 'libs/domain-model'
 import { buildText } from '../utils/text-builder'
 import { Handler, Message } from '../types'
 
-const SET_GROUP_REGEXP = buildText('myGroupParseRegexp')
+const SET_GROUP_REGEXP = buildText('myGroupRegexp')
 
 const getGroupByText = async (groupText: string): Promise<StudentsGroup | never> => {
   const [groupName, subgroupNumber] = groupText.split(':')
@@ -15,11 +15,11 @@ const getGroupByText = async (groupText: string): Promise<StudentsGroup | never>
 }
 
 export const handleSetGroupEvent: Handler = async (bot: telegram, msg: Message) => {
-  const { _id, telegram: { firstName, lastName } } = msg.locals.user
+  const { _id } = msg.locals.user
   const { text: msgText } = msg.tMessage
   const groupText = get(msgText.match(SET_GROUP_REGEXP), '[1]')
   if (isNil(groupText)) {
-    await bot.sendMessage(msg.tMessage.chat.id, buildText('wrongGroup'))
+    await bot.sendMessage(msg.tMessage.chat.id, buildText('failedSetAttempt'))
     return
   }
   const group = await getGroupByText(groupText.toUpperCase())
@@ -27,6 +27,9 @@ export const handleSetGroupEvent: Handler = async (bot: telegram, msg: Message) 
     await bot.sendMessage(msg.tMessage.chat.id, buildText('groupNotFound', { groupText }))
     return
   }
-  await TelegramUserModel.updateOne({ _id }, { $set: { groupId: group._id, status: TelegramUserStatus.partialKnown } })
+  await TelegramUserModel.updateOne(
+    { _id },
+    { $set: { groupId: group._id, status: TelegramUserStatus.partialKnown, name: null, role: TelegramUserRole.student } },
+  )
   await bot.sendMessage(msg.tMessage.chat.id,  buildText('groupSet', { groupText }))
 }

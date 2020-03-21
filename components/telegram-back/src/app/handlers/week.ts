@@ -2,7 +2,7 @@ import * as telegram from 'node-telegram-bot-api'
 import { SystemSettingsModel } from 'libs/domain-model'
 import { buildText } from '../utils/text-builder'
 import { Handler, Message } from '../types'
-import { ODD_WEEK, getCurrentWeekNumber } from '../utils/dateTime'
+import { ODD_WEEK, getCurrentWeekNumber } from '../utils/date-time'
 
 export const handleGetWeekEvent: Handler = async (bot: telegram, msg: Message) => {
   const { id: chatId } = msg.tMessage.chat

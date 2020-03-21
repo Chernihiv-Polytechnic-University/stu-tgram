@@ -11,7 +11,8 @@ import updatePrivateChatIdMiddleware from '../middleware/updatePrivateChatId'
 
 import { handleStartEvent } from './start'
 import { handleGetLessonEvent } from './lesson'
-import { handleSetGroupEvent } from './setGroup'
+import { handleSetGroupEvent } from './set-group'
+import { handleSetTeacherEvent } from './set-teacher'
 import { createGetScheduleEventHandler, handleGetCallScheduleEvent } from './schedule'
 import { handleGetWeekEvent } from './week'
 import { handleAboutSystemTextEvent, handleAttestationTextEvent, handleGoBackTextEvent } from './texts'
@@ -19,29 +20,31 @@ import { handleCreateFeedbackEvent, handleFeedbackCreatingEvent } from './feedba
 import { handleGetSettingsEvent, handleSetupUpdateKeyboard } from './settings'
 
 import { buildText } from '../utils/text-builder'
-import { Handler } from '#types'
+import { escape } from '../utils/escape-regexp'
+import { Handler } from '../types'
 
-const SET_GROUP_REGEXP = new RegExp(buildText('myGroupMatchRegexp'))
+const SET_GROUP_REGEXP = new RegExp(buildText('myGroupRegexp'))
 const ADD_KEY_REGEXP = new RegExp(buildText('addKeyMatchRegexp'))
 const REMOVE_KEY_REGEXP = new RegExp(buildText('removeKeyMatchRegexp'))
-const SET_TEACHER_REGEXP = new RegExp(buildText('teacherMatchRegexp'))
-const GET_NEXT_LESSON = new RegExp(`^${buildText('whichLesson')}$`)
-const GET_LESSON_SCHEDULE = new RegExp(`^${buildText('whichSchedule')}$`)
-const GET_EDUCATION_SCHEDULE = new RegExp(`^${buildText('whichEducationSchedule')}$`)
-const GET_WEEK = new RegExp(`^${buildText('whichWeek')}$`)
-const GET_CALL_SCHEDULE = new RegExp(`^${buildText('whichCallSchedule')}$`)
-const LEFT_FEEDBACK = new RegExp(`^${buildText('leftFeedback')}$`)
-const ABOUT_SYSTEM = new RegExp(`^${buildText('aboutSystem')}$`)
-const CLAIM_ATTESTATION = new RegExp(`^${buildText('claimAttestation')}$`)
-const GET_SETTINGS = new RegExp(`^${buildText('settings')}$`)
-const SET_KEYBOARD = new RegExp(`^${buildText('setKeyboard')}$`)
-const GO_BACK = new RegExp(`^${buildText('back')}$`)
+const SET_TEACHER_REGEXP = new RegExp(buildText('teacherRegexp'))
+const GET_NEXT_LESSON = new RegExp(`^${escape(buildText('whichLesson'))}$`)
+const GET_LESSON_SCHEDULE = new RegExp(`^${escape(buildText('whichSchedule'))}$`)
+const GET_EDUCATION_SCHEDULE = new RegExp(`^${escape(buildText('whichEducationSchedule'))}$`)
+const GET_WEEK = new RegExp(`^${escape(buildText('whichWeek'))}$`)
+const GET_CALL_SCHEDULE = new RegExp(`^${escape(buildText('whichCallSchedule'))}$`)
+const LEFT_FEEDBACK = new RegExp(`^${escape(buildText('leftFeedback'))}$`)
+const ABOUT_SYSTEM = new RegExp(`^${escape(buildText('aboutSystem'))}$`)
+const CLAIM_ATTESTATION = new RegExp(`^${escape(buildText('claimAttestation'))}$`)
+const GET_SETTINGS = new RegExp(`^${escape(buildText('settings'))}$`)
+const SET_KEYBOARD = new RegExp(`^${escape(buildText('setKeyboard'))}$`)
+const GO_BACK = new RegExp(`^${escape(buildText('back'))}$`)
 
 // we should skip all handled events while processing session
 const HANDLED_EVENTS_REGEXP: RegExp[] = [
   ADD_KEY_REGEXP,
   REMOVE_KEY_REGEXP,
   SET_GROUP_REGEXP,
+  SET_TEACHER_REGEXP,
   GET_NEXT_LESSON,
   GET_EDUCATION_SCHEDULE,
   GET_LESSON_SCHEDULE,
@@ -98,6 +101,7 @@ export default async (bot: telegram) => {
   const lessonsScheduleHandler = buildHandler(bot, ...pickMiddlewares({ withCheckUserStatus: true }), createGetScheduleEventHandler('lessons'))
   const educationScheduleHandler = buildHandler(bot, ...pickMiddlewares({ withCheckUserStatus: true }), createGetScheduleEventHandler('education'))
   const setGroupHandler = buildHandler(bot, ...pickMiddlewares(),  handleSetGroupEvent)
+  const setTeacherHandler = buildHandler(bot, ...pickMiddlewares(),  handleSetTeacherEvent)
   const callScheduleHandler = buildHandler(bot, ...pickMiddlewares(),  handleGetCallScheduleEvent)
   const weekHandler = buildHandler(bot, ...pickMiddlewares(),  handleGetWeekEvent)
   const aboutSystemTextHandler = buildHandler(bot, ...pickMiddlewares(),  handleAboutSystemTextEvent)
@@ -119,6 +123,7 @@ export default async (bot: telegram) => {
   bot.onText(GET_EDUCATION_SCHEDULE, await educationScheduleHandler(['text', 'get_education_schedule']))
   bot.onText(GET_NEXT_LESSON, await lessonHandler(['text', 'get_lesson']))
   bot.onText(SET_GROUP_REGEXP, await setGroupHandler(['text', 'set_group']))
+  bot.onText(SET_TEACHER_REGEXP, await setTeacherHandler(['text', 'set_teacher']))
   bot.onText(GET_CALL_SCHEDULE, await callScheduleHandler(['text', 'get_call_schedule']))
   bot.onText(GET_WEEK, await weekHandler(['text', 'get_week']))
   bot.onText(ABOUT_SYSTEM, await aboutSystemTextHandler(['text', 'about_system']))
@@ -131,6 +136,7 @@ export default async (bot: telegram) => {
   bot.onText(GO_BACK, await goBackHandler(['text', 'go_back']))
 
   bot.on('text', async (msg) => {
+    console.log(msg.text, GET_NEXT_LESSON)
     if (isHandledEvent(msg.text)) {
       return
     }

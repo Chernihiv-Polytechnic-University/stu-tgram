@@ -1,24 +1,24 @@
 import * as telegram from 'node-telegram-bot-api'
-import { minBy, filter, flow } from 'lodash/fp'
-import { get, isNil, find, isString } from 'lodash'
-import { Lesson, LessonModel, SystemSettingsModel } from 'libs/domain-model'
+import { filter, flow, minBy } from 'lodash/fp'
+import { find, get, isNil, isString } from 'lodash'
+import { Lesson, LessonModel, SystemSettingsModel, TelegramUserRole } from 'libs/domain-model'
 import { Handler, Message } from '../types'
 import { buildText, getTimeUnitEnding } from '../utils/text-builder'
 import {
-  LAST_LESSON_NUMBER,
   Day,
-  getNow,
-  getCurrentWeekNumber,
-  getLessonStartTimeAsStr,
-  getLessonEndTimeAsStr,
-  getNextDayWeekNumberOf,
-  getNextDayOf,
   getCurrentDay,
   getCurrentLessonNumber,
+  getCurrentWeekNumber,
   getDiffBetweenLessonStartAndNow,
   getDiffBetweenNowAndLessonStartInMinutes,
+  getLessonEndTimeAsStr,
+  getLessonStartTimeAsStr,
+  getNextDayOf,
+  getNextDayWeekNumberOf,
+  getNow,
+  LAST_LESSON_NUMBER,
   nowIsAfterLessonsToday,
-} from '../utils/dateTime'
+} from '../utils/date-time'
 
 const weekDays = ['ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ', 'НД']
 
@@ -30,7 +30,7 @@ const isLessonsEqualByDay = (first: Lesson, second: Lesson): boolean => {
 }
 
 export const handleGetLessonEvent: Handler = async (bot: telegram, msg: Message) => {
-  const { telegram: { firstName, lastName }, groupId } = msg.locals.user
+  const { telegram: { firstName, lastName }, groupId, role, name } = msg.locals.user
   const systemSettings = await SystemSettingsModel.findOne({})
   const now = getNow()
   const currentWeek = getCurrentWeekNumber(systemSettings.firstOddWeekMondayDate)
@@ -39,7 +39,15 @@ export const handleGetLessonEvent: Handler = async (bot: telegram, msg: Message)
   const nextDayWeek = getNextDayWeekNumberOf(now, systemSettings.firstOddWeekMondayDate)
   const currentLessonNumber = getCurrentLessonNumber()
 
-  const where = { groupId, day: { $in: [currentDay, nextDay] }, week: { $in: [currentWeek % 2, nextDayWeek % 2] }, isExist: true }
+  const roleCriteria = role === TelegramUserRole.teacher
+    ? { 'teacher.only': true, 'teacher.name': name }
+    : { 'teacher.only': { $ne: true }, groupId: null }
+  const where = {
+    day: { $in: [currentDay, nextDay] },
+    week: { $in: [currentWeek % 2, nextDayWeek % 2] },
+    isExist: true,
+    ...roleCriteria,
+  }
   const lessons: Lesson[] = await LessonModel.find(where)
 
   const currentLesson: Lesson = find(lessons, { number: currentLessonNumber, day: currentDay } as Partial<Lesson>)
