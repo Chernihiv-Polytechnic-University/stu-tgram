@@ -27,21 +27,25 @@ const createFindLessonBy = (lessons: LessonAttributes[]) => (condition: Partial<
   return find(lessons, condition) as LessonAttributes
 }
 
-const buildLessonData = (lesson: LessonAttributes) => {
+const buildLessonData = (forTeachers: boolean) => (lesson: LessonAttributes) => {
   if (!lesson) { return '' }
   // tslint:disable-next-line:prefer-template
-  return `${get(lesson, 'name', '*')}, ${get(lesson, 'teacher.name', '*')}`
+  return `${get(lesson, 'name', '*')}, ${get(lesson, forTeachers ? 'group.name' : 'teacher.name', '*')}`
     + (isString(lesson.auditory) ? `,ауд ${get(lesson, 'auditory', '*')}` : '')
 }
 
-const buildScheduleData = (lessons: LessonAttributes[]) => {
+const buildLessonDataForStudents = buildLessonData(false)
+const buildLessonDataForTeachers = buildLessonData(true)
+
+const buildScheduleData = (forTeachers: boolean, lessons: LessonAttributes[]) => {
   const findLessonBy = createFindLessonBy(lessons)
+  const build = forTeachers ? buildLessonDataForTeachers : buildLessonDataForStudents
   return buildWeekTemplate(lessons).map(dayTemplate => ({
     ...dayTemplate,
     lessons: dayTemplate.lessons.map(lessonTemplate => ({
       ...lessonTemplate,
-      oddData: buildLessonData(findLessonBy({ day: dayTemplate.name as LessonDay, number: lessonTemplate.number, week: ODD_WEEK_NUM })),
-      evenData: buildLessonData(findLessonBy({ day: dayTemplate.name as LessonDay, number: lessonTemplate.number, week: EVEN_WEEK_NUM })),
+      oddData: build(findLessonBy({ day: dayTemplate.name as LessonDay, number: lessonTemplate.number, week: ODD_WEEK_NUM })),
+      evenData: build(findLessonBy({ day: dayTemplate.name as LessonDay, number: lessonTemplate.number, week: EVEN_WEEK_NUM })),
     })),
   }))
 }
@@ -59,7 +63,7 @@ export const createLessonScheduleHTML = (
   },
 ): string => {
   const compileHTML = handlebars.compile(scheduleTemplate)
-  const days = buildScheduleData(lessons)
+  const days = buildScheduleData(!!teacherName, lessons)
   const name = teacherName ? teacherName : `${groupName}:${subgroupNumber}`
   return compileHTML({ days, name })
 }
