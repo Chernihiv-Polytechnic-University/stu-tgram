@@ -136,7 +136,6 @@ export default async (bot: telegram) => {
   bot.onText(GO_BACK, await goBackHandler(['text', 'go_back']))
 
   bot.on('text', async (msg) => {
-    console.log(msg.text, GET_NEXT_LESSON)
     if (isHandledEvent(msg.text)) {
       return
     }

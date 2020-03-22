@@ -31,6 +31,12 @@
   "currentLessonIsLast": "Ця пара остання сьогодні, ура, додому!",
   "nextLessonIs": "Наступна пара № {lessonNumber} ({startTime} - {endTime})\n\"{lessonName}\" в аудиторії \"{auditory}\", викладач \"{teacherName}\"\nбуде через {hours} годин{hoursEnd} та {minutes} хвилин{minutesEnd}",
   "nextLessonIsWithoutAuditory": "Наступна пара № {lessonNumber} ({startTime} - {endTime})\n\"{lessonName}\", викладач \"{teacherName}\"\nбуде через {hours} годин{hoursEnd} та {minutes} хвилин{minutesEnd}",
+  "forTeacher_currentLessonIs": "Поточна пара № {lessonNumber} ({startTime} - {endTime})\n\"{lessonName}\" в аудиторії \"{auditory}\", група \"{groupName}\"\nпочалася {minutes} хвилин{minutesEnd} тому",
+  "forTeacher_currentLessonIsWithoutAuditory": "Поточна пара № {lessonNumber} ({startTime} - {endTime})\n\"{lessonName}\", група \"{groupName}\"\nпочалася {minutes} хвилин{minutesEnd} тому",
+  "forTeacher_currentLessonStarting": "Поточна пара № {lessonNumber} ({startTime} - {endTime})\n\"{lessonName}\" в аудиторії \"{auditory}\", група \"{groupName}\"\nпочинається через {minutes} хвилин{minutesEnd}",
+  "forTeacher_currentLessonStartingWithoutAuditory": "Поточна пара № {lessonNumber} ({startTime} - {endTime})\n\"{lessonName}\", група \"{groupName}\"\nпочинається через {minutes} хвилин{minutesEnd}",
+  "forTeacher_nextLessonIs": "Наступна пара № {lessonNumber} ({startTime} - {endTime})\n\"{lessonName}\" в аудиторії \"{auditory}\", група \"{groupName}\"\nбуде через {hours} годин{hoursEnd} та {minutes} хвилин{minutesEnd}",
+  "forTeacher_nextLessonIsWithoutAuditory": "Наступна пара № {lessonNumber} ({startTime} - {endTime})\n\"{lessonName}\", група \"{groupName}\"\nбуде через {hours} годин{hoursEnd} та {minutes} хвилин{minutesEnd}",
   "scheduleFileName": "Розклад_{name}.png",
   "educationScheduleFileName": "Графік_освітнього_процесу_{name}_{subgroupNumber}.png",
   "callScheduleHeader": "Номер   Початок   Кінець   Перерва до, хв",
@@ -64,5 +70,6 @@
   "removeKey": "- прибрати",
   "removeAddKeys": "Додайте потрібні або преберіть зайві клавіші",
   "myGroupRegexp": "Моя група[ ]*(.+)",
-  "teacherRegexp": "Викладач[ ]*(.+)"
+  "teacherRegexp": "Викладач[ ]*(.+)",
+  "info": "Довідка."
 }
