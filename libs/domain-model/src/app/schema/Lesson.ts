@@ -9,6 +9,9 @@ export interface LessonAttributes {
   auditory?: string,
   week: number,
   groupId: string,
+  group?: {
+    name?: string,
+  }
   teacher?: {
     name?: string,
     only?: boolean,
@@ -31,6 +34,9 @@ const schema = new mongoose.Schema({
     // lessons by teacher & group. Not sure my data sources are correct enough
     // and have consistent data, so lessons are separated with this flag
     only: { type: Boolean },
+  },
+  group: {
+    name: { type: String },
   },
 }, {
   collection: 'Lesson',
