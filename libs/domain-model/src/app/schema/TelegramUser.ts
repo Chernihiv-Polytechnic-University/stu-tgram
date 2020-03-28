@@ -13,6 +13,8 @@ export enum TelegramUserStatus {
 
 export enum TelegramUserSessionAction {
   feedback = 'fb',
+  infoCategories = 'ic',
+  infoCategoryQuestions = 'iq',
   setGroup = 'sg',
 }
 
@@ -38,6 +40,7 @@ export interface TelegramUserAttributes {
   telegram: TelegramData
   role?: TelegramUserRole
   session?: TelegramUserSession
+  lastSystemVersion?: number
 }
 
 export interface TelegramUser extends TelegramUserAttributes, mongoose.Document {}
@@ -48,6 +51,7 @@ const schema = new mongoose.Schema({
   status: { type: String, enum: ['u', 'p', 't'], default: 'u' },
   role: { type: String, enum: ['s', 't'], default: 's' },
   code: { type: String },
+  lastSystemVersion: { type: Number, default: 0 },
   telegram: {
     id: { type: Number, index: true, unique: true },
     firstName: { type: String },

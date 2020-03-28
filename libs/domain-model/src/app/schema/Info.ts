@@ -1,39 +1,39 @@
 import * as mongoose from 'mongoose'
-import { File } from './common'
-
-export interface Text {
-  question: string,
-  answer: string,
-  language: string,
-}
 
 export interface InfoAttributes {
-  code: string,
-  texts: Text[],
-  onlyText: boolean,
-  files?: File[],
+  question: string
+  answer: string
+  category: string
+}
+
+export interface InfoCategoryAttributes {
+  category: string
+  questionsCount: number
 }
 
 export interface Info extends InfoAttributes, mongoose.Document {}
 
 const schema = new mongoose.Schema({
-  code: { type: String, required: true, index: true, unique: true },
-  texts: [{
-    question: { type: String, required: true },
-    answer: { type: String, required: true },
-    language: { type: String, required: true },
-  }],
-  onlyText: { type: String, default: true },
-  files: [{
-    isDoc: { type: String, default: false },
-    isPhoto:  { type: String, default: false },
-    name: { type: String, required: true },
-    data: { type: mongoose.Schema.Types.Buffer, required: true },
-  }],
+  question: { type: String, index: true },
+  category: { type: String, index: true },
+  answer: { type: String },
 }, {
   collection: 'Info',
   autoIndex: true,
   timestamps: true,
 })
+
+// tslint:disable-next-line:only-arrow-functions
+schema.statics.findCategories = function (limit: number, skip: number) {
+  const pipeline: any[] = [
+    { $group: { _id: '$category', questionsCount: { $sum: 1 } } },
+    { $project: { category: '$_id', questionsCount: '$questionsCount' } },
+  ]
+
+  if (limit) { pipeline.push({ $limit: limit }) }
+  if (skip) { pipeline.push({ $skip: skip }) }
+
+  return this.aggregate(pipeline)
+}
 
 export const InfoModel = mongoose.model<Info>('InfoModel', schema)
