@@ -21,6 +21,9 @@ export const MAIN_KEYBOARD_TEXT_IDS = [
 export const KEYBOARD_TEXT_IDS_TO_REMOVE = [
   'claimAttestation',
 ]
+export const KEYBOARD_TEXT_IDS_TO_ADD = [
+  'info',
+]
 
 export const REQUIRED_MAIN_KEYBOARD_TEXT_IDS = [
   'settings',
