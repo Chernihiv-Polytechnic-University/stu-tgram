@@ -3,7 +3,7 @@ import { difference, get, uniq } from 'lodash'
 import { TelegramUserRole, StudentsGroupModel } from 'libs/domain-model'
 import {
   buildSettingKeyboardResponse,
-  buildSetupKeyboardResponse,
+  buildCustomKeyboardResponse,
   MAIN_KEYBOARD_TEXT_IDS,
   REQUIRED_MAIN_KEYBOARD_TEXT_IDS,
 } from '../utils/build-keyboard'
@@ -74,6 +74,6 @@ export const handleSetupUpdateKeyboard = (isKeyboardUpdateHandler: boolean): Han
   await bot.sendMessage(
     msg.tMessage.chat.id,
     isKeyboardUpdateHandler ? buildText('okay') : buildText('removeAddKeys'),
-    { reply_markup:  buildSetupKeyboardResponse('panel', [...keyboardWithActions, buildText('back')], 1) } as any,
+    { reply_markup:  buildCustomKeyboardResponse('panel', [...keyboardWithActions, buildText('back')], 1) } as any,
   )
 }

@@ -1,3 +1,5 @@
+// TODO refactor
+
 import * as telegram from 'node-telegram-bot-api'
 import { range, uniq } from 'lodash'
 import { buildText } from './text-builder'
@@ -11,9 +13,13 @@ export const MAIN_KEYBOARD_TEXT_IDS = [
   'whichCallSchedule',
   'leftFeedback',
   'aboutSystem',
-  'claimAttestation',
   'whichEducationSchedule',
   'settings',
+  'info',
+]
+
+export const KEYBOARD_TEXT_IDS_TO_REMOVE = [
+  'claimAttestation',
 ]
 
 export const REQUIRED_MAIN_KEYBOARD_TEXT_IDS = [
@@ -57,7 +63,7 @@ export const buildSettingKeyboardResponse = () => {
   return { keyboard: buildShape(buttons.length, DEFAULT_KEYBOARD_WIDTH, buttons), resize_keyboard: true }
 }
 
-export const buildSetupKeyboardResponse   = (type: 'inline' | 'panel',  buttonData: string[], width: number): Keyboard => {
+export const buildCustomKeyboardResponse   = (type: 'inline' | 'panel',  buttonData: string[], width: number): Keyboard => {
   const buttons: Button[] = uniq(buttonData).map((e) => {
     return { text: e }
   })

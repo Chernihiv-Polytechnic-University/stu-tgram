@@ -16,5 +16,5 @@ export const handleAboutSystemTextEvent: Handler = async (bot: telegram, msg: Me
 
 export const handleAttestationTextEvent: Handler = async (bot: telegram, msg: Message) => {
   const { id: chatId } = msg.tMessage.chat
-  await bot.sendMessage(chatId, buildText('attestationText'))
+  await bot.sendMessage(chatId, buildText('claimAttestationIsDeprecated'))
 }
