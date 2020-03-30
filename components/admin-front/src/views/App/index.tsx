@@ -1,19 +1,7 @@
 import React from 'react'
 import Header from '../../components/Header'
-import Login from '../Login'
-import Groups from '../Groups'
 import {BrowserRouter, Route} from 'react-router-dom'
-
-const routes = [
-    {
-        path: '/groups',
-        component: Groups
-    },
-    {
-        path: '/',
-        component: Login
-    }
-]
+import {routes} from '../../routes'
 
 const App: React.FC = () => {
   return (

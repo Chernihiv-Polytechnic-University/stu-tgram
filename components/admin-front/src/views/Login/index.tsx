@@ -7,7 +7,7 @@ import {
     ThemeProvider
 } from '@material-ui/core'
 import { client } from '../../client'
-import theme from './theme'
+import theme from '../../theme'
 import {useHistory} from 'react-router-dom'
 
 const Login: React.FC = () => {
@@ -30,10 +30,11 @@ const Login: React.FC = () => {
             .then((result) => {
                 //console.log(result)
                 if (result.isSuccess) {
-                    history.push('/groups')
+                    history.push('/users')
                     setError(false)
                 } else setError(true)
-            }).then(() => client.getMe(null))
+            })
+            .then(() => client.getMe(null))
             .then((result) => {
                 //console.log(result)
             })
@@ -45,7 +46,7 @@ const Login: React.FC = () => {
         <ThemeProvider theme={theme}>
             <Container maxWidth="xs">
                 <div>
-                    <Typography component="h3" variant="h3" align="center">
+                    <Typography component="h1" variant="h1" align="center">
                         Sign in
                     </Typography>
                     <form noValidate>
