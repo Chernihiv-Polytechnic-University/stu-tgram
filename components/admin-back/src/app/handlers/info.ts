@@ -1,4 +1,4 @@
-import { isString } from 'lodash'
+import { isString, pick } from 'lodash'
 import { Request, Response } from 'express'
 import { createLogger } from 'libs/logger'
 import {  InfoModel, InfoAttributes, findAndPaginate } from 'libs/domain-model'
@@ -47,6 +47,7 @@ export const get = withCatch(['info', 'get'], async (req: Request, res: Response
     pickCount: true,
     pickCountAll: true,
     sort: req.query.ordering ? req.query.ordering.replace(/,/g, ' ') : 'question',
+    query: pick(req.query, ['question', 'category']),
   }
 
   const result = await findAndPaginate(InfoModel, { ...req.query, ...additionalOptions })

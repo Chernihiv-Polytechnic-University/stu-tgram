@@ -1,4 +1,4 @@
-import { set, isString } from 'lodash'
+import { set, isString, pick } from 'lodash'
 import { Request, Response } from 'express'
 import * as config from 'config'
 import { createLogger } from 'libs/logger'
@@ -11,7 +11,7 @@ const withCatch = catchUtils.withCatch(logger)
 
 const FIELDS_TO_SELECT = '_id name login role createdAt updatedAt'
 
-export const login = withCatch(['users', 'login'], async (req: Request, res: Response, next) => {
+export const login = withCatch(['users', 'login'], async (req: Request, res: Response) => {
   try {
     const { login, password } = req.body
 
@@ -30,13 +30,13 @@ export const login = withCatch(['users', 'login'], async (req: Request, res: Res
   }
 })
 
-export const logout = withCatch(['users', 'logout'], async (req: Request, res: Response, next) => {
+export const logout = withCatch(['users', 'logout'], async (req: Request, res: Response) => {
   res.clearCookie(config.get<string>('AUTH_COOKIES_NAME'))
     .status(204)
     .send()
 })
 
-export const create = withCatch(['users', 'create'], async (req: Request, res: Response, next) => {
+export const create = withCatch(['users', 'create'], async (req: Request, res: Response) => {
   const { login, password, role, name } = req.body
 
   const hashedPassword = await hashPass(password)
@@ -46,7 +46,7 @@ export const create = withCatch(['users', 'create'], async (req: Request, res: R
   res.status(201).send()
 })
 
-export const update = withCatch(['users', 'update'], async (req: Request, res: Response, next) => {
+export const update = withCatch(['users', 'update'], async (req: Request, res: Response) => {
   const { _id } = res.locals.user
   const { login, password, name } = req.body
   const patch = {}
@@ -60,7 +60,7 @@ export const update = withCatch(['users', 'update'], async (req: Request, res: R
   res.status(204).send()
 })
 
-export const remove = withCatch(['users', 'remove'], async (req: Request, res: Response, next) => {
+export const remove = withCatch(['users', 'remove'], async (req: Request, res: Response) => {
   const { id } = req.params
 
   await UserModel.deleteOne({ _id: id })
@@ -68,7 +68,7 @@ export const remove = withCatch(['users', 'remove'], async (req: Request, res: R
   res.status(204).send()
 })
 
-export const get = withCatch(['users', 'get'], async (req: Request, res: Response, next) => {
+export const get = withCatch(['users', 'get'], async (req: Request, res: Response) => {
   const { id } = req.params
 
   if (req.path === '/me') {
@@ -94,6 +94,7 @@ export const get = withCatch(['users', 'get'], async (req: Request, res: Respons
     pickCount: true,
     pickCountAll: true,
     sort: req.query.ordering ? req.query.ordering.replace(/,/g, ' ') : 'name',
+    query: pick(req.query, ['name', 'login']),
   }
 
   const result = await findAndPaginate(UserModel, { ...req.query, ...additionalOptions })
