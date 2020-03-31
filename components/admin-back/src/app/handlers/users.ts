@@ -4,12 +4,14 @@ import * as config from 'config'
 import { createLogger } from 'libs/logger'
 import {  UserModel, findAndPaginate } from 'libs/domain-model'
 import { getToken, hashPass } from '../services/auth'
+import * as catchUtils from '../utils/withCatch'
 
 const logger = createLogger(`#handlers/${__filename}`)
+const withCatch = catchUtils.withCatch(logger)
 
 const FIELDS_TO_SELECT = '_id name login role createdAt updatedAt'
 
-export const login = async (req: Request, res: Response, next) => {
+export const login = withCatch(['users', 'login'], async (req: Request, res: Response, next) => {
   try {
     const { login, password } = req.body
 
@@ -24,108 +26,77 @@ export const login = async (req: Request, res: Response, next) => {
       return
     }
 
-    logger.error(e)
-
-    next(e)
+    throw e
   }
-}
+})
 
-export const logout = async (req: Request, res: Response, next) => {
-  try {
-    res.clearCookie(config.get<string>('AUTH_COOKIES_NAME'))
-      .status(204)
-      .send()
-  } catch (e) {
+export const logout = withCatch(['users', 'logout'], async (req: Request, res: Response, next) => {
+  res.clearCookie(config.get<string>('AUTH_COOKIES_NAME'))
+    .status(204)
+    .send()
+})
 
-    next(e)
-  }
-}
+export const create = withCatch(['users', 'create'], async (req: Request, res: Response, next) => {
+  const { login, password, role, name } = req.body
 
-export const create = async (req: Request, res: Response, next) => {
-  try {
-    const { login, password, role, name } = req.body
+  const hashedPassword = await hashPass(password)
 
-    const hashedPassword = await hashPass(password)
+  await UserModel.create({ login, role, name, password: hashedPassword })
 
-    await UserModel.create({ login, role, name, password: hashedPassword })
+  res.status(201).send()
+})
 
-    res.status(201).send()
-  } catch (e) {
-    logger.error(e)
+export const update = withCatch(['users', 'update'], async (req: Request, res: Response, next) => {
+  const { _id } = res.locals.user
+  const { login, password, name } = req.body
+  const patch = {}
 
-    next(e)
-  }
-}
+  if (isString(login)) { set(patch, 'login', login) }
+  if (isString(name)) { set(patch, 'name', name) }
+  if (isString(password)) { set(patch, 'password', await hashPass(password)) }
 
-export const update = async (req: Request, res: Response, next) => {
-  try {
-    const { _id } = res.locals.user
-    const { login, password, name } = req.body
-    const patch = {}
+  await UserModel.updateOne({ _id }, patch)
 
-    if (isString(login)) { set(patch, 'login', login) }
-    if (isString(name)) { set(patch, 'name', name) }
-    if (isString(password)) { set(patch, 'password', await hashPass(password)) }
+  res.status(204).send()
+})
 
-    await UserModel.updateOne({ _id }, patch)
+export const remove = withCatch(['users', 'remove'], async (req: Request, res: Response, next) => {
+  const { id } = req.params
 
-    res.status(204).send()
-  } catch (e) {
-    logger.error(e)
+  await UserModel.deleteOne({ _id: id })
 
-    next(e)
-  }
-}
+  res.status(204).send()
+})
 
-export const remove = async (req: Request, res: Response, next) => {
-  try {
-    const { id } = req.params
+export const get = withCatch(['users', 'get'], async (req: Request, res: Response, next) => {
+  const { id } = req.params
 
-    await UserModel.deleteOne({ _id: id })
-
-    res.status(204).send()
-  } catch (e) {
-    logger.error(e)
-
-    next(e)
-  }
-}
-
-export const get = async (req: Request, res: Response, next) => {
-  try {
-    const { id } = req.params
-
-    if (req.path === '/me') {
-      const user = await UserModel
+  if (req.path === '/me') {
+    const user = await UserModel
         .findById(res.locals.user._id)
         .select(FIELDS_TO_SELECT)
         .exec()
-      res.send(user)
-      return
-    }
+    res.send(user)
+    return
+  }
 
-    if (isString(id)) {
-      const user = await UserModel
+  if (isString(id)) {
+    const user = await UserModel
         .findById(id)
         .select(FIELDS_TO_SELECT)
         .exec()
-      res.send(user)
-      return
-    }
-
-    const additionalOptions = {
-      select: FIELDS_TO_SELECT,
-      pickCount: true,
-      pickCountAll: true,
-      sort: req.query.ordering ? req.query.ordering.replace(/,/g, ' ') : 'name',
-    }
-
-    const result = await findAndPaginate(UserModel, { ...req.query, ...additionalOptions })
-
-    res.send(result)
-  } catch (e) {
-    logger.error(e)
-
-    next(e)
+    res.send(user)
+    return
   }
-}
+
+  const additionalOptions = {
+    select: FIELDS_TO_SELECT,
+    pickCount: true,
+    pickCountAll: true,
+    sort: req.query.ordering ? req.query.ordering.replace(/,/g, ' ') : 'name',
+  }
+
+  const result = await findAndPaginate(UserModel, { ...req.query, ...additionalOptions })
+
+  res.send(result)
+})
