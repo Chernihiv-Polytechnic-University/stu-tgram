@@ -1,6 +1,6 @@
 import { isString } from 'lodash'
 import { Request, Response } from 'express'
-import { withCatch } from '../utils/withCatch'
+import { withCatch } from '../utils/with-catch'
 import { createLogger } from 'libs/logger'
 import { StudentsGroupModel, StudentsGroup } from 'libs/domain-model'
 const logger = createLogger(`#handlers/${__filename}`)

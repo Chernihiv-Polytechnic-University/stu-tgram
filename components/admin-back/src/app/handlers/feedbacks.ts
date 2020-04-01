@@ -2,7 +2,7 @@ import { isString } from 'lodash'
 import { Request, Response } from 'express'
 import { createLogger } from 'libs/logger'
 import { FeedbackModel, mongoose } from 'libs/domain-model'
-import { withCatch } from '../utils/withCatch'
+import { withCatch } from '../utils/with-catch'
 
 const logger = createLogger(`#handlers/${__filename}`)
 

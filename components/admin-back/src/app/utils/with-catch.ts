@@ -7,7 +7,11 @@ export const withCatch = curry((logger: Logger, logLabels: string[], handlerFn: 
     await handlerFn(req, res, next)
 
   } catch (err) {
-    logger.warn(logLabels, err)
+    logger.warn(['api', ...logLabels], {
+      err,
+      traceToken: res.locals.traceToken,
+      userId: res.locals.user && res.locals.user._id,
+    })
 
     next(err)
   }

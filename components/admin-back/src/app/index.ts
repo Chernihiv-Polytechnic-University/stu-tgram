@@ -7,6 +7,8 @@ import * as bodyParser from 'body-parser'
 import * as cookieParser from 'cookie-parser'
 import * as config from 'config'
 import { timeout } from './middlewares/timeout'
+import { trace } from './middlewares/trace'
+import { logOnResponse } from './middlewares/log-on-end'
 
 import { connect } from 'libs/domain-model'
 import { createLogger } from 'libs/logger'
@@ -34,6 +36,8 @@ const runApp = () => {
   app.use(cookieParser())
   app.use(compress())
   app.use(timeout(60 * 30))
+  app.use(trace)
+  app.use(logOnResponse(logger))
   app.use(bodyParser.json({ limit: config.get('JSON_SIZE_LIMIT') }))
   initRoutes({ uploader })
     .then(router => app.use('/api/v1', router))

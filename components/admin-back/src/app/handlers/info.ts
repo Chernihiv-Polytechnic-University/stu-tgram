@@ -2,7 +2,7 @@ import { isString, pick } from 'lodash'
 import { Request, Response } from 'express'
 import { createLogger } from 'libs/logger'
 import {  InfoModel, InfoAttributes, findAndPaginate } from 'libs/domain-model'
-import * as catchUtils from '../utils/withCatch'
+import * as catchUtils from '../utils/with-catch'
 
 const logger = createLogger(`#handlers/${__filename}`)
 const withCatch = catchUtils.withCatch(logger)
