@@ -1,5 +1,5 @@
 import React from 'react'
-import {Button, Dialog, DialogActions, DialogContent, DialogTitle} from '@material-ui/core'
+import {Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid} from '@material-ui/core'
 
 export interface CustomDialogProps {
     isOpen: boolean;
@@ -18,13 +18,17 @@ const CustomDialog: React.FC<CustomDialogProps> = ({
                                                        buttonName}: CustomDialogProps) => {
     return (<div>
         <Dialog open={isOpen} onClose={handleClose}>
-            <DialogTitle>{title}</DialogTitle>
+            <DialogTitle>
+                {title}
+            </DialogTitle>
             <DialogContent>
                 {children}
             </DialogContent>
             <DialogActions>
-                <Button onClick={handleClose}>Скасувати</Button>
-                <Button onClick={handleSubmit}>{buttonName}</Button>
+                <Grid container direction='row' justify='space-between' alignItems='center'>
+                    <Button onClick={handleClose} variant='outlined' color='primary'>Скасувати</Button>
+                    <Button onClick={handleSubmit} variant='contained' color='primary'>{buttonName}</Button>
+                </Grid>
             </DialogActions>
         </Dialog>
     </div>)

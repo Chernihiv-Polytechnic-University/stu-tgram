@@ -6,7 +6,6 @@ import {routes} from '../../routes'
 const App: React.FC = () => {
   return (
     <BrowserRouter>
-      <Header/>
         {routes.map(route => (
             <Route
                 key={route.path}

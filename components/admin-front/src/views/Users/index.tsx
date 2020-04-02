@@ -6,13 +6,16 @@ import {
     Table,
     TableHead,
     TableCell,
-    TableBody, TableRow, Button, TextField, Select, MenuItem
+    TableBody, TableRow, Button, TextField, Select, MenuItem, IconButton, Grid
 } from '@material-ui/core'
 import {client} from '../../client'
 import theme from '../../theme'
 import {InputWithId} from '../../../../../libs/admin-back-client/dist/shared'
 import CustomDialog from '../../components/CustomDialog'
 import {CreateUserInput} from '../../../../../libs/admin-back-client/dist/users'
+import deleteIcon from '../../assets/deleteIcon.svg'
+import managerIcon from '../../assets/managerIcon.svg'
+import adminIcon from '../../assets/adminIcon.svg'
 
 const INITIAL_NEW_USER: CreateUserInput = {
     name: '',
@@ -80,7 +83,7 @@ const Users: React.FC = () => {
         <CustomDialog
             isOpen={isDialogOpen}
             handleClose={handleDialogClose}
-            title={'Користувачі'} buttonName={'Створити'} handleSubmit={handleCreateUser}>
+            title={'Створити нового користувача'} buttonName={'Створити'} handleSubmit={handleCreateUser}>
             <TextField
                 value={newUser.name}
                 onChange={(e) => handleInputChange(e, 'name')}
@@ -107,12 +110,14 @@ const Users: React.FC = () => {
                 type='password'
                 label='Введіть пароль' fullWidth/>
         </CustomDialog>
-    
+
     return (
         <ThemeProvider theme={theme}>
             <Container>
-                <Typography component="h3" variant="h3" align="left" color="textPrimary">Користувачі</Typography>
-                <Button onClick={handleDialogOpen}>Додати користувача</Button>
+                <Grid container direction='row' justify='space-between' alignItems='baseline'>
+                    <Typography component="h3" variant="h3" align="left" color="textPrimary">Користувачі</Typography>
+                    <Button onClick={handleDialogOpen} variant='outlined' color='primary'>Додати користувача</Button>
+                </Grid>
                 {userCreateDialog}
                 <Table>
                     <TableHead>
@@ -125,13 +130,20 @@ const Users: React.FC = () => {
                     </TableHead>
                     <TableBody>
                         {users.map(user => {
-                            return (<TableRow key={user._id}>
-                                    <TableCell>{user.role}</TableCell>
-                                    <TableCell>{user.name}</TableCell>
-                                    <TableCell>{user.login}</TableCell>
-                                    <TableCell>
-                                        <Button onClick={() => handleDeleteUser(user._id)}>Delete</Button>
-                                    </TableCell>
+                            return (<TableRow key={user._id} hover>
+                                        <TableCell>
+                                            <IconButton>
+                                                <img src={user.role === 'm' ? managerIcon : adminIcon}
+                                                     alt={user.role === 'm' ? 'Менеджер' : 'Адміністратор'}/>
+                                            </IconButton>
+                                        </TableCell>
+                                        <TableCell>{user.name}</TableCell>
+                                        <TableCell>{user.login}</TableCell>
+                                        <TableCell>
+                                            <IconButton aria-label='' onClick={() => handleDeleteUser(user._id)}>
+                                                <img src={deleteIcon} alt='Видалити'/>
+                                            </IconButton>
+                                        </TableCell>
                                 </TableRow>)
                         })}
                     </TableBody>

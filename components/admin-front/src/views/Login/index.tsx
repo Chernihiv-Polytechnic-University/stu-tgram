@@ -4,17 +4,37 @@ import {
     Container,
     Typography,
     Button,
-    ThemeProvider
+    ThemeProvider, Grid, makeStyles
 } from '@material-ui/core'
 import { client } from '../../client'
 import theme from '../../theme'
 import {useHistory} from 'react-router-dom'
+import logo from '../../assets/logo.svg'
+
+const useStyles = makeStyles({
+    logo: {
+        marginTop: '111px',
+        marginBottom: '72px'
+    },
+    heading: {
+        marginBottom: '72px'
+    },
+    textField: {
+        height: '64px',
+        margin: '0 0 32px 0'
+    },
+    button: {
+        height: '64px'
+    }
+})
 
 const Login: React.FC = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [error, setError] = useState(false)
     const history = useHistory()
+
+    const classes = useStyles()
 
     const handleEmailChange: any = (event: React.ChangeEvent<{ value: string }>) => {
         setEmail(event.target.value)
@@ -44,30 +64,31 @@ const Login: React.FC = () => {
 
     return (
         <ThemeProvider theme={theme}>
-            <Container maxWidth="xs">
-                <div>
-                    <Typography component="h1" variant="h1" align="center">
-                        Sign in
+            <Container>
+                <Grid container xs={5} direction='column' alignItems='center'>
+                    <div className={classes.logo}>
+                        <img src={logo} alt='Logo'/>
+                    </div>
+                    <Typography component="h1" variant="h1" color='primary' className={classes.heading}>
+                        З поверненням!
                     </Typography>
                     <form noValidate>
-                        <Typography component="p" align="left">Email:</Typography>
                         <TextField
+                            className={classes.textField}
                             error={error}
-                            style={{marginBottom: '25px'}}
                             variant="outlined"
-                            margin="normal"
                             required
                             fullWidth
                             id="email"
                             name="email"
                             autoComplete="email"
                             autoFocus
+                            label='Email'
                             onChange={handleEmailChange}
                         />
-                        <Typography component="p" align="left">Password:</Typography>
                         <TextField
+                            className={classes.textField}
                             error={error}
-                            style={{marginBottom: '36px'}}
                             variant="outlined"
                             margin="normal"
                             required
@@ -77,17 +98,20 @@ const Login: React.FC = () => {
                             id="password"
                             autoComplete="current-password"
                             onChange={handlePasswordChange}
+                            label='Пароль'
                         />
                         <Button
+                            className={classes.button}
                             fullWidth
                             type="submit"
                             variant="contained"
+                            color='primary'
                             onClick={handleSignInClick}
                         >
-                            Sign In
+                            Увійти
                         </Button>
                     </form>
-                </div>
+                </Grid>
             </Container>
         </ThemeProvider>
     )
