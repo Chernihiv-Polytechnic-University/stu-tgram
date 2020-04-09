@@ -10,9 +10,8 @@ const AUDITORY_REGEXP = /[0-9]{1}[ ]{0,1}-[ ]{0,1}[0-9]{1,3}/
 const GROUP_CODE_NUMBER_SEPARATOR = '-'
 const DAYS_IN_WEEK = 6
 
-const DEFAULT_AUDITORY = 'хтозна-де'
-const DEFAULT_TEACHER_NAME = 'Викладач'
-const DEFAULT_LESSON_NAME = 'Пара'
+export const DEFAULT_TEACHER_NAME = 'Викладач'
+export const DEFAULT_LESSON_NAME = 'Пара'
 
 export interface Lesson {
   isExist: boolean,
@@ -30,16 +29,9 @@ const filterNoLessons = (lessons: Lesson[]) =>
   filter(lessons, (e) => {
     // in this case, almost completely that this is a mistake of the current parsing
     return (
-      e.week !== 1 // last week
-      || e.day !== 'СБ' // last day
-      || e.auditory !== DEFAULT_AUDITORY // unknown place
+      e.day !== 'СБ' // last day
+      || e.auditory !== null // unknown place
       || e.teacher.name !== DEFAULT_TEACHER_NAME // unknown teacher
-    )
-      &&
-    (
-      e.auditory !== DEFAULT_AUDITORY
-      || e.teacher.name !== DEFAULT_TEACHER_NAME
-      || e.name !== DEFAULT_LESSON_NAME
     )
   })
 
@@ -60,7 +52,7 @@ const findGroups = (data) => {
       const valueIsGroup = checkValueIsGroup(value)
       if (valueIsGroup) {
         const columns = [Number(key), Number(key) + 1]
-        groups.push({ columns, name: value })
+        groups.push({ columns, name: String(value).toUpperCase() })
         groupRowIsFound = true
       }
     })
@@ -143,11 +135,10 @@ const findGroupLessons = (data, groups, days, sheet, excelWorksheet: Excel.Works
 
 const parseLessonData = (lessonData) => {
   if (!lessonData) {
-    return [DEFAULT_LESSON_NAME, DEFAULT_TEACHER_NAME, DEFAULT_AUDITORY]
+    return [DEFAULT_LESSON_NAME, DEFAULT_TEACHER_NAME, null]
   }
   const auditoryData = lessonData.match(AUDITORY_REGEXP)
-  const auditoryIndex = get(auditoryData, 'index', Number.MAX_SAFE_INTEGER)
-  const auditoryName = get(auditoryData, '0', DEFAULT_AUDITORY)
+  const auditoryName = get(auditoryData, '0', null)
   const lessonDataWithoutAuditory = lessonData.replace(auditoryName, '')
   const splittedOne = lessonDataWithoutAuditory.split('\n')
   if (splittedOne.length > 1) {

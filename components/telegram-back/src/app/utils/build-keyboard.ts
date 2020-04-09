@@ -1,8 +1,38 @@
+// TODO refactor
+
 import * as telegram from 'node-telegram-bot-api'
-import { range } from 'lodash'
+import { range, uniq } from 'lodash'
 import { buildText } from './text-builder'
 
 const DEFAULT_KEYBOARD_WIDTH = 2
+
+export const MAIN_KEYBOARD_TEXT_IDS = [
+  'whichLesson',
+  'whichSchedule',
+  'whichWeek',
+  'whichCallSchedule',
+  'leftFeedback',
+  'aboutSystem',
+  'whichEducationSchedule',
+  'settings',
+  'info',
+]
+
+export const KEYBOARD_TEXT_IDS_TO_REMOVE = [
+  'claimAttestation',
+]
+export const KEYBOARD_TEXT_IDS_TO_ADD = [
+  'info',
+]
+
+export const REQUIRED_MAIN_KEYBOARD_TEXT_IDS = [
+  'settings',
+]
+
+const SETTINGS_KEYBOARD_TEXT_IDS = [
+  'setKeyboard',
+  'back',
+]
 
 interface Button extends telegram.InlineKeyboardButton, telegram.KeyboardButton {}
 
@@ -28,13 +58,34 @@ const buildShape = (length: number, width: number, buttons): Button[][] => {
   return array
 }
 
-export const buildKeyboardResponse
-  = (type: 'inline' | 'panel',  buttonData: ButtonData[], width: number = DEFAULT_KEYBOARD_WIDTH): Keyboard => {
-    const buttons: Button[] = buttonData.map((e) => {
-      const button: Button =  { text: buildText(e.textId, e.textReplacers || {}) }
-      if (type === 'inline' && e.cbData) { button.callback_data = e.cbData }
-      return button
+export const buildSettingKeyboardResponse = () => {
+  const buttons: Button[] = SETTINGS_KEYBOARD_TEXT_IDS.map(textId => ({
+    text: buildText(textId),
+  }))
+
+  return { keyboard: buildShape(buttons.length, DEFAULT_KEYBOARD_WIDTH, buttons), resize_keyboard: true }
+}
+
+export const buildCustomKeyboardResponse   = (type: 'inline' | 'panel',  buttonData: string[], width: number): Keyboard => {
+  const buttons: Button[] = uniq(buttonData).map((e) => {
+    return { text: e }
+  })
+
+  return type === 'panel'
+    ? { keyboard: buildShape(buttons.length, width, buttons), resize_keyboard: true }
+    : { inline_keyboard: buildShape(buttons.length, width, buttons) }
+}
+
+export const buildMainKeyboardResponse
+  = (type: 'inline' | 'panel',  buttonData: string[], width: number = DEFAULT_KEYBOARD_WIDTH): Keyboard => {
+    const filteredButtonData = buttonData.length > 0
+      ? buttonData
+      : [...MAIN_KEYBOARD_TEXT_IDS]
+
+    const buttons: Button[] = uniq([...filteredButtonData, ...REQUIRED_MAIN_KEYBOARD_TEXT_IDS]).map((e) => {
+      return { text:  buildText(e,  {}) }
     })
+
     return type === 'panel'
     ? { keyboard: buildShape(buttons.length, width, buttons), resize_keyboard: true }
     : { inline_keyboard: buildShape(buttons.length, width, buttons) }

@@ -2,6 +2,8 @@ import { isString } from 'lodash'
 import { Request, Response } from 'express'
 import { createLogger } from 'libs/logger'
 import { FeedbackModel, mongoose } from 'libs/domain-model'
+import { withCatch } from '../utils/with-catch'
+
 const logger = createLogger(`#handlers/${__filename}`)
 
 const buildPipeline = (page: number, limit: number, id: string) => {
@@ -24,38 +26,32 @@ const buildPipeline = (page: number, limit: number, id: string) => {
   return pipeline
 }
 
-export const get = async (req: Request, res: Response, next) => {
-  try {
-    const { id } = req.params
-    const { page, limit } = req.query
+export const get = withCatch(logger, ['feedbacks', 'get'], async (req: Request, res: Response) => {
+  const { id } = req.params
+  const { page, limit } = req.query
 
-    if (isString(id)) {
-      const result = await FeedbackModel.aggregate(buildPipeline(0, 1, id))
-      res.send(result[0] ? result[0] : undefined)
-      return
-    }
-
-    const pageN = isString(page) ? Number(page) : 0
-    const limitN = isString(limit) ? Number(limit) : 10
-
-    const docs = await FeedbackModel.aggregate(buildPipeline(pageN, limitN, id))
-    const count = await FeedbackModel.countDocuments({}).exec()
-    const pages = Math.ceil(count / limitN)
-
-    const result = {
-      docs,
-      count,
-      pages,
-      limit: limitN,
-      page: pageN,
-      pagesAll: pages,
-      countAll: count,
-    }
-
-    res.send(result)
-  } catch (e) {
-    logger.error(e)
-
-    next(e)
+  if (isString(id)) {
+    const result = await FeedbackModel.aggregate(buildPipeline(0, 1, id))
+    res.send(result[0] ? result[0] : undefined)
+    return
   }
-}
+
+  const pageN = isString(page) ? Number(page) : 0
+  const limitN = isString(limit) ? Number(limit) : 10
+
+  const docs = await FeedbackModel.aggregate(buildPipeline(pageN, limitN, id))
+  const count = await FeedbackModel.countDocuments({}).exec()
+  const pages = Math.ceil(count / limitN)
+
+  const result = {
+    docs,
+    count,
+    pages,
+    limit: limitN,
+    page: pageN,
+    pagesAll: pages,
+    countAll: count,
+  }
+
+  res.send(result)
+})

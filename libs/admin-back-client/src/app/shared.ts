@@ -12,3 +12,9 @@ export type ManyOutput<T> = {
   pagesAll: number
   countAll: number,
 }
+
+export type ManyInput = {
+  sort?: string
+  limit?: number
+  page?: number,
+}

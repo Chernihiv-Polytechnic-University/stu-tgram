@@ -12,6 +12,7 @@ export * from './schema/Metric'
 export * from './schema/StudentsGroup'
 export * from './schema/SystemSettings'
 export * from './schema/Feedback'
+export * from './schema/Teacher'
 
 export * from './api-pagination'
 

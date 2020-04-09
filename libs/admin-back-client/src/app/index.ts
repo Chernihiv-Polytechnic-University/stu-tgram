@@ -1,6 +1,7 @@
 import * as axios from 'axios'
 import * as domain from 'libs/domain-model'
 import * as users from './users'
+import * as info from './info'
 import * as groups from './groups'
 import { ManyOutput } from './shared'
 
@@ -38,4 +39,10 @@ export const initClient = (baseOptions: BaseOptions) => ({
 
   getGroup: execRequest<groups.GetGroupInput, domain.StudentsGroupAttributes>(groups.getGroup, baseOptions),
   getGroups: execRequest<groups.GetGroupsInput, ManyOutput<domain.StudentsGroupAttributes>>(groups.getGroups, baseOptions),
+
+  createInfo: execRequest<info.CreateInfoInput, null>(info.createInfo, baseOptions),
+  updateInfo: execRequest<info.UpdateInfoInput, null>(info.updateInfo, baseOptions),
+  getInfo: execRequest<info.GetInfoInput, null>(info.getInfo, baseOptions),
+  getManyInfo: execRequest<info.GetManyInfoInput, null>(info.getManyInfo, baseOptions),
+  deleteInfo: execRequest<info.DeleteInfoInput, null>(info.deleteInfo, baseOptions),
 })

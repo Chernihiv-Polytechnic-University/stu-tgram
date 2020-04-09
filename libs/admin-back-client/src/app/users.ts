@@ -1,25 +1,19 @@
 import { AxiosRequestConfig } from 'axios'
-import { InputWithId } from './shared'
+import * as domain from 'libs/domain-model'
+import { InputWithId, ManyInput } from './shared'
 
 export type LoginInput = {
   login: string
   password: string,
 }
 
-export type UpdateUserInput = InputWithId & {
-  login?: string
-  password?: string
-  name?: string,
-}
-
-export type CreateUserInput = {
-  login: string
-  password: string
-  role: 'a' | 'm'
-  name: string,
-}
-
+export type UpdateUserInput = InputWithId & Partial<domain.UserAttributes>
+export type CreateUserInput = domain.UserAttributes
 export type GetUserInput = InputWithId
+export type GetUsersInput = ManyInput & {
+  name?: string
+  login?: string,
+}
 export type DeleteUserInput = InputWithId
 
 export const login = ({ login, password }: LoginInput): AxiosRequestConfig => {
@@ -72,6 +66,10 @@ export const deleteUser = ({ id }: DeleteUserInput): AxiosRequestConfig => {
   }
 }
 
-export const getUsers = (): AxiosRequestConfig => {
-  return getUser({ id: '' })
+export const getUsers = (params: GetUsersInput): AxiosRequestConfig => {
+  return {
+    params,
+    method: 'get',
+    url: '/users/',
+  }
 }

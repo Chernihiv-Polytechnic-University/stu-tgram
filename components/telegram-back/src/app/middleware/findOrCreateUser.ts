@@ -3,6 +3,7 @@ import { isString } from 'lodash'
 import { TelegramUserAttributes, TelegramUserModel, TelegramUserStatus } from 'libs/domain-model'
 import { Handler, HandlerResult, Message } from '../types'
 import { buildText } from '../utils/text-builder'
+import { MAIN_KEYBOARD_TEXT_IDS } from '../utils/build-keyboard'
 
 const extractUsername = (user: telegram.User): string => {
   if (isString(user.username)) { return user.username }
@@ -29,6 +30,7 @@ const handler: Handler = async (bot: telegram, msg: Message) => {
         username: extractUsername(from),
         firstName: from.first_name,
         lastName: from.last_name,
+        keyboard: MAIN_KEYBOARD_TEXT_IDS,
       },
     }
     user = await TelegramUserModel.create(userData)

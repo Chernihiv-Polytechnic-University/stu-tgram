@@ -1,8 +1,10 @@
+// TODO refactor
+
 import * as telegram from 'node-telegram-bot-api'
-import { StudentsGroupModel } from 'libs/domain-model'
+import { StudentsGroupModel, TelegramUserRole, TeacherModel } from 'libs/domain-model'
 import { buildText } from '../utils/text-builder'
 import { Handler, Message } from '../types'
-import { callSchedule, getTime } from '../utils/dateTime'
+import { callSchedule, getTime } from '../utils/date-time'
 
 const scheduleTypeMapper = {
   lessons: { imagePath: 'lessonsScheduleImage', textId: 'scheduleFileName' },
@@ -10,8 +12,35 @@ const scheduleTypeMapper = {
 }
 
 export const createGetScheduleEventHandler = (scheduleType: 'lessons' | 'education'): Handler => async (bot: telegram, msg: Message) => {
-  const { groupId } = msg.locals.user
+  const { groupId, name, role } = msg.locals.user
   const { id: chatId } = msg.tMessage.chat
+
+  if (role === TelegramUserRole.teacher && scheduleType === 'education') {
+    await bot.sendMessage(chatId, buildText('notSupportedForTeacher'))
+
+    return
+  }
+
+  if (role === TelegramUserRole.teacher) {
+    const teacherData = await TeacherModel.findOne({ name })
+
+    if (!teacherData || !teacherData.lessonsScheduleImage) {
+      await bot.sendMessage(chatId, buildText('resourceNotFoundCommon'))
+
+      return
+    }
+    await bot.sendDocument(
+      chatId,
+      teacherData.lessonsScheduleImage,
+      {},
+      {
+        contentType: 'image/png',
+        filename: buildText(scheduleTypeMapper[scheduleType].textId,
+          { name }),
+      },
+    )
+    return
+  }
 
   const group = await StudentsGroupModel.findOne({ _id: groupId }).exec()
 
@@ -28,7 +57,7 @@ export const createGetScheduleEventHandler = (scheduleType: 'lessons' | 'educati
     {
       contentType: 'image/png',
       filename: buildText(scheduleTypeMapper[scheduleType].textId,
-        { name: group.name, subgroupNumber: group.subgroupNumber }),
+        { name: `${group.name}_${group.subgroupNumber}` }),
     },
   )
 }

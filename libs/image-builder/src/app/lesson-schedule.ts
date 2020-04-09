@@ -1,7 +1,6 @@
 import * as path from 'path'
 import * as fs from 'fs'
-import { range, get, find, filter, maxBy } from 'lodash'
-import * as puppeteer from 'puppeteer'
+import { range, get, isString, find, filter, maxBy } from 'lodash'
 import * as handlebars from 'handlebars'
 import { LessonAttributes, LessonDay } from 'libs/domain-model'
 
@@ -21,33 +20,50 @@ const buildWeekTemplate = (lessons: LessonAttributes[]) => [
   { name: 'ЧТ', isHeader: false, lessons: range(1, getDayMaxLessonNumber('ЧТ', lessons) + 1).map(e => ({ number: e, oddData: '', evenData: '' })) },
   { name: 'ПТ', isHeader: false, lessons: range(1, getDayMaxLessonNumber('ПТ', lessons) + 1).map(e => ({ number: e, oddData: '', evenData: '' })) },
   { name: 'СБ', isHeader: false, lessons: range(1, getDayMaxLessonNumber('СБ', lessons) + 1).map(e => ({ number: e, oddData: '', evenData: '' })) },
+  { name: 'НД', isHeader: false, lessons: range(1, getDayMaxLessonNumber('НД', lessons) + 1).map(e => ({ number: e, oddData: '', evenData: '' })) },
 ]
 
 const createFindLessonBy = (lessons: LessonAttributes[]) => (condition: Partial<LessonAttributes>): LessonAttributes => {
   return find(lessons, condition) as LessonAttributes
 }
 
-const buildLessonData = (lesson: LessonAttributes) =>
-  lesson ? `${get(lesson, 'name', '*')}, ${get(lesson, 'teacher.name', '*')}, ауд ${get(lesson, 'auditory', '*')}` : ''
+const buildLessonData = (forTeachers: boolean) => (lesson: LessonAttributes) => {
+  if (!lesson) { return '' }
+  // tslint:disable-next-line:prefer-template
+  return `${get(lesson, 'name', '*')}, ${get(lesson, forTeachers ? 'group.name' : 'teacher.name', '*')}`
+    + (isString(lesson.auditory) ? `,ауд ${get(lesson, 'auditory', '*')}` : '')
+}
 
-const buildScheduleData = (lessons: LessonAttributes[]) => {
+const buildLessonDataForStudents = buildLessonData(false)
+const buildLessonDataForTeachers = buildLessonData(true)
+
+const buildScheduleData = (forTeachers: boolean, lessons: LessonAttributes[]) => {
   const findLessonBy = createFindLessonBy(lessons)
+  const build = forTeachers ? buildLessonDataForTeachers : buildLessonDataForStudents
   return buildWeekTemplate(lessons).map(dayTemplate => ({
     ...dayTemplate,
     lessons: dayTemplate.lessons.map(lessonTemplate => ({
       ...lessonTemplate,
-      oddData: buildLessonData(findLessonBy({ day: dayTemplate.name as LessonDay, number: lessonTemplate.number, week: ODD_WEEK_NUM })),
-      evenData: buildLessonData(findLessonBy({ day: dayTemplate.name as LessonDay, number: lessonTemplate.number, week: EVEN_WEEK_NUM })),
+      oddData: build(findLessonBy({ day: dayTemplate.name as LessonDay, number: lessonTemplate.number, week: ODD_WEEK_NUM })),
+      evenData: build(findLessonBy({ day: dayTemplate.name as LessonDay, number: lessonTemplate.number, week: EVEN_WEEK_NUM })),
     })),
   }))
 }
 
 export const createLessonScheduleHTML = (
   lessons: LessonAttributes[],
-  groupName: string,
-  subgroupNumber: number,
+  {
+    groupName,
+    subgroupNumber,
+    teacherName,
+  }:{
+    groupName?: string,
+    subgroupNumber?: number,
+    teacherName?: string,
+  },
 ): string => {
   const compileHTML = handlebars.compile(scheduleTemplate)
-  const days = buildScheduleData(lessons)
-  return compileHTML({ days, groupName, subgroupNumber })
+  const days = buildScheduleData(!!teacherName, lessons)
+  const name = teacherName ? teacherName : `${groupName}:${subgroupNumber}`
+  return compileHTML({ days, name })
 }

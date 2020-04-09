@@ -1,5 +1,4 @@
 import * as mongoose from 'mongoose'
-import * as moment from 'moment'
 
 export interface SystemSettingsAttributes {
   firstOddWeekMondayDate: string // e.g., 2019-09-02
