@@ -6,7 +6,7 @@ import {
     Table,
     TableHead,
     TableCell,
-    TableBody, TableRow, Button, TextField, Select, MenuItem, IconButton, Grid
+    TableBody, TableRow, Button, TextField, Select, MenuItem, IconButton, Grid, Icon
 } from '@material-ui/core'
 import {client} from '../../client'
 import theme from '../../theme'
@@ -73,8 +73,6 @@ const Users: React.FC = () => {
         handleDialogClose()
     }
 
-    console.log(newUser)
-
     useEffect(() => {
         fetchUsers()
     }, [])
@@ -132,10 +130,10 @@ const Users: React.FC = () => {
                         {users.map(user => {
                             return (<TableRow key={user._id} hover>
                                         <TableCell>
-                                            <IconButton>
+                                            <Icon>
                                                 <img src={user.role === 'm' ? managerIcon : adminIcon}
                                                      alt={user.role === 'm' ? 'Менеджер' : 'Адміністратор'}/>
-                                            </IconButton>
+                                            </Icon>
                                         </TableCell>
                                         <TableCell>{user.name}</TableCell>
                                         <TableCell>{user.login}</TableCell>
