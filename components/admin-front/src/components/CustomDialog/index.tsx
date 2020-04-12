@@ -8,6 +8,7 @@ export interface CustomDialogProps {
     title: string;
     buttonName: string;
     handleSubmit: any;
+    disable: boolean;
 }
 
 const CustomDialog: React.FC<CustomDialogProps> = ({
@@ -15,7 +16,11 @@ const CustomDialog: React.FC<CustomDialogProps> = ({
                                                        children,
                                                        handleClose, title,
                                                        handleSubmit,
-                                                       buttonName}: CustomDialogProps) => {
+                                                       buttonName,
+                                                       disable}: CustomDialogProps) => {
+
+    console.log(disable)
+
     return (<div>
         <Dialog open={isOpen} onClose={handleClose}>
             <DialogTitle>
@@ -27,7 +32,7 @@ const CustomDialog: React.FC<CustomDialogProps> = ({
             <DialogActions>
                 <Grid container direction='row' justify='space-between' alignItems='center'>
                     <Button onClick={handleClose} variant='outlined' color='primary'>Скасувати</Button>
-                    <Button onClick={handleSubmit} variant='contained' color='primary'>{buttonName}</Button>
+                    <Button onClick={handleSubmit} variant='contained' color='primary' disabled={disable}>{buttonName}</Button>
                 </Grid>
             </DialogActions>
         </Dialog>

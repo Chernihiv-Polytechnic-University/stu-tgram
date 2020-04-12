@@ -47,7 +47,7 @@ const Login: React.FC = () => {
     const handleSignInClick: any = (event: React.ChangeEvent<{value: string}>) => {
         event.preventDefault()
         client.login({ login: email, password })
-            .then((result) => {
+            .then((result: any) => {
                 //console.log(result)
                 if (result.isSuccess) {
                     history.push('/users')
@@ -55,7 +55,7 @@ const Login: React.FC = () => {
                 } else setError(true)
             })
             .then(() => client.getMe(null))
-            .then((result) => {
+            .then((result: any) => {
                 //console.log(result)
             })
         console.log(email, password)

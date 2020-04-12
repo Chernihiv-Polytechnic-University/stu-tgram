@@ -92,7 +92,8 @@ const theme = createMuiTheme({
         },
         MuiDialogActions: {
             root: {
-                padding: '24px 40px'
+                padding: '0px 40px',
+                paddingBottom: '24px'
             }
         },
         MuiDialog: {
@@ -120,8 +121,12 @@ const theme = createMuiTheme({
                 border: '2px solid #949494',
                 borderRadius: '10px'
             }
+        },
+        MuiToolbar: {
+            root: {
+                height: '80px'
+            }
         }
-
     }
 })
 
