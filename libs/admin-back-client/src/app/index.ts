@@ -18,6 +18,7 @@ export type Result<R> = {
 const execRequest = <I, R>(specificFunc: (input: I) => axios.AxiosRequestConfig, baseOptions: BaseOptions) =>
   async (specificFuncOptions: I): Promise<Result<R>> => {
     return await axios.default({
+      withCredentials: true,
       ...baseOptions,
       ...specificFunc(specificFuncOptions),
     }).then((axiosResult) => {
