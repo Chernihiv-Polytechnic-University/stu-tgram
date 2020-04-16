@@ -6,6 +6,7 @@ import { initRoutes as initUserRoutes } from './users'
 import { initRoutes as initFeedbacksRoutes } from './feedbacks'
 import { initRoutes as initInfoRoutes } from './info'
 import { initRoutes as initGroupsRoutes } from './groups'
+import { initRoutes as initLessonsRoutes } from './lessons'
 
 export interface InitRoutesOptions {
   uploader?: MulterInstance,
@@ -23,6 +24,7 @@ export const initRoutes: InitRoutes = async (options) => {
   router.use('/feedbacks', await initFeedbacksRoutes(options))
   router.use('/info', await initInfoRoutes(options))
   router.use('/groups', await initGroupsRoutes(options))
+  router.use('/lessons', await initLessonsRoutes(options))
 
   return router
 }
