@@ -14,7 +14,3 @@ then
     docker-compose -f "$rootPath"/overlord/docker/"$2"-compose -p ucs up -d
 fi
 
-if [[ "$1" == *compile* ]]
-then
-    docker run -it -v $(git rev-parse --show-toplevel):/home/project compilemanager npm run compile --prefix "$2"
-fi
