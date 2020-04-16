@@ -1,6 +1,3 @@
-// TODO refactor
-
-import { EventEmitter } from 'events'
 import * as tls from 'tls'
 import axios from 'axios'
 import { map as pMap } from 'bluebird'
@@ -19,9 +16,10 @@ const getTeachers = ({ baseUrl, universityId, facultyId }) => {
     .then(({ data }) => data.d.employees)
 }
 
-const getTeacherSchedule = ({ baseUrl, universityId, teacher, from, to }) => {
-  return axios.get(`${baseUrl}/GetScheduleDataEmp?aVuzID=${universityId}&aEmployeeID="${teacher.Key}"&aStartDate="${from}"&aEndDate="${to}"&&aStudyTypeID=null`)
-    .then(({ data }) => data.d)
+const getTeacherSchedule = ({ baseUrl, universityId, entity, from, to }) => {
+  return axios.get(`${baseUrl}/GetScheduleDataEmp?aVuzID=${universityId}&aEmployeeID="${entity.Key}"&aStartDate="${from}"&aEndDate="${to}"&&aStudyTypeID=null`)
+    .then(({ data }) => data.d as object[])
+    .then(map(e => ({ ...e, employee: entity.Value }) as Lesson))
 }
 
 const getGroups = ({ baseUrl, universityId, facultyId }): Promise<{ Key: string, Value: string }[]> => {
@@ -31,16 +29,10 @@ const getGroups = ({ baseUrl, universityId, facultyId }): Promise<{ Key: string,
     .then(({ data }) => data.d.studyGroups)
 }
 
-const getSchedule = ({ baseUrl, universityId, group, from, to }): Promise<Lesson[]> => {
-  return axios.get(`${baseUrl}/GetScheduleDataX?aVuzID=${universityId}&aStudyGroupID="${group.Key}"&aStartDate="${from}"&aEndDate="${to}"&&aStudyTypeID=null`)
+const getStudentSchedule = ({ baseUrl, universityId, entity, from, to }): Promise<Lesson[]> => {
+  return axios.get(`${baseUrl}/GetScheduleDataX?aVuzID=${universityId}&aStudyGroupID="${entity.Key}"&aStartDate="${from}"&aEndDate="${to}"&&aStudyTypeID=null`)
     .then(({ data }) => data.d as object[])
-    .then(map(e => ({ ...e, group: group.Value }) as Lesson))
-}
-
-enum FarmEvent {
-  FARMED_PACK = 'fp',
-  ERROR = 'err',
-  END = 'end',
+    .then(map(e => ({ ...e, group: entity.Value }) as Lesson))
 }
 
 type Lesson = {
@@ -57,6 +49,7 @@ type Lesson = {
 }
 
 export type FarmInput = {
+  type: 'teachers' | 'students'
   baseUrl: string
   universityId: number
   from: string
@@ -83,16 +76,10 @@ export type FarmedLesson = {
 }
 
 export type Farmer = {
-  onFarmedPack: (listener: (lessons: FarmedLesson[]) => void) => void
-  onError: (listener: (error: Error) => void) => void
-  onEnd: (listener: () => void) => void,
+  [Symbol.asyncIterator]: () => {
+    next: () => Promise<IteratorResult<FarmedLesson[]>>,
+  },
 }
-
-const createFarmer = (emitter: EventEmitter): Farmer => ({
-  onFarmedPack: (listener => emitter.on(FarmEvent.FARMED_PACK, listener)),
-  onError: (listener => emitter.on(FarmEvent.ERROR, listener)),
-  onEnd: (listener => emitter.on(FarmEvent.END, listener)),
-})
 
 /**
  * convert date format 'DD.MM.YYYY' into 'YYYY-MM-DD'
@@ -135,7 +122,7 @@ const getNumberFromStr = (str: string) => {
   return Number(lessonNumber)
 }
 
-const mapToFarmedLesson = (isOnlyTeacherLesson: boolean, teacherName?: string) => map((lesson: Lesson) => {
+const mapToFarmedLesson = (isOnlyTeacherLesson: boolean) => map((lesson: Lesson): FarmedLesson | [FarmedLesson, FarmedLesson] => {
   const farmed: FarmedLesson = {
     isOnlyTeacherLesson,
     name: lesson.discipline,
@@ -144,7 +131,7 @@ const mapToFarmedLesson = (isOnlyTeacherLesson: boolean, teacherName?: string) =
     type: typeMapper.has(lesson.study_type) ? typeMapper.get(lesson.study_type) : null,
     number: getNumberFromStr(lesson.study_time),
     auditory: lesson.cabinet,
-    teacherName: teacherName ? teacherName : lesson.employee,
+    teacherName: lesson.employee,
     group: null,
   }
 
@@ -168,67 +155,45 @@ const mapToFarmedLesson = (isOnlyTeacherLesson: boolean, teacherName?: string) =
   return [one, two]
 })
 
-const farmAndEmit = (forTeachers: boolean) =>
-  async ({ baseUrl, universityId, from, to, chunkSize }: FarmInput, emitter: EventEmitter): Promise<void> => {
-    try {
-      const faculties = await getFaculties({ baseUrl, universityId })
-
-      if (!forTeachers) {
-        // farm students schedule
-        const groupsChunks = await pMap(faculties, ({ Key }) => getGroups({ baseUrl, universityId, facultyId: Key }))
-          .then(flattenDeep)
-          .then(chunk(chunkSize))
-
-        await pMap(groupsChunks, async (groups) => {
-          const data = await pMap(groups, async (group) => {
-            const groupSchedule = await getSchedule({ baseUrl, universityId, group, from: reconvertDate(from), to: reconvertDate(to) })
-
-            return mapToFarmedLesson(false)(groupSchedule)
-          })
-
-          emitter.emit(FarmEvent.FARMED_PACK, flattenDeep(data))
-        }, { concurrency: 1 })
-      } else {
-        // farm teachers schedule
-        const teacherChunks = await pMap(faculties,  ({ Key }) => getTeachers({ baseUrl, universityId, facultyId: Key }))
-          .then(flattenDeep)
-          .then(chunk(chunkSize))
-
-        await pMap(teacherChunks, async (teachers) => {
-          const data = await pMap(teachers, async (teacher) => {
-            const schedule = await getTeacherSchedule({ baseUrl, universityId, teacher, from: reconvertDate(from), to: reconvertDate(to) })
-
-            return mapToFarmedLesson(true, teacher.Value)(schedule)
-          })
-
-          emitter.emit(FarmEvent.FARMED_PACK, flattenDeep(data))
-        }, { concurrency: 1 })
-      }
-
-    } catch (err) {
-
-      emitter.emit(FarmEvent.ERROR, err)
-    } finally {
-
-      emitter.emit(FarmEvent.END)
-      emitter.removeAllListeners()
-    }
-  }
-
-export const farmLessonSchedule = (input: FarmInput): Farmer => {
-  const farmerEmitter = new EventEmitter()
-  const farmer = createFarmer(farmerEmitter)
-
-  farmAndEmit(false)(input, farmerEmitter)
-
-  return farmer
+const farmerFunctionsMapper = {
+  teachers: {
+    getEntities: getTeachers,
+    getSchedule: getTeacherSchedule,
+    mapToFarmed: mapToFarmedLesson(true),
+  },
+  students: {
+    getEntities: getGroups,
+    getSchedule: getStudentSchedule,
+    mapToFarmed: mapToFarmedLesson(false),
+  },
 }
 
-export const farmTeacherLessonSchedule = (input: FarmInput): Farmer => {
-  const farmerEmitter = new EventEmitter()
-  const farmer = createFarmer(farmerEmitter)
+export const farmLessonSchedule = async ({ baseUrl, universityId, from, to, chunkSize, type }: FarmInput): Promise<Farmer> => {
+  const faculties = await getFaculties({ baseUrl, universityId })
 
-  farmAndEmit(true)(input, farmerEmitter)
+  const { getEntities, getSchedule, mapToFarmed } = farmerFunctionsMapper[type]
 
-  return farmer
+  const chunks = await pMap(faculties, ({ Key }) => getEntities({ baseUrl, universityId, facultyId: Key }))
+      .then(flattenDeep)
+      .then(chunk(chunkSize))
+
+  const len = chunks.length
+  let i = -1
+
+  const next = async (): Promise<IteratorResult<FarmedLesson[]>> => {
+    i += 1
+    if (i >= len) {
+      return { value: [], done: true }
+    }
+    const chunk = chunks[i]
+    const data = await pMap(chunk, async (entity) => {
+      const schedule = await getSchedule({ baseUrl, universityId, entity, from: reconvertDate(from), to: reconvertDate(to) })
+
+      return mapToFarmed(schedule)
+    })
+
+    return { value: flattenDeep(data) as FarmedLesson[], done: false }
+  }
+
+  return { [Symbol.asyncIterator]: () => ({ next }) }
 }
