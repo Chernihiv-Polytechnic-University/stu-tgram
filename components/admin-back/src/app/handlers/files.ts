@@ -1,16 +1,21 @@
-import { Handler } from 'express'
-import { mapSeries } from 'bluebird'
-import { map, values, entries, find, groupBy, flow, omit, filter } from 'lodash/fp'
+import { map as pMap, mapSeries } from 'bluebird'
+import { map, values, find, groupBy, flow, omit } from 'lodash/fp'
 import { parseLessonsSchedule, parseEducationSchedule, Lesson as ParsedLesson } from 'libs/xlsx-parser'
 import { createImageMaker } from 'libs/image-builder'
+import { createLogger } from 'libs/logger'
 import {
   SystemSettingsModel,
   StudentsGroupAttributes,
   StudentsGroupModel,
-  LessonAttributes,
   LessonModel,
   StudentsGroup,
+  TeacherModel,
+  TeacherAttributes,
 } from 'libs/domain-model'
+import * as catchUtil from '../utils/with-catch'
+
+const logger = createLogger(`#handlers/${__filename}`)
+const withCatch = catchUtil.withCatch(logger)
 
 const getGroupByGroupData = (groups: StudentsGroup[], data: StudentsGroupAttributes): StudentsGroup =>
   find((g: StudentsGroup) => g.name === data.name && g.subgroupNumber === data.subgroupNumber)(groups) as StudentsGroup
@@ -19,7 +24,7 @@ const buildLessonInsert = (groups: StudentsGroup[], lesson: ParsedLesson) =>
   ({ ...omit(['group'])(lesson), groupId: getGroupByGroupData(groups, lesson.group)._id })
 
 const buildGroupsUpdateOptions = (groups: Partial<StudentsGroupAttributes>[]) =>
-  map((e: Partial<StudentsGroupAttributes>) => ({ updateOne: { filter: e, replacement: e, upsert: true } }))(groups)
+  map((e: Partial<StudentsGroupAttributes>) => ({ updateOne: { filter: e, update: { $set: { ...e } }, upsert: true } }))(groups)
 
 const extractGroups = (lessons: ParsedLesson[]): any[] => flow(
   map('group'),
@@ -28,78 +33,68 @@ const extractGroups = (lessons: ParsedLesson[]): any[] => flow(
   map('0'),
 )(lessons)
 
-const groupByGroup = flow(
-  groupBy('group'),
-  entries,
-)
+export const uploadLessonsSchedule = withCatch(['files', 'upload_lessons', 'deprecated'], async (req, res) => {
+  const { buffer: fileBuffer } = req.file
 
-export const uploadLessonsSchedule: Handler = async (req, res, next) => {
-  try {
-    const { buffer: fileBuffer } = req.file
+  const lessons: ParsedLesson[] = await parseLessonsSchedule(fileBuffer)
+  const parsedGroups = extractGroups(lessons)
+  const groupsBulkWriteOptions = buildGroupsUpdateOptions(parsedGroups)
 
-    await LessonModel.remove({}).exec()
+  await StudentsGroupModel.bulkWrite(groupsBulkWriteOptions)
+  const groups: StudentsGroup[] = await StudentsGroupModel.find({ name: { $in: map('name', parsedGroups) } }).exec()
 
-    const lessons: ParsedLesson[] = await parseLessonsSchedule(fileBuffer)
-    const parsedGroups = extractGroups(lessons)
-    const groupsBulkWriteOptions = buildGroupsUpdateOptions(parsedGroups)
+  await LessonModel.deleteMany({ groupId: { $in: map('_id', groups) } })
+  await LessonModel.create(lessons.map(lesson => buildLessonInsert(groups, lesson)))
 
-    await StudentsGroupModel.bulkWrite(groupsBulkWriteOptions)
-    const groups: StudentsGroup[] = await StudentsGroupModel.find({ name: { $in: map('name', parsedGroups) } }).exec()
+  res.status(204).send()
+})
 
-    await LessonModel.deleteMany({ groupId: { $in: map('_id', groups) } })
-    await LessonModel.create(lessons.map(lesson => buildLessonInsert(groups, lesson)))
+export const uploadEducationProcessSchedule = withCatch(['files', 'education_schedule'], async (req, res, next) => {
 
-    res.status(204).send()
-  } catch (e) {
-    next(e)
-  }
-}
+  const { buffer: fileBuffer } = req.file
 
-export const uploadEducationProcessSchedule: Handler = async (req, res, next) => {
-  try {
-    const { buffer: fileBuffer } = req.file
+  const groupsSchedule = await parseEducationSchedule(fileBuffer)
 
-    const groupsSchedule = await parseEducationSchedule(fileBuffer)
+  const groups = await StudentsGroupModel.find().select('_id name').exec()
 
-    const groups = await StudentsGroupModel.find().select('_id name').exec()
+  await mapSeries(groups, async ({ name, _id }) => {
+    await StudentsGroupModel.updateOne(
+      { _id, name },
+      { educationSchedule: groupsSchedule.filter(g => new RegExp(g.group, 'i').test(name)) },
+    )
+  })
 
-    await mapSeries(groups, async ({ name, _id }) => {
-      await StudentsGroupModel.updateOne({ _id, name }, { educationSchedule: groupsSchedule.filter(g => new RegExp(g.group, 'i').test(name)) })
-    })
+  res.status(204).send()
+})
 
-    res.status(204).send()
-  } catch (e) {
-    next(e)
-  }
-}
+export const compilePNGs = withCatch(['files', 'compile_png'], async (req, res) => {
+  const concurrency = req.query.concurrency ? Number(req.query.concurrency) : 5
+  const settings = await SystemSettingsModel.findOne().exec()
+  const groups = await StudentsGroupModel.find().select('_id name subgroupNumber educationSchedule').exec()
+  const teachers: TeacherAttributes[] = await TeacherModel.find().select('_id name').exec()
 
-export const compileSchedulePNGs: Handler = async (req, res, next) => {
-  try {
-    const settings = await SystemSettingsModel.findOne().exec()
-    const groups = await StudentsGroupModel.find().exec()
-    const lessons = await LessonModel.find().exec()
+  const imageMaker = await createImageMaker()
 
-    const imageMaker = await createImageMaker()
+  await pMap(groups, async (g: StudentsGroup, i) => {
+    const lessons = await LessonModel.find({ groupId: g._id.toString() }).exec()
+    const lessonsScheduleImage: Buffer = await imageMaker.createLessonSchedulePNG(lessons, { groupName: g.name, subgroupNumber: g.subgroupNumber })
 
-    await mapSeries(groups, async (g: StudentsGroup) => {
-      const groupLessons = filter({ groupId: g._id.toString(), isExist: true } as Partial<LessonAttributes>)(lessons)
-      const lessonsScheduleImage: Buffer = await imageMaker.createLessonSchedulePNG(groupLessons, g.name, g.subgroupNumber)
+    const educationScheduleImage: Buffer = (!g.educationSchedule || !g.educationSchedule.length)
+      ? null
+      : await imageMaker.createEducationSchedulePNG(g.educationSchedule, settings.firstOddWeekMondayDate)
 
-      if (!g.educationSchedule || !g.educationSchedule.length) {
-        return
-      }
+    await StudentsGroupModel.updateOne({ _id: g._id }, { $set: { lessonsScheduleImage, educationScheduleImage } }).exec()
 
-      const educationScheduleImage: Buffer = (!g.educationSchedule || !g.educationSchedule.length)
-        ? null
-        : await imageMaker.createEducationSchedulePNG(g.educationSchedule, settings.firstOddWeekMondayDate)
+  }, { concurrency })
 
-      await StudentsGroupModel.updateOne({ _id: g._id }, { $set: { lessonsScheduleImage, educationScheduleImage } }).exec()
-    })
+  await pMap(teachers, async (teacher, i) => {
+    const lessons = await LessonModel.find({ teacher: { name: teacher.name, only: true } }).exec()
+    const lessonsScheduleImage: Buffer = await imageMaker.createLessonSchedulePNG(lessons, { teacherName: teacher.name })
 
-    await imageMaker.destruct()
+    await TeacherModel.updateOne({ _id: teacher._id }, { $set: { lessonsScheduleImage } }).exec()
+  }, { concurrency })
 
-    res.status(204).send()
-  } catch (e) {
-    next(e)
-  }
-}
+  await imageMaker.destruct()
+
+  res.status(204).send()
+})
