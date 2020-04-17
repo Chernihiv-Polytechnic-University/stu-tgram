@@ -82,8 +82,6 @@ const handleTeachersSchedule = async (week: number, lessons: FarmedLesson[]): Pr
 
   const preparedLessons = prepareLessons(lessons)
 
-  console.log(preparedLessons.filter(l => !l.day))
-
   await LessonModel.deleteMany({ week: Number(week), 'teacher.name': { $in: teachers }, 'teacher.only': true })
   await LessonModel.create(preparedLessons.filter(l => !!l.day).map(lesson => buildLessonInsertForTeachers(Number(week), lesson)))
 }
@@ -100,8 +98,6 @@ const handleStudentsSchedule = async (week: number, lessons: FarmedLesson[]): Pr
 
   const groups: StudentsGroup[] = await StudentsGroupModel.find({ name: { $in: map('name', parsedGroups) } }).exec()
   const preparedLessons = prepareLessons(lessons)
-
-  console.log(preparedLessons.find(l => l.day === null))
 
   await LessonModel.deleteMany({ week: Number(week), groupId: { $in: map('_id', groups) }, 'teacher.only': { $ne: true } })
   await LessonModel.create(preparedLessons.filter(l => l.day !== null).map(lesson => buildLessonInsertForStudents(Number(week), lesson, groups)))
