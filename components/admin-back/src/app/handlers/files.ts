@@ -74,6 +74,10 @@ export const compilePNGs = withCatch(['files', 'compile_png'], async (req, res) 
   const teachers: TeacherAttributes[] = await TeacherModel.find().select('_id name').exec()
 
   const imageMaker = await createImageMaker()
+  const all = groups.length + teachers.length
+  let left = 0
+
+  res.locals.socket.emit('png_compiling', { all, left })
 
   await pMap(groups, async (g: StudentsGroup, i) => {
     const lessons = await LessonModel.find({ groupId: g._id.toString() }).exec()
@@ -85,6 +89,9 @@ export const compilePNGs = withCatch(['files', 'compile_png'], async (req, res) 
 
     await StudentsGroupModel.updateOne({ _id: g._id }, { $set: { lessonsScheduleImage, educationScheduleImage } }).exec()
 
+    left += 1
+    res.locals.socket.emit('png_compiling', { all, left })
+
   }, { concurrency })
 
   await pMap(teachers, async (teacher, i) => {
@@ -92,6 +99,9 @@ export const compilePNGs = withCatch(['files', 'compile_png'], async (req, res) 
     const lessonsScheduleImage: Buffer = await imageMaker.createLessonSchedulePNG(lessons, { teacherName: teacher.name })
 
     await TeacherModel.updateOne({ _id: teacher._id }, { $set: { lessonsScheduleImage } }).exec()
+
+    left += 1
+    res.locals.socket.emit('png_compiling', { all, left })
   }, { concurrency })
 
   await imageMaker.destruct()
