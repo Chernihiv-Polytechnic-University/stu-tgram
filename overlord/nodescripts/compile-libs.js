@@ -9,7 +9,7 @@ const exec = promisify(childProcess.exec)
 
 const FORCE_FLAG = '--f'
 
-if (!version.isTwelve()) {
+if (!version.isTwelvePlus()) {
     throw new Error('Node version should be >= 12.x')
 }
 

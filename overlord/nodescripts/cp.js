@@ -2,7 +2,7 @@ const { copyFileSync } = require('fs')
 const { resolve, basename, join } = require('path')
 const version = require('./version')
 
-if (!version.isTwelve()) {
+if (!version.isTwelvePlus()) {
     throw new Error('Node version should be >= 12.x')
 }
 
