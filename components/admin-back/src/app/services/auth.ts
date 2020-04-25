@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction, RequestHandler } from 'express'
 import * as jwt from 'jsonwebtoken'
 import * as bcrypt from 'bcrypt'
-import * as config from 'config'
+import config from '../config'
 
 import { createLogger } from 'libs/logger'
 import { UserAttributes, UserModel } from 'libs/domain-model'
@@ -26,14 +26,14 @@ const getHashPart = (user: UserAttributes) => {
 }
 
 const signJWT = async (data: JWTPayload): Promise<string> => new Promise((resolve, reject) => {
-  jwt.sign(data, config.get('JWT_SECRET'), {}, (err, res) => {
+  jwt.sign(data, config('JWT_SECRET'), {}, (err, res) => {
     if (err) { return reject(err) }
     return resolve(res)
   })
 })
 
 const verifyJWT = async (token: string): Promise<JWTPayload> => new Promise((resolve, reject) => {
-  jwt.verify(token, config.get('JWT_SECRET'), (err, data) => {
+  jwt.verify(token, config('JWT_SECRET'), (err, data) => {
     if (err) { return reject(err) }
     return resolve(data as JWTPayload)
   })
@@ -51,7 +51,7 @@ export const getToken = async (login: string, password: string, expressRequest: 
   const payload: JWTPayload = {
     _id: user._id,
     agent: expressRequest.header('user-agent'),
-    expiresIn: Date.now() + (config.get('JWT_LIFE_TIME') as number),
+    expiresIn: Date.now() + (config('JWT_LIFE_TIME') as number),
     hash: getHashPart(user),
   }
   return signJWT(payload)
@@ -78,7 +78,11 @@ export const authMiddleware: RequestHandler = async (req: Request, res: Response
       return
     }
     res.locals.user = user
-    res.cookie(config.get<string>('AUTH_COOKIES_NAME'), authorization, { httpOnly: true, expires: new Date(Date.now() + config.get<string>('AUTH_COOKIES_LIFETIME')) })
+    res.cookie(
+      config('AUTH_COOKIES_NAME'),
+      authorization,
+      { httpOnly: true, expires: new Date(Date.now() + config('AUTH_COOKIES_LIFETIME')) },
+    )
     next()
   } catch (e) {
     res.status(401).send({ message: 'Not Authorized' })
