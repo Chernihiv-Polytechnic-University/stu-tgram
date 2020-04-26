@@ -9,13 +9,14 @@ if (process.env.DOT_ENV) {
 
 const schema = {
   APP_PORT: {
-    format:  Number,
+    format: Number,
     env: 'APP_PORT',
     default: 3000,
   },
   FILE_SIZE_LIMIT_BYTES: {
     format: Number,
     env: 'FILE_SIZE_LIMIT_BYTES',
+    default: 5242880,
   },
   JSON_SIZE_LIMIT: {
     format: String,
