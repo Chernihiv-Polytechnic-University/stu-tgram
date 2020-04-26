@@ -1,5 +1,36 @@
 version: '3.4'
 services:
+
+  telegram-back:
+    build:
+      context: ../../
+      dockerfile: ./components/telegram-back/Dockerfile
+    environment:
+      - BOT_TOKEN=place_your_token_here
+      - APP_PORT=4000
+      - MONGO_HOST=mongo
+      - MONGO_DATABASE=CNTU_UCSDOSSG
+      - MONGO_USER=root
+      - MONGO_PASSWORD=zxc123zxc123plkjn
+    depends_on:
+      - mongo
+
+  admin-back:
+    build:
+      context: ../../
+      dockerfile: ./components/admin-back/Dockerfile
+    environment:
+      - JWT_SECRET=strongjwtsecret93jdhgdiencuebsbcbjsdyeyu3isnbcdsciu3yincbzshdiwuwhebmsncHGbdasjkhUH
+      - APP_PORT=4000
+      - MONGO_HOST=mongo
+      - MONGO_DATABASE=CNTU_UCSDOSSG
+      - MONGO_USER=root
+      - MONGO_PASSWORD=zxc123zxc123plkjn
+    ports:
+    - '4000:4000'
+    depends_on:
+      - mongo
+
   mongo:
     image: mongo:4.2
     restart: always
