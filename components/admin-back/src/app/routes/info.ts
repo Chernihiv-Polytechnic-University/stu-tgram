@@ -9,7 +9,7 @@ export const initRoutes: InitRoutes = async () => {
   router.get(['/categories'], authMiddleware, getCategories)
   router.post('/', authMiddleware, create)
   router.delete('/:id', authMiddleware, remove)
-  router.delete('/:id', authMiddleware, update)
+  router.patch('/:id', authMiddleware, update)
   router.get(['/:id', '/'], authMiddleware, get)
 
   return router
