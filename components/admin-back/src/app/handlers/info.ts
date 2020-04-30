@@ -54,3 +54,9 @@ export const get = withCatch(['info', 'get'], async (req: Request, res: Response
 
   res.send(result)
 })
+
+export const getCategories = withCatch(['info_categories', 'get'], async (req: Request, res: Response) => {
+  const result = await (InfoModel as any).findCategories()
+
+  res.send(result)
+})

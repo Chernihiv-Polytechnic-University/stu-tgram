@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import { InitRoutes } from './index'
-import { create, update, remove, get } from '../handlers/info'
-import { authMiddleware, createScopeMiddleware } from '../services/auth'
+import { create, update, remove, get, getCategories } from '../handlers/info'
+import { authMiddleware } from '../services/auth'
 
 export const initRoutes: InitRoutes = async () => {
   const router = Router()

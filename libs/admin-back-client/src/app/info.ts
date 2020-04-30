@@ -21,6 +21,13 @@ export const updateInfo = ({ answer, question, category, id }: UpdateInfoInput):
   }
 }
 
+export const getInfoCategories = (): AxiosRequestConfig => {
+  return {
+    method: 'get',
+    url: '/info/categories',
+  }
+}
+
 export const getManyInfo = (params: GetManyInfoInput): AxiosRequestConfig => {
   return {
     params,
