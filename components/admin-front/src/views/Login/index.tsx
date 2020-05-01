@@ -1,12 +1,7 @@
-import React, {useState} from 'react'
-import {
-    TextField,
-    Container,
-    Typography,
-    Button,
-    ThemeProvider, Grid, makeStyles
-} from '@material-ui/core'
-import { client } from '../../client'
+import React, {useContext, useState} from 'react'
+import {Button, Container, Grid, makeStyles, TextField, ThemeProvider, Typography} from '@material-ui/core'
+import {AppActionType, AppContext} from '../../reducer'
+import {client} from '../../client'
 import theme from '../../theme'
 import {useHistory} from 'react-router-dom'
 import logo from '../../assets/logo.svg'
@@ -32,9 +27,11 @@ const Login: React.FC = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [error, setError] = useState(false)
-    const history = useHistory()
 
+    const history = useHistory()
     const classes = useStyles()
+
+    const { reducer: { state, dispatch } } = useContext(AppContext)
 
     const handleEmailChange: any = (event: React.ChangeEvent<{ value: string }>) => {
         setEmail(event.target.value)
@@ -55,8 +52,8 @@ const Login: React.FC = () => {
                 } else setError(true)
             })
             .then(() => client.getMe(null))
-            .then((result: any) => {
-                //console.log(result)
+            .then(({ result }) => {
+                dispatch({ type: AppActionType.SET_ME, payload: result })
             })
         console.log(email, password)
 
