@@ -1,6 +1,6 @@
 import React from 'react'
 import {AppBar, Toolbar, Tabs, Tab, ThemeProvider} from '@material-ui/core'
-import theme from '../../theme'
+import theme from '../../shared/theme'
 import {useLocation} from 'react-router-dom'
 
 const Header: React.FC = () => {

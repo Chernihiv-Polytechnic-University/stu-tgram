@@ -1,7 +1,7 @@
 import React from 'react'
-import {BrowserRouter, Route} from 'react-router-dom'
-import { AppContext, reducer, initialState } from '../../reducer'
-import {routes} from '../../routes'
+import { BrowserRouter, Route } from 'react-router-dom'
+import { AppContext, reducer, initialState } from '../../shared/reducer'
+import { routes } from '../../shared/routes'
 import Header from '../../components/Header'
 
 const App: React.FC = () => {
@@ -24,23 +24,3 @@ const App: React.FC = () => {
 }
 
 export default App
-
-
-
-// import React, {useReducer} from 'react'
-// import {ContextApp, initialState, testReducer} from "./reducer.js";
-// import {IndexComponent} from "./IndexComponent.js"
-//
-// export const App = () => {
-//   // Инициализируем reducer и получаем state + dispatch для записи
-//   const [state, dispatch] = useReducer(testReducer, initialState);
-//
-//   return (
-//     // Для того, чтобы мы могли использовать reducer в компонентах
-//     // Воспользуемся ContextApp и передадим (dispatch и state)
-//     // в компоненты ниже по иерархии
-//     <ContextApp.Provider value={{dispatch, state}}>
-//       <IndexComponent/>
-//     </ContextApp.Provider>
-//   )
-// };
