@@ -120,6 +120,15 @@ const theme = createMuiTheme({
             notchedOutline: {
                 border: '2px solid #949494',
                 borderRadius: '10px'
+            },
+            input: {
+                paddingTop: '14.5px',
+                paddingBottom: '14.5px'
+            }
+        },
+        MuiInputLabel: {
+            formControl: {
+                top: '-7%'
             }
         },
         MuiToolbar: {

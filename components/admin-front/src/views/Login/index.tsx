@@ -74,7 +74,7 @@ const Login: React.FC = () => {
                     </Typography>
                     <form noValidate>
                         <TextField
-                            className={classes.textField}
+                            classes={{root: classes.textField}}
                             error={error}
                             variant="outlined"
                             required

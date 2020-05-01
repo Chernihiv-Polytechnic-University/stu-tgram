@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import {ListItem, ListItemAvatar, Typography} from '@material-ui/core'
+import {ListItem, Typography} from '@material-ui/core'
 import {client} from '../../../client'
 
 interface GroupItemProps {
@@ -26,8 +26,6 @@ const GroupItem: React.FC<GroupItemProps> = ({ createdAt, updatedAt, id}: GroupI
 
     return (
         <ListItem>
-            <ListItemAvatar>
-            </ListItemAvatar>
             <Typography>{group.name} | {group.subgroupNumber} | Created at {createdAt} | Updated at {updatedAt}</Typography>
         </ListItem>
     )
