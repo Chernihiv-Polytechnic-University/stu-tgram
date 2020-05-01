@@ -1,15 +1,15 @@
-import {createContext, Dispatch} from 'react'
+import { createContext, Dispatch } from 'react'
 import { UserAttributes } from 'libs/domain-model'
 
 export type AppState = {
-  me: null | UserAttributes;
+  me: null | UserAttributes
 }
 
 export type AppContext = {
   reducer: {
-    state: AppState;
-    dispatch: Dispatch<AppAction>;
-  };
+    state: AppState
+    dispatch: Dispatch<AppAction>
+  }
 }
 
 export enum AppActionType {
@@ -17,8 +17,8 @@ export enum AppActionType {
 }
 
 export type AppAction = {
-  type: AppActionType;
-  payload: any;
+  type: AppActionType
+  payload: any
 }
 
 export const initialState: AppState = {
@@ -27,11 +27,11 @@ export const initialState: AppState = {
 
 export const reducer = (state: AppState, action: AppAction) => {
   switch (action.type) {
-    case AppActionType.SET_ME:
-      return {
-        ...state,
-        me: action.payload,
-      }
+  case AppActionType.SET_ME:
+    return {
+      ...state,
+      me: action.payload,
+    }
   }
 
   return state
