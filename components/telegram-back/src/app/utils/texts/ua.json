@@ -38,7 +38,7 @@
   "forTeacher_nextLessonIs": "Наступна пара № {lessonNumber} ({startTime} - {endTime})\n\"{lessonName}\" в аудиторії \"{auditory}\", група \"{groupName}\"\nбуде через {hours} годин{hoursEnd} та {minutes} хвилин{minutesEnd}",
   "forTeacher_nextLessonIsWithoutAuditory": "Наступна пара № {lessonNumber} ({startTime} - {endTime})\n\"{lessonName}\", група \"{groupName}\"\nбуде через {hours} годин{hoursEnd} та {minutes} хвилин{minutesEnd}",
   "scheduleFileName": "Розклад_{name}.png",
-  "educationScheduleFileName": "Графік_освітнього_процесу_{name}_{subgroupNumber}.png",
+  "educationScheduleFileName": "Графік_освітнього_процесу_{name}.png",
   "callScheduleHeader": "Номер   Початок   Кінець   Перерва до, хв",
   "callScheduleRecord": "    {number}           {start}        {end}               {break}",
   "oddWeek": "Непарний тиждень",

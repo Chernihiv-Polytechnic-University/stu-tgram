@@ -4,6 +4,9 @@ x-local
 .npmrc
 .vscode
 
+# prod-config
+prod-compose
+
 # Logs
 logs
 *.log

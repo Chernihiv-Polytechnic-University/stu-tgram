@@ -18,6 +18,7 @@ export type Result<R> = {
 const execRequest = <I, R>(specificFunc: (input: I) => axios.AxiosRequestConfig, baseOptions: BaseOptions) =>
   async (specificFuncOptions: I): Promise<Result<R>> => {
     return await axios.default({
+      withCredentials: true,
       ...baseOptions,
       ...specificFunc(specificFuncOptions),
     }).then((axiosResult) => {
@@ -33,7 +34,7 @@ export const initClient = (baseOptions: BaseOptions) => ({
   updateMe: execRequest<users.UpdateUserInput, null>(users.updateCurrentUser, baseOptions),
   getMe: execRequest<null, domain.UserAttributes>(users.getCurrentUser, baseOptions),
   getUser: execRequest<users.GetUserInput, domain.UserAttributes>(users.getUser, baseOptions),
-  getUsers: execRequest<null, ManyOutput<domain.UserAttributes>>(users.getUsers, baseOptions),
+  getUsers: execRequest<users.GetUsersInput, ManyOutput<domain.UserAttributes>>(users.getUsers, baseOptions),
   createUser: execRequest<users.CreateUserInput, null>(users.createUser, baseOptions),
   deleteUser: execRequest<users.DeleteUserInput, null>(users.deleteUser, baseOptions),
 
@@ -42,7 +43,8 @@ export const initClient = (baseOptions: BaseOptions) => ({
 
   createInfo: execRequest<info.CreateInfoInput, null>(info.createInfo, baseOptions),
   updateInfo: execRequest<info.UpdateInfoInput, null>(info.updateInfo, baseOptions),
-  getInfo: execRequest<info.GetInfoInput, null>(info.getInfo, baseOptions),
-  getManyInfo: execRequest<info.GetManyInfoInput, null>(info.getManyInfo, baseOptions),
+  getInfo: execRequest<info.GetInfoInput, domain.InfoAttributes>(info.getInfo, baseOptions),
+  getManyInfo: execRequest<info.GetManyInfoInput, ManyOutput<domain.InfoAttributes>>(info.getManyInfo, baseOptions),
   deleteInfo: execRequest<info.DeleteInfoInput, null>(info.deleteInfo, baseOptions),
+  getInfoCategories: execRequest<null, domain.InfoCategoryAttributes>(info.getInfoCategories, baseOptions),
 })

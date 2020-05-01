@@ -1,1 +1,1 @@
-module.exports.isTwelve = () => /v12.*/.test(process.version)
+module.exports.isTwelvePlus = () => /v1[2-6].*/.test(process.version)

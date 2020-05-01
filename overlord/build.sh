@@ -13,9 +13,3 @@ then
 
     pm2 restart all
 fi
-
-if [[ "$1" == *compilemanager* ]]
-then
-
-    docker build -t compilemanager:latest -f "$rootPath"/overlord/docker/dockerfile-compilemanager "$rootPath"/overlord/docker
-fi

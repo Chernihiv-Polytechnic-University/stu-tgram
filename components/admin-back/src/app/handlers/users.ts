@@ -1,6 +1,6 @@
 import { set, isString, pick } from 'lodash'
 import { Request, Response } from 'express'
-import * as config from 'config'
+import config from '../config'
 import { createLogger } from 'libs/logger'
 import {  UserModel, findAndPaginate } from 'libs/domain-model'
 import { getToken, hashPass } from '../services/auth'
@@ -17,7 +17,11 @@ export const login = withCatch(['users', 'login'], async (req: Request, res: Res
 
     const token = await getToken(login, password, req)
 
-    res.cookie(config.get<string>('AUTH_COOKIES_NAME'), token, { httpOnly: true, expires: new Date(Date.now() + config.get<string>('AUTH_COOKIES_LIFETIME')) })
+    res.cookie(
+      config('AUTH_COOKIES_NAME'),
+      token,
+      { httpOnly: true, expires: new Date(Date.now() + config('AUTH_COOKIES_LIFETIME')) },
+    )
       .status(204)
       .send()
   } catch (e) {
@@ -31,7 +35,7 @@ export const login = withCatch(['users', 'login'], async (req: Request, res: Res
 })
 
 export const logout = withCatch(['users', 'logout'], async (req: Request, res: Response) => {
-  res.clearCookie(config.get<string>('AUTH_COOKIES_NAME'))
+  res.clearCookie(config('AUTH_COOKIES_NAME'))
     .status(204)
     .send()
 })

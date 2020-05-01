@@ -14,7 +14,7 @@ export const initRoutes: InitRoutes = async () => {
 
   router.post('/', authMiddleware, createScopeMiddleware(['a']), create)
   router.delete('/:id', authMiddleware, createScopeMiddleware(['a']), remove)
-  router.get(['/:id', '/'], authMiddleware, createScopeMiddleware(['a']), get)
+  router.get(['/:id', '/'], authMiddleware, get)
 
   return router
 }

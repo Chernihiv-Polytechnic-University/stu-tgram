@@ -20,6 +20,8 @@
   "devDependencies": {
     "@types/bluebird": "^3.5.27",
     "@types/config": "0.0.34",
+    "@types/convict": "^4.2.1",
+    "@types/dotenv": "^8.2.0",
     "@types/lodash": "^4.14.137",
     "@types/moment": "^2.13.0",
     "@types/moment-timezone": "^0.5.12",
@@ -32,6 +34,8 @@
   "dependencies": {
     "bluebird": "^3.5.5",
     "config": "^3.2.2",
+    "convict": "^5.2.0",
+    "dotenv": "^8.2.0",
     "lodash": "^4.17.15",
     "moment": "^2.24.0",
     "moment-timezone": "^0.5.26",
