@@ -13,7 +13,11 @@ module.exports = {
     },
     rules: {
         quotes: ["error", "single"],
-        semi: ["error", "never"]
+        semi: ["error", "never"],
+        'object-curly-spacing': ["error", "always"],
+        "indent": ["error", 2],
+        "@typescript-eslint/semi": ["error", "never"],
+        '@typescript-eslint/member-delimiter-style': ["error", { multiline: { delimiter: 'none' } }]
     },
     settings: {
         react: {
