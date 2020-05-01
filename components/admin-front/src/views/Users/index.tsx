@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useContext, useEffect, useState} from 'react'
 import {
     Button,
     Container,
@@ -23,6 +23,7 @@ import deleteIcon from '../../assets/deleteIcon.svg'
 import managerIcon from '../../assets/managerIcon.svg'
 import adminIcon from '../../assets/adminIcon.svg'
 import {UserAttributes, UserRole} from 'libs/domain-model'
+import {AppContext} from '../../reducer'
 
 const useStyles = makeStyles({
     formInput: {
@@ -50,22 +51,19 @@ const MAPPER = {
 }
 
 const Users: React.FC = () => {
+    const { reducer: { state } } = useContext(AppContext)
+
     const [users, setUsers] = useState<any[]>([])
     const [isDialogOpen, setDialogOpen] = useState<boolean>(false)
     const [newUser, setUser] = useState<UserAttributes>(INITIAL_NEW_USER)
     const [error, setError] = useState<any>(INITIAL_ERROR)
-    const [myRole, setMyRole] = useState<UserRole>()
 
     const classes = useStyles()
 
     const fetchUsers: any = async () => {
-        const getMeResult = (await client.getMe(null)).result
-        const { result } = await client.getUsers(null)
+        const { result } = await client.getUsers({})
         if (result) {
             setUsers(result.docs)
-        }
-        if (getMeResult) {
-            setMyRole(getMeResult.role)
         }
     }
 
@@ -79,12 +77,12 @@ const Users: React.FC = () => {
             deleteUserFromState(id)
         }
     }
-    
+
     const handleDialogClose: any = () => {
         setDialogOpen(false)
         setUser(INITIAL_NEW_USER)
     }
-    
+
     const handleDialogOpen: any = () => {
         setDialogOpen(true)
     }
@@ -113,7 +111,7 @@ const Users: React.FC = () => {
     }, [])
 
     console.log(error)
-    
+
     const userCreateDialog =
         <CustomDialog
             isOpen={isDialogOpen}
@@ -160,7 +158,7 @@ const Users: React.FC = () => {
             <Container>
                 <Grid container direction='row' justify='space-between' alignItems='baseline'>
                     <Typography component="h3" variant="h3" align="left" color="textPrimary">Користувачі</Typography>
-                    {myRole === UserRole.admin ? <Button onClick={handleDialogOpen}
+                    {state.me?.role === UserRole.admin ? <Button onClick={handleDialogOpen}
                                                          variant='outlined'
                                                          color='primary'>Додати користувача
                     </Button> : null}
@@ -187,7 +185,7 @@ const Users: React.FC = () => {
                                         <TableCell>{user.name}</TableCell>
                                         <TableCell>{user.login}</TableCell>
                                         <TableCell>
-                                            {myRole === UserRole.admin ? <IconButton aria-label='' onClick={() => handleDeleteUser(user._id)}>
+                                            {state.me?.role === UserRole.admin ? <IconButton aria-label='' onClick={() => handleDeleteUser(user._id)}>
                                                 <img src={deleteIcon} alt='Видалити'/>
                                             </IconButton> : null}
                                         </TableCell>
