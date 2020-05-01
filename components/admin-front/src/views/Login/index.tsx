@@ -1,48 +1,47 @@
 import React, { useContext, useState } from 'react'
 import { Button, Container, Grid, makeStyles, TextField, ThemeProvider, Typography } from '@material-ui/core'
+import { useHistory } from 'react-router-dom'
 import { AppActionType, AppContext } from '../../shared/reducer'
 import { client } from '../../shared/client'
 import theme from '../../shared/theme'
-import { useHistory } from 'react-router-dom'
 import logo from '../../assets/logo.svg'
 import styles from './styles'
 
 const useStyles = makeStyles(styles)
 
 const Login: React.FC = () => {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const { reducer: { dispatch } } = useContext(AppContext)
+
   const [error, setError] = useState(false)
+  const [credentials, setCredentials] = useState({ email: '', password: '' })
 
-  const history = useHistory()
   const classes = useStyles()
+  const history = useHistory()
 
-  const { reducer: { state, dispatch } } = useContext(AppContext)
-
-  const handleEmailChange: any = (event: React.ChangeEvent<{ value: string }>) => {
-    setEmail(event.target.value)
+  const handleFieldChange = (field: 'email' | 'password') => (event: React.ChangeEvent<{ value: string }>) => {
+    setCredentials({ ...credentials, [field]: event.target.value })
   }
 
-  const handlePasswordChange: any = (event: React.ChangeEvent<{ value: string }>) => {
-    setPassword(event.target.value)
-  }
-
-  const handleSignInClick: any = (event: React.ChangeEvent<{value: string}>) => {
+  const handleSignInClick: any = async (event: React.ChangeEvent<{value: string}>) => {
     event.preventDefault()
-    client.login({ login: email, password })
-      .then((result: any) => {
-        //console.log(result)
-        if (result.isSuccess) {
-          history.push('/users')
-          setError(false)
-        } else setError(true)
-      })
-      .then(() => client.getMe(null))
-      .then(({ result }) => {
-        dispatch({ type: AppActionType.SET_ME, payload: result })
-      })
-    console.log(email, password)
+    const { isSuccess: isLoginSuccess } = await client.login({ login: credentials.email, password: credentials.password })
 
+    if (!isLoginSuccess) {
+      // TODO show error to user with snack bar
+      setError(true)
+      return
+    }
+
+    const { isSuccess: isGetMeSuccess, result: currentUserInfo } = await client.getMe(null)
+
+    if (!isGetMeSuccess) {
+      // TODO show error to user with snack bar
+      setError(true)
+      return
+    }
+
+    dispatch({ type: AppActionType.SET_ME, payload: currentUserInfo })
+    history.push('/users')
   }
 
   return (
@@ -67,7 +66,7 @@ const Login: React.FC = () => {
               autoComplete="email"
               autoFocus
               label='Email'
-              onChange={handleEmailChange}
+              onChange={handleFieldChange('email')}
             />
             <TextField
               className={classes.textField}
@@ -80,7 +79,7 @@ const Login: React.FC = () => {
               type="password"
               id="password"
               autoComplete="current-password"
-              onChange={handlePasswordChange}
+              onChange={handleFieldChange('password')}
               label='Пароль'
             />
             <Button
@@ -91,7 +90,7 @@ const Login: React.FC = () => {
               color='primary'
               onClick={handleSignInClick}
             >
-                            Увійти
+              Увійти
             </Button>
           </form>
         </Grid>
