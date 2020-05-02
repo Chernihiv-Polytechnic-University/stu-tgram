@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
-import { ListItem, ListItemAvatar, Typography } from '@material-ui/core'
-import { client } from '../../../shared/client'
+import React, { useContext, useEffect, useState } from 'react'
+import { ListItem, Typography } from '@material-ui/core'
+import { AppContext } from '../../../shared/reducer'
 
 interface GroupItemProps {
     createdAt: string
@@ -9,6 +9,8 @@ interface GroupItemProps {
 }
 
 const GroupItem: React.FC<GroupItemProps> = ({ createdAt, updatedAt, id }: GroupItemProps) => {
+  const { client } = useContext(AppContext)
+
   const [group, setGroup] = useState<any>({})
 
   const fetchGroup = async () => {
@@ -26,8 +28,6 @@ const GroupItem: React.FC<GroupItemProps> = ({ createdAt, updatedAt, id }: Group
 
   return (
     <ListItem>
-      <ListItemAvatar>
-      </ListItemAvatar>
       <Typography>{group.name} | {group.subgroupNumber} | Created at {createdAt} | Updated at {updatedAt}</Typography>
     </ListItem>
   )

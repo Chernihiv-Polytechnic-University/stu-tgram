@@ -2,7 +2,6 @@ import React, { useContext, useState } from 'react'
 import { Button, Container, Grid, makeStyles, TextField, ThemeProvider, Typography } from '@material-ui/core'
 import { useHistory } from 'react-router-dom'
 import { AppActionType, AppContext } from '../../shared/reducer'
-import { client } from '../../shared/client'
 import theme from '../../shared/theme'
 import logo from '../../assets/logo.svg'
 import styles from './styles'
@@ -10,7 +9,7 @@ import styles from './styles'
 const useStyles = makeStyles(styles)
 
 const Login: React.FC = () => {
-  const { reducer: { dispatch } } = useContext(AppContext)
+  const { reducer: { dispatch }, client } = useContext(AppContext)
 
   const [error, setError] = useState(false)
   const [credentials, setCredentials] = useState({ email: '', password: '' })

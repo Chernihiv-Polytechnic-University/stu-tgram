@@ -18,7 +18,6 @@ import {
   Typography,
   makeStyles,
 } from '@material-ui/core'
-import { client } from '../../shared/client'
 import theme from '../../shared/theme'
 import CustomDialog from '../../components/CustomDialog'
 import deleteIcon from '../../assets/deleteIcon.svg'
@@ -31,7 +30,7 @@ import styles from './styles'
 const useStyles = makeStyles(styles)
 
 const Users: React.FC = () => {
-  const { reducer: { state } } = useContext(AppContext)
+  const { reducer: { state }, client } = useContext(AppContext)
 
   const [users, setUsers] = useState<(UserAttributes & { _id?: string })[]>([])
   const [isDialogOpen, setDialogOpen] = useState<boolean>(false)

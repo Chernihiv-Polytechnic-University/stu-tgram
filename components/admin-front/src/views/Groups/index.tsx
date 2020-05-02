@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { List, Container, TextField } from '@material-ui/core'
 import GroupItem from './GroupItem'
-import { client } from '../../shared/client'
+import { AppContext } from '../../shared/reducer'
 
 const Groups: React.FC = () => {
+  const { client } = useContext(AppContext)
   const [groups, setGroups] = useState<any[]>([])
   const [filteredGroups, setFilteredGroups] = useState<any[]>([])
 

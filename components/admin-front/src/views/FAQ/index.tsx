@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {
   Button,
   Container,
@@ -7,16 +7,21 @@ import {
   ThemeProvider,
   TextField,
   TableHead,
-  TableRow, TableCell, TableBody, Table, makeStyles, IconButton
+  TableRow,
+  TableCell,
+  TableBody,
+  Table,
+  IconButton,
+  makeStyles,
 } from '@material-ui/core'
 import { Autocomplete, createFilterOptions } from '@material-ui/lab'
 import theme from '../../shared/theme'
 import { InfoAttributes } from 'libs/domain-model'
 import CustomDialog from '../../components/CustomDialog'
-import { client } from '../../shared/client'
 import deleteIcon from '../../assets/deleteIcon.svg'
 import changeIcon from '../../assets/changeIcon.svg'
 import { uniq } from 'lodash'
+import { AppContext } from '../../shared/reducer'
 
 const INITIAL_NEW_QUESTION: InfoAttributes = {
   question: '',
@@ -48,6 +53,7 @@ const useStyles = makeStyles({
 })
 
 const FAQ: React.FC = () => {
+  const { client } = useContext(AppContext)
   const [questions, setQuestions] = useState<any[]>([])
   const [categories, setCategories] = useState<string[]>([])
   const [newQuestion, setQuestion] = useState<InfoAttributes>(INITIAL_NEW_QUESTION)

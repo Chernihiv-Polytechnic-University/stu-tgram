@@ -11,11 +11,18 @@ export type BaseOptions = {
 
 export type Result<R> = {
   isSuccess: boolean
+  isHandled?: boolean
   error?: axios.AxiosError
   result?: R,
 }
 
-const execRequest = <I, R>(specificFunc: (input: I) => axios.AxiosRequestConfig, baseOptions: BaseOptions) =>
+export type ErrorHandler = {
+  (error: axios.AxiosError): Promise<boolean>,
+}
+
+const createExecRequest = (baseOptions: BaseOptions, errorHandler: ErrorHandler) => <I, R>(
+  specificFunc: (input: I) => axios.AxiosRequestConfig,
+) =>
   async (specificFuncOptions: I): Promise<Result<R>> => {
     return await axios.default({
       withCredentials: true,
@@ -23,28 +30,33 @@ const execRequest = <I, R>(specificFunc: (input: I) => axios.AxiosRequestConfig,
       ...specificFunc(specificFuncOptions),
     }).then((axiosResult) => {
       return { isSuccess: true, result: axiosResult.data }
-    }).catch((error) => {
-      return { error, isSuccess: false }
+    }).catch(async (error) => {
+      const isHandled = await errorHandler(error)
+      return { error, isHandled, isSuccess: false }
     })
   }
 
-export const initClient = (baseOptions: BaseOptions) => ({
-  login: execRequest<users.LoginInput, null>(users.login, baseOptions),
-  logout: execRequest<{}, null>(users.logout, baseOptions),
-  updateMe: execRequest<users.UpdateUserInput, null>(users.updateCurrentUser, baseOptions),
-  getMe: execRequest<null, domain.UserAttributes>(users.getCurrentUser, baseOptions),
-  getUser: execRequest<users.GetUserInput, domain.UserAttributes>(users.getUser, baseOptions),
-  getUsers: execRequest<users.GetUsersInput, ManyOutput<domain.UserAttributes>>(users.getUsers, baseOptions),
-  createUser: execRequest<users.CreateUserInput, null>(users.createUser, baseOptions),
-  deleteUser: execRequest<users.DeleteUserInput, null>(users.deleteUser, baseOptions),
+export const initClient = (baseOptions: BaseOptions, errorHandler: ErrorHandler) => {
+  const execRequest = createExecRequest(baseOptions, errorHandler)
 
-  getGroup: execRequest<groups.GetGroupInput, domain.StudentsGroupAttributes>(groups.getGroup, baseOptions),
-  getGroups: execRequest<groups.GetGroupsInput, ManyOutput<domain.StudentsGroupAttributes>>(groups.getGroups, baseOptions),
+  return {
+    login: execRequest<users.LoginInput, null>(users.login),
+    logout: execRequest<{}, null>(users.logout),
+    updateMe: execRequest<users.UpdateUserInput, null>(users.updateCurrentUser),
+    getMe: execRequest<null, domain.UserAttributes>(users.getCurrentUser),
+    getUser: execRequest<users.GetUserInput, domain.UserAttributes>(users.getUser),
+    getUsers: execRequest<users.GetUsersInput, ManyOutput<domain.UserAttributes>>(users.getUsers),
+    createUser: execRequest<users.CreateUserInput, null>(users.createUser),
+    deleteUser: execRequest<users.DeleteUserInput, null>(users.deleteUser),
 
-  createInfo: execRequest<info.CreateInfoInput, null>(info.createInfo, baseOptions),
-  updateInfo: execRequest<info.UpdateInfoInput, null>(info.updateInfo, baseOptions),
-  getInfo: execRequest<info.GetInfoInput, domain.InfoAttributes>(info.getInfo, baseOptions),
-  getManyInfo: execRequest<info.GetManyInfoInput, ManyOutput<domain.InfoAttributes>>(info.getManyInfo, baseOptions),
-  deleteInfo: execRequest<info.DeleteInfoInput, null>(info.deleteInfo, baseOptions),
-  getInfoCategories: execRequest<null, domain.InfoCategoryAttributes>(info.getInfoCategories, baseOptions),
-})
+    getGroup: execRequest<groups.GetGroupInput, domain.StudentsGroupAttributes>(groups.getGroup),
+    getGroups: execRequest<groups.GetGroupsInput, ManyOutput<domain.StudentsGroupAttributes>>(groups.getGroups),
+
+    createInfo: execRequest<info.CreateInfoInput, null>(info.createInfo),
+    updateInfo: execRequest<info.UpdateInfoInput, null>(info.updateInfo),
+    getInfo: execRequest<info.GetInfoInput, domain.InfoAttributes>(info.getInfo),
+    getManyInfo: execRequest<info.GetManyInfoInput, ManyOutput<domain.InfoAttributes>>(info.getManyInfo),
+    deleteInfo: execRequest<info.DeleteInfoInput, null>(info.deleteInfo),
+    getInfoCategories: execRequest<null, domain.InfoCategoryAttributes>(info.getInfoCategories),
+  }
+}
