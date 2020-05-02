@@ -1,10 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react'
+import { UserAttributes, UserRole } from 'libs/domain-model'
 import {
   Button,
   Container,
   Grid,
   Icon,
-  IconButton, makeStyles,
+  IconButton,
   MenuItem,
   Select,
   Table,
@@ -14,7 +15,8 @@ import {
   TableRow,
   TextField,
   ThemeProvider,
-  Typography
+  Typography,
+  makeStyles,
 } from '@material-ui/core'
 import { client } from '../../shared/client'
 import theme from '../../shared/theme'
@@ -22,49 +24,34 @@ import CustomDialog from '../../components/CustomDialog'
 import deleteIcon from '../../assets/deleteIcon.svg'
 import managerIcon from '../../assets/managerIcon.svg'
 import adminIcon from '../../assets/adminIcon.svg'
-import { UserAttributes, UserRole } from 'libs/domain-model'
 import { AppContext } from '../../shared/reducer'
+import { INITIAL_ERROR, INITIAL_NEW_USER, MAPPER, ITEMS_PER_PAGE } from './constants'
+import styles from './styles'
 
-const useStyles = makeStyles({
-  formInput: {
-    paddingBottom: '24px'
-  }
-})
-
-const INITIAL_NEW_USER: UserAttributes = {
-  name: '',
-  login: '',
-  password: '',
-  role: UserRole.manager
-}
-
-const INITIAL_ERROR: any = {
-  name: false,
-  login: false,
-  password: false
-}
-
-const MAPPER = {
-  login: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-  password: /^\w{6,14}$/,
-  name: /^[a-zA-Z ]+$/
-}
+const useStyles = makeStyles(styles)
 
 const Users: React.FC = () => {
   const { reducer: { state } } = useContext(AppContext)
 
-  const [users, setUsers] = useState<any[]>([])
+  const [users, setUsers] = useState<(UserAttributes & { _id?: string })[]>([])
   const [isDialogOpen, setDialogOpen] = useState<boolean>(false)
   const [newUser, setUser] = useState<UserAttributes>(INITIAL_NEW_USER)
   const [error, setError] = useState<any>(INITIAL_ERROR)
+  const [page, setPage] = useState<number>(0)
 
   const classes = useStyles()
 
+  const onMoreClick: any = () => {
+    setPage(page + 1)
+  }
+
   const fetchUsers: any = async () => {
-    const { result } = await client.getUsers({})
-    if (result) {
-      setUsers(result.docs)
+    const { result, isSuccess } = await client.getUsers({ limit: ITEMS_PER_PAGE, page })
+    if (!isSuccess) {
+      // TODO show error with snack bar
+      return
     }
+    setUsers([...users, ...result?.docs as []])
   }
 
   const deleteUserFromState: any = (userId: string) => {
@@ -73,9 +60,11 @@ const Users: React.FC = () => {
 
   const handleDeleteUser: any = async (id: string) => {
     const { isSuccess } = await client.deleteUser({ id })
-    if (isSuccess) {
-      deleteUserFromState(id)
+    if (!isSuccess) {
+      // TODO show error with snack bar
+      return
     }
+    deleteUserFromState(id)
   }
 
   const handleDialogClose: any = () => {
@@ -92,9 +81,9 @@ const Users: React.FC = () => {
     setError({ ...error, [key]: !MAPPER[key].test(value) })
   }
 
-  const handleInputChange: any = (event: React.ChangeEvent<{ value: string}>, key: string) => {
-    setUser({ ...newUser, [key]: event.target.value })
-    validateInput(key, event.target.value)
+  const handleFieldChange: any = (field: 'login' | 'password' | 'name') => (event: React.ChangeEvent<{ value: string}>) => {
+    setUser({ ...newUser, [field]: event.target.value })
+    validateInput(field, event.target.value)
   }
 
   const handleCreateUser: any = async () => {
@@ -108,7 +97,7 @@ const Users: React.FC = () => {
 
   useEffect(() => {
     fetchUsers()
-  }, [])
+  }, [page])
 
   console.log(error)
 
@@ -122,7 +111,7 @@ const Users: React.FC = () => {
             className={classes.formInput}
             error={error.name}
             value={newUser.name}
-            onChange={(e) => handleInputChange(e, 'name')}
+            onChange={handleFieldChange('name')}
             variant='outlined'
             label='Введіть прізвище, ім’я, побатькові користувача'
             fullWidth/>
@@ -130,14 +119,14 @@ const Users: React.FC = () => {
             className={classes.formInput}
             error={error.login}
             value={newUser.login}
-            onChange={(e) => handleInputChange(e, 'login')}
+            onChange={handleFieldChange('login')}
             variant='outlined'
             label='Введіть електронну пошту користувача'
             type="email" fullWidth/>
           <div className={classes.formInput}>
             <Select
               value={newUser.role}
-              onChange={(e) => handleInputChange(e, 'role')}
+              onChange={handleFieldChange('role')}
               fullWidth variant={'outlined'}>
               <MenuItem value="a">Адміністратор</MenuItem>
               <MenuItem value="m">Менеджер</MenuItem>
@@ -146,7 +135,7 @@ const Users: React.FC = () => {
           <TextField
             className={classes.formInput}
             error={error.password}
-            onChange={(e) => handleInputChange(e, 'password')}
+            onChange={handleFieldChange('password')}
             value={newUser.password}
             variant='outlined'
             type='password'
@@ -193,6 +182,7 @@ const Users: React.FC = () => {
             })}
           </TableBody>
         </Table>
+        <Button onClick={onMoreClick}>Більше</Button>
       </Container>
     </ThemeProvider>
   )
