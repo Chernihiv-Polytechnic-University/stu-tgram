@@ -18,9 +18,6 @@ const CustomDialog: React.FC<CustomDialogProps> = ({
                                                        handleSubmit,
                                                        buttonName,
                                                        disable}: CustomDialogProps) => {
-
-    console.log(disable)
-
     return (<div>
         <Dialog open={isOpen} onClose={handleClose}>
             <DialogTitle>
