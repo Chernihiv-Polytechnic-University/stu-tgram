@@ -7,18 +7,24 @@ import {
   ThemeProvider,
   TextField,
   TableHead,
-  TableRow, TableCell, TableBody, Table, makeStyles
+  TableRow, TableCell, TableBody, Table, makeStyles, IconButton
 } from '@material-ui/core'
+import { Autocomplete, createFilterOptions } from '@material-ui/lab'
 import theme from '../../shared/theme'
 import { InfoAttributes } from 'libs/domain-model'
 import CustomDialog from '../../components/CustomDialog'
 import { client } from '../../shared/client'
+import deleteIcon from '../../assets/deleteIcon.svg'
+import changeIcon from '../../assets/changeIcon.svg'
+import { uniq } from 'lodash'
 
 const INITIAL_NEW_QUESTION: InfoAttributes = {
   question: '',
   answer: '',
   category: ''
 }
+
+const filter = createFilterOptions<string>()
 
 const useStyles = makeStyles({
   category: {
@@ -43,15 +49,24 @@ const useStyles = makeStyles({
 
 const FAQ: React.FC = () => {
   const [questions, setQuestions] = useState<any[]>([])
+  const [categories, setCategories] = useState<string[]>([])
   const [newQuestion, setQuestion] = useState<InfoAttributes>(INITIAL_NEW_QUESTION)
+  const [deleteQuestionId, setDeleteQuestionId] = useState<string>('')
   const [isDialogOpen, setDialogOpen] = useState<boolean>(false)
+  const [isDialogDeleteOpen, setDialogDeleteOpen] = useState<boolean>(false)
 
   const classes = useStyles()
 
   const fetchQuestions: any = async () => {
     const { result } = await client.getManyInfo({}) as any
+    const categoryResult = await client.getInfoCategories(null) as any
     if (result) {
       setQuestions(result.docs)
+    }
+    if (categoryResult) {
+      setCategories(uniq(categoryResult.result.map((item: any) => {
+        return item.category
+      })))
     }
   }
 
@@ -64,15 +79,62 @@ const FAQ: React.FC = () => {
     setDialogOpen(true)
   }
 
-  const handleCreateQuestion: any = () => {
+  const handleCreateQuestion: any = async () => {
+    const { isSuccess } = await client.createInfo(newQuestion)
+    if (isSuccess){
+      setQuestions(prevUsers => prevUsers.concat(newQuestion))
+      setQuestion(INITIAL_NEW_QUESTION)
+    }
+    handleDialogClose()
+  }
 
+  const deleteQuestionFromState: any = (id: string) => {
+    setQuestions(prevState => prevState.filter(({ _id }) => _id !== id))
+  }
+
+  const handleDeleteDialogOpen: any = (id: string) => {
+    setDialogDeleteOpen(true)
+    setDeleteQuestionId(id)
+  }
+
+  const handleDeleteDialogClose: any = () => {
+    setDialogDeleteOpen(false)
+    setDeleteQuestionId('')
+  }
+
+  const handleDeleteQuestion: any = async () => {
+    const { isSuccess } = await client.deleteInfo({ id: deleteQuestionId })
+    if (isSuccess) {
+      deleteQuestionFromState(deleteQuestionId)
+    }
+    handleDeleteDialogClose()
+  }
+
+  const handleInputChange: any = (event: React.ChangeEvent<{ value: string}>, key: string) => {
+    setQuestion({ ...newQuestion, [key]: event.target.value })
+  }
+
+  const handleCategoryChange: any = (event: any, value: any) => {
+    setQuestion({ ...newQuestion, ['category']: value })
   }
 
   useEffect(() => {
     fetchQuestions()
   }, [])
 
-  console.log(questions)
+  console.log(newQuestion)
+  console.log(categories)
+
+  const deleteDialog =
+        <CustomDialog
+          isOpen={isDialogDeleteOpen}
+          handleClose={handleDeleteDialogClose}
+          title='Видалити питання?'
+          buttonName='Так, видалити питання'
+          handleSubmit={handleDeleteQuestion}
+          disable={false}>
+          <Typography>Ви впевнені, що хочете видалити питання?</Typography>
+        </CustomDialog>
 
   const questionCreateDialog =
         <CustomDialog
@@ -82,9 +144,32 @@ const FAQ: React.FC = () => {
           title={'Додати питання'} buttonName={'Створити'} handleSubmit={handleCreateQuestion}>
           <TextField
             value={newQuestion.question}
+            onChange={(e) => handleInputChange(e, 'question')}
             variant='outlined'
             label='Введіть питання'
             fullWidth/>
+          <Autocomplete
+            value={newQuestion.category}
+            onChange={handleCategoryChange}
+            filterOptions={(options, params) => {
+              const filtered = filter(options, params) as string[]
+              if (params.inputValue !== '') {
+                filtered.push(params.inputValue)
+              }
+              return filtered
+            }}
+            options={categories}
+            getOptionLabel={option => option}
+            renderInput={params => (
+              <TextField {...params} label="Оберіть категорію" variant="outlined" fullWidth />
+            )}/>
+          <TextField
+            onChange={(e) => handleInputChange(e, 'answer')}
+            value={newQuestion.answer}
+            label='Введіть відповідь'
+            fullWidth
+            multiline
+            variant='outlined'/>
         </CustomDialog>
 
   return (
@@ -98,8 +183,8 @@ const FAQ: React.FC = () => {
             color='primary'>Додати запитання
           </Button>
         </Grid>
-        <Grid>
-          <TextField className={classes.searchTextField} variant='outlined' label='Пошук...'/>
+        <Grid container direction='row' justify='flex-end'>
+          <TextField classes={{ root: classes.searchTextField }} variant='outlined' label='Пошук...'/>
         </Grid>
         {questionCreateDialog}
         <Table>
@@ -128,11 +213,19 @@ const FAQ: React.FC = () => {
                     color="primary"
                     variant="outlined">{question.category}</Button>
                 </TableCell>
-                <TableCell/>
+                <TableCell>
+                  <IconButton aria-label=''>
+                    <img src={changeIcon} alt='Змінити'/>
+                  </IconButton>
+                  <IconButton aria-label='' onClick={() => handleDeleteDialogOpen(question._id)}>
+                    <img src={deleteIcon} alt='Видалити'/>
+                  </IconButton>
+                </TableCell>
               </TableRow>)
             })}
           </TableBody>
         </Table>
+        {deleteDialog}
       </Container>
     </ThemeProvider>
   )
