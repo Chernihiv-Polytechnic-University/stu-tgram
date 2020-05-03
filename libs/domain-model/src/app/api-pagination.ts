@@ -31,12 +31,12 @@ export const findAndPaginate = async <T extends Document>(model: Model<T>, optio
     limit: options.limit ? Number(options.limit) : 10,
   }
 
-  if (options.query) { Object.assign(condition, options.query) }
-  if (options.search && options.search.length > 0) {
-    options.search.forEach(([key, value]) => {
+  if (options.query && Object.keys(options.query)) {
+    Object.entries(options.query).forEach(([key, value]: [string, string]) => {
       condition[key] = { $regex: value, $options: 'i' }
     })
   }
+
   const docsQuery = model.find(condition)
 
   if (options.sort) { docsQuery.sort(options.sort) }
