@@ -16,6 +16,7 @@ module.exports = {
         semi: ["error", "never"],
         'object-curly-spacing': ["error", "always"],
         "indent": ["error", 2],
+        "react/prop-types": "off",
         "@typescript-eslint/semi": ["error", "never"],
         '@typescript-eslint/member-delimiter-style': ["error", { multiline: { delimiter: 'none' } }]
     },

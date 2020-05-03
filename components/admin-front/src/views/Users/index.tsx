@@ -46,10 +46,7 @@ const Users: React.FC = () => {
 
   const fetchUsers: any = async () => {
     const { result, isSuccess } = await client.getUsers({ limit: ITEMS_PER_PAGE, page })
-    if (!isSuccess) {
-      // TODO show error with snack bar
-      return
-    }
+    if (!isSuccess) { return }
     setUsers([...users, ...result?.docs as []])
   }
 
@@ -59,10 +56,7 @@ const Users: React.FC = () => {
 
   const handleDeleteUser: any = async (id: string) => {
     const { isSuccess } = await client.deleteUser({ id })
-    if (!isSuccess) {
-      // TODO show error with snack bar
-      return
-    }
+    if (!isSuccess) { return }
     deleteUserFromState(id)
   }
 
@@ -97,8 +91,6 @@ const Users: React.FC = () => {
   useEffect(() => {
     fetchUsers()
   }, [page])
-
-  console.log(error)
 
   const userCreateDialog =
         <CustomDialog
