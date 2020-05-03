@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import { Alert } from '@material-ui/lab'
 import { AppBar, Snackbar, Tab, Tabs, ThemeProvider, Toolbar } from '@material-ui/core'
 import theme from '../../shared/theme'
-import { useLocation } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import { AppActionType, AppContext, AppError } from '../../shared/reducer'
 
 const AuthErrorSnackbar: React.FC = () => {
@@ -24,26 +24,26 @@ const AuthErrorSnackbar: React.FC = () => {
   )
 }
 
-const locationTabMapper: { [k: string]: number } = {
-  '/users': 0,
-  '/faq': 4,
-}
-
 const Header: React.FC = () => {
-  const location = useLocation()
+  const history = useHistory()
 
-  if (location.pathname === '/') return null
+  if (history.location.pathname === '/') return null
+
+  const handleTabChange: any = (_: any, value: string) => {
+    history.push(value)
+  }
+
 
   return (
     <ThemeProvider theme={theme}>
       <AppBar position='static'>
         <Toolbar>
-          <Tabs value={locationTabMapper[location.pathname]} variant='fullWidth'>
-            <Tab label='Користувачі' href='/users'/>
+          <Tabs value={history.location.pathname} variant='fullWidth' onChange={handleTabChange}>
+            <Tab label='Користувачі' value='/users'/>
             <Tab disabled label='Розклад' href='/users'/>
             <Tab disabled label='Групи' href='/users'/>
             <Tab disabled label='Повідомлення' href='/users'/>
-            <Tab label='FAQ' href='/faq'/>
+            <Tab label='FAQ' value='/faq'/>
             <Tab disabled label='Статистика' href='/users'/>
           </Tabs>
         </Toolbar>
