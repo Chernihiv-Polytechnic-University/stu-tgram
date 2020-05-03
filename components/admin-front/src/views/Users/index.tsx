@@ -173,7 +173,7 @@ const Users: React.FC = () => {
             })}
           </TableBody>
         </Table>
-        <Button onClick={onMoreClick}>Більше</Button>
+        <Button classes={{ root: classes.moreButton }} onClick={onMoreClick}>... Показати більше</Button>
       </Container>
     </ThemeProvider>
   )
