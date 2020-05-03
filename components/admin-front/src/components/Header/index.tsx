@@ -40,11 +40,11 @@ const Header: React.FC = () => {
         <Toolbar>
           <Tabs value={locationTabMapper[location.pathname]} variant='fullWidth'>
             <Tab label='Користувачі' href='/users'/>
-            <Tab label='Розклад' href='/users'/>
-            <Tab label='Групи' href='/users'/>
-            <Tab label='Повідомлення' href='/users'/>
+            <Tab disabled label='Розклад' href='/users'/>
+            <Tab disabled label='Групи' href='/users'/>
+            <Tab disabled label='Повідомлення' href='/users'/>
             <Tab label='FAQ' href='/faq'/>
-            <Tab label='Статистика' href='/users'/>
+            <Tab disabled label='Статистика' href='/users'/>
           </Tabs>
         </Toolbar>
         <AuthErrorSnackbar/>

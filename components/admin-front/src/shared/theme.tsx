@@ -125,6 +125,34 @@ const theme = createMuiTheme({
     MuiToolbar: {
       root: {
         height: '80px'
+      },
+      gutters: {
+        '@media (min-width: 600px)': {
+          paddingLeft: '119px',
+          paddingRight: '119px',
+        }
+      }
+    },
+    MuiTabs: {
+      root: {
+        width: '100%'
+      },
+      indicator: {
+        backgroundColor: 'transparent'
+      }
+    },
+    MuiTab: {
+      textColorInherit: {
+        color: '#FFFFFF',
+        textTransform: 'capitalize',
+        fontSize: '16px',
+        fontStyle: 'normal',
+        fontWeight: 500,
+        opacity: 1,
+        '&$selected': {
+          backgroundColor: '#2282A1',
+          borderRadius: '20px'
+        }
       }
     }
   }
