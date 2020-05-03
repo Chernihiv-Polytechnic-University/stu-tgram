@@ -14,43 +14,20 @@ import {
   IconButton,
   makeStyles,
 } from '@material-ui/core'
+import { map } from 'lodash'
 import { Autocomplete, createFilterOptions } from '@material-ui/lab'
 import theme from '../../shared/theme'
 import { InfoAttributes } from 'libs/domain-model'
 import CustomDialog from '../../components/CustomDialog'
 import deleteIcon from '../../assets/deleteIcon.svg'
 import changeIcon from '../../assets/changeIcon.svg'
-import { uniq } from 'lodash'
 import { AppContext } from '../../shared/reducer'
+import styles from './styles'
+import { INITIAL_NEW_QUESTION, ITEMS_PER_PAGE } from './constants'
 
-const INITIAL_NEW_QUESTION: InfoAttributes = {
-  question: '',
-  answer: '',
-  category: ''
-}
+const filterOptions = createFilterOptions<string>()
 
-const filter = createFilterOptions<string>()
-
-const useStyles = makeStyles({
-  category: {
-    color: '#2282A1',
-    border: '1px solid #2282A1',
-    height: '35px',
-    '&:hover': {
-      border: '1px solid',
-      cursor: 'default',
-      backgroundColor: '#FFFFFF'
-    }
-  },
-  label: {
-    fontWeight: 'normal',
-    textTransform: 'none'
-  },
-  searchTextField: {
-    width: '378px',
-    paddingBottom: '24px'
-  }
-})
+const useStyles = makeStyles(styles as any)
 
 const FAQ: React.FC = () => {
   const { client } = useContext(AppContext)
@@ -60,19 +37,31 @@ const FAQ: React.FC = () => {
   const [deleteQuestionId, setDeleteQuestionId] = useState<string>('')
   const [isDialogOpen, setDialogOpen] = useState<boolean>(false)
   const [isDialogDeleteOpen, setDialogDeleteOpen] = useState<boolean>(false)
+  const [page, setPage] = useState<number>(0)
+  const [query, setQuery] = useState<string>('')
 
   const classes = useStyles()
 
+  const onMoreClick: any = () => {
+    setPage(page + 1)
+  }
+
+  const fetchCategories: any = async () => {
+    const { isSuccess, result } = await client.getInfoCategories(null)
+
+    if (!isSuccess) { return }
+    setCategories(map(result, 'category'))
+  }
+
   const fetchQuestions: any = async () => {
-    const { result } = await client.getManyInfo({}) as any
-    const categoryResult = await client.getInfoCategories(null) as any
-    if (result) {
+    const { result, isSuccess } = await client.getManyInfo({ limit: ITEMS_PER_PAGE, page, question: query })
+
+    if (!isSuccess) { return }
+
+    if (page === 0) {
       setQuestions(result.docs)
-    }
-    if (categoryResult) {
-      setCategories(uniq(categoryResult.result.map((item: any) => {
-        return item.category
-      })))
+    } else {
+      setQuestions(old => [...old, ...result.docs])
     }
   }
 
@@ -87,15 +76,12 @@ const FAQ: React.FC = () => {
 
   const handleCreateQuestion: any = async () => {
     const { isSuccess } = await client.createInfo(newQuestion)
-    if (isSuccess){
-      setQuestions(prevUsers => prevUsers.concat(newQuestion))
-      setQuestion(INITIAL_NEW_QUESTION)
-    }
-    handleDialogClose()
-  }
+    if (!isSuccess) { return }
 
-  const deleteQuestionFromState: any = (id: string) => {
-    setQuestions(prevState => prevState.filter(({ _id }) => _id !== id))
+    setPage(0)
+    setQuestion(INITIAL_NEW_QUESTION)
+
+    handleDialogClose()
   }
 
   const handleDeleteDialogOpen: any = (id: string) => {
@@ -110,26 +96,34 @@ const FAQ: React.FC = () => {
 
   const handleDeleteQuestion: any = async () => {
     const { isSuccess } = await client.deleteInfo({ id: deleteQuestionId })
-    if (isSuccess) {
-      deleteQuestionFromState(deleteQuestionId)
+
+    if (!isSuccess) { return }
+
+    if (page !== 0) {
+      setPage(0)
+    } else {
+      fetchQuestions()
     }
     handleDeleteDialogClose()
   }
 
-  const handleInputChange: any = (event: React.ChangeEvent<{ value: string}>, key: string) => {
+  const handleQueryChange: any = (event: React.ChangeEvent<{ value: string}>) => {
+    setPage(0)
+    setQuery(event.target.value)
+  }
+
+  const handleInputChange: any = (key: string) => (event: React.ChangeEvent<{ value: string}>) => {
     setQuestion({ ...newQuestion, [key]: event.target.value })
   }
 
-  const handleCategoryChange: any = (event: any, value: any) => {
+  const handleCategoryChange: any = (_: any, value: string) => {
     setQuestion({ ...newQuestion, ['category']: value })
   }
 
   useEffect(() => {
+    fetchCategories()
     fetchQuestions()
-  }, [])
-
-  console.log(newQuestion)
-  console.log(categories)
+  }, [page, query])
 
   const deleteDialog =
         <CustomDialog
@@ -150,7 +144,7 @@ const FAQ: React.FC = () => {
           title={'Додати питання'} buttonName={'Створити'} handleSubmit={handleCreateQuestion}>
           <TextField
             value={newQuestion.question}
-            onChange={(e) => handleInputChange(e, 'question')}
+            onChange={handleInputChange('question')}
             variant='outlined'
             label='Введіть питання'
             fullWidth/>
@@ -158,7 +152,7 @@ const FAQ: React.FC = () => {
             value={newQuestion.category}
             onChange={handleCategoryChange}
             filterOptions={(options, params) => {
-              const filtered = filter(options, params) as string[]
+              const filtered = filterOptions(options, params) as string[]
               if (params.inputValue !== '') {
                 filtered.push(params.inputValue)
               }
@@ -170,7 +164,7 @@ const FAQ: React.FC = () => {
               <TextField {...params} label="Оберіть категорію" variant="outlined" fullWidth />
             )}/>
           <TextField
-            onChange={(e) => handleInputChange(e, 'answer')}
+            onChange={handleInputChange('answer')}
             value={newQuestion.answer}
             label='Введіть відповідь'
             fullWidth
@@ -190,7 +184,7 @@ const FAQ: React.FC = () => {
           </Button>
         </Grid>
         <Grid container direction='row' justify='flex-end'>
-          <TextField classes={{ root: classes.searchTextField }} variant='outlined' label='Пошук...'/>
+          <TextField classes={{ root: classes.searchTextField }} variant='outlined' label='Пошук...' onChange={handleQueryChange}/>
         </Grid>
         {questionCreateDialog}
         <Table>
@@ -215,7 +209,8 @@ const FAQ: React.FC = () => {
                   <Button
                     classes={{
                       root: classes.category,
-                      label: classes.label }}
+                      label: classes.label
+                    }}
                     color="primary"
                     variant="outlined">{question.category}</Button>
                 </TableCell>
@@ -231,6 +226,7 @@ const FAQ: React.FC = () => {
             })}
           </TableBody>
         </Table>
+        <Button onClick={onMoreClick}>Більше</Button>
         {deleteDialog}
       </Container>
     </ThemeProvider>
