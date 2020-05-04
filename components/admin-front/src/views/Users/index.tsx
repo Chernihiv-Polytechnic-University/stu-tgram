@@ -122,7 +122,7 @@ const Users: React.FC = () => {
       buttonName='Так, видалити користувача'
       handleSubmit={handleDeleteUser}
       disable={false}>
-      <Typography>Ви впевнені, що хочете видалити користувача?</Typography>
+      <Typography align='center'>Ви впевнені, що хочете видалити користувача?</Typography>
     </CustomDialog>
   )
 

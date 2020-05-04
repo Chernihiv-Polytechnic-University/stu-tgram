@@ -134,7 +134,7 @@ const FAQ: React.FC = () => {
       buttonName='Так, видалити питання'
       handleSubmit={handleDeleteQuestion}
       disable={false}>
-      <Typography>Ви впевнені, що хочете видалити питання?</Typography>
+      <Typography align='center'>Ви впевнені, що хочете видалити питання?</Typography>
     </CustomDialog>
   )
 
@@ -200,7 +200,7 @@ const FAQ: React.FC = () => {
             })}
           </TableBody>
         </Table>
-        <Button onClick={onMoreClick}>Більше</Button>
+        <Button classes={{ root: classes.moreButton }} onClick={onMoreClick}>... Показати більше</Button>
         {deleteDialog}
       </Container>
     </ThemeProvider>

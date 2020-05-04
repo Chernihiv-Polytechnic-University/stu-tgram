@@ -98,7 +98,7 @@ const theme = createMuiTheme({
     },
     MuiDialog: {
       paperWidthSm: {
-        maxWidth: '572px'
+        maxWidth: '769px'
       }
     },
     MuiDialogTitle: {
@@ -125,13 +125,7 @@ const theme = createMuiTheme({
     MuiToolbar: {
       root: {
         height: '80px'
-      },
-      // gutters: {
-      //   '@media (min-width: 600px)': {
-      //     paddingLeft: '119px',
-      //     paddingRight: '119px',
-      //   }
-      // }
+      }
     },
     MuiTabs: {
       root: {

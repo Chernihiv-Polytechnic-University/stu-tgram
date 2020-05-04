@@ -6,7 +6,7 @@ import downIcon from '../../assets/downIcon.svg'
 import styles from './styles'
 import { AppContext } from '../../shared/reducer'
 import UpdateAccountDialog from './UpdateAccountDialog'
-import {useHistory} from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 
 const useStyles = makeStyles(styles)
 
