@@ -26,6 +26,7 @@ const AuthErrorSnackbar: React.FC = () => {
 }
 
 const Header: React.FC = () => {
+  const { reducer: { dispatch, state }, client } = useContext(AppContext)
   const history = useHistory()
 
   if (history.location.pathname === '/') return null
@@ -34,6 +35,13 @@ const Header: React.FC = () => {
     history.push(value)
   }
 
+  if (!state.me) {
+    client.getMe()
+      .then((result: any) => {
+        if (result.isSuccess)
+          dispatch({ type: AppActionType.SET_ME, payload: result.result })
+      })
+  }
 
   return (
     <ThemeProvider theme={theme}>

@@ -16,7 +16,7 @@ export const INITIAL_ERROR: any = {
 export const MAPPER: { [k: string]: RegExp } = {
   login: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
   password: /^\w{10,32}$/,
-  name: /^\S{6,45}$/
+  name: /^[\S| ]{6,45}$/
 }
 
 export const ITEMS_PER_PAGE: number = 9
