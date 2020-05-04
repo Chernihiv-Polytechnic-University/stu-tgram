@@ -89,7 +89,6 @@ const FAQ: React.FC = () => {
       result = await client.createInfo(data)
     }
 
-    console.log(result, createUpdateDialogState)
     if (!result.isSuccess) {
       return
     }

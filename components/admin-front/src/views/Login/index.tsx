@@ -9,7 +9,7 @@ import styles from './styles'
 const useStyles = makeStyles(styles)
 
 const Login: React.FC = () => {
-  const { reducer: { dispatch }, client } = useContext(AppContext)
+  const { client } = useContext(AppContext)
 
   const [error, setError] = useState(false)
   const [credentials, setCredentials] = useState({ email: '', password: '' })
@@ -30,16 +30,6 @@ const Login: React.FC = () => {
       setError(true)
       return
     }
-
-    const { isSuccess: isGetMeSuccess, result: currentUserInfo } = await client.getMe(null)
-
-    if (!isGetMeSuccess) {
-      // TODO show error to user with snack bar
-      setError(true)
-      return
-    }
-
-    dispatch({ type: AppActionType.SET_ME, payload: currentUserInfo })
     history.push('/users')
   }
 

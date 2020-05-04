@@ -32,13 +32,13 @@
     "eslint-plugin-react": "^7.17.0",
     "mongoose": "^5.9.7",
     "react-scripts": "3.3.0",
-    "typescript": "~3.7.2"
+    "typescript": "~3.8.3"
   },
   "scripts": {
     "start": "node ./node_modules/react-scripts/bin/react-scripts.js start",
-    "build": "node ./node_modules/react-scripts/bin/react-scripts.js react-scripts build",
-    "test": "node ./node_modules/react-scripts/bin/react-scripts.js react-scripts test",
-    "eject": "node ./node_modules/react-scripts/bin/react-scripts.js react-scripts eject",
+    "build": "node ./node_modules/react-scripts/bin/react-scripts.js build",
+    "test": "node ./node_modules/react-scripts/bin/react-scripts.js test",
+    "eject": "node ./node_modules/react-scripts/bin/react-scripts.js eject",
     "clean": "node ../../overlord/nodescripts/rmdir.js dist node_modules",
     "compile": "npm run compile-libs",
     "compile-libs": "node ../../overlord/nodescripts/compile-libs.js domain-model admin-back-client"

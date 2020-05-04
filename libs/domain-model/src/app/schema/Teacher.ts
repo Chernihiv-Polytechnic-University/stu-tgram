@@ -3,14 +3,14 @@ import * as mongoose from 'mongoose'
 export interface TeacherAttributes {
   _id: any
   name: string
-  lessonsScheduleImage?: Buffer
+  lessonsScheduleImage?: any
 }
 
 export interface Teacher extends TeacherAttributes, mongoose.Document {}
 
 const schema = new mongoose.Schema({
   name: { type: String, index: true },
-  lessonsScheduleImage: { type: Buffer },
+  lessonsScheduleImage: { type: mongoose.Schema.Types.Buffer },
 }, {
   collection: 'Teacher',
   autoIndex: false,

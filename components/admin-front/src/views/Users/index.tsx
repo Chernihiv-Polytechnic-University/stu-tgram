@@ -34,6 +34,8 @@ const Users: React.FC = () => {
 
   const [users, setUsers] = useState<(UserAttributes & { _id?: string })[]>([])
   const [isDialogOpen, setDialogOpen] = useState<boolean>(false)
+  const [isDialogDeleteOpen, setDialogDeleteOpen] = useState<boolean>(false)
+  const [deletingUserId, setDeletingUserId] = useState<string>('')
   const [newUser, setUser] = useState<UserAttributes>(INITIAL_NEW_USER)
   const [error, setError] = useState<any>(INITIAL_ERROR)
   const [page, setPage] = useState<number>(0)
@@ -47,17 +49,37 @@ const Users: React.FC = () => {
   const fetchUsers: any = async () => {
     const { result, isSuccess } = await client.getUsers({ limit: ITEMS_PER_PAGE, page })
     if (!isSuccess) { return }
+    if (page === 0) {
+      setUsers(result.docs)
+      return
+    }
     setUsers([...users, ...result?.docs as []])
   }
 
-  const deleteUserFromState: any = (userId: string) => {
-    setUsers(prevState => prevState.filter(({ _id }) => _id !== userId))
+  const refresh: any = () => {
+    if (page !== 0) {
+      setPage(0)
+    } else {
+      fetchUsers()
+    }
   }
 
-  const handleDeleteUser: any = async (id: string) => {
-    const { isSuccess } = await client.deleteUser({ id })
+  const handleDeleteDialogOpen: any = (id: string) => () => {
+    setDialogDeleteOpen(true)
+    setDeletingUserId(id)
+  }
+
+  const handleDeleteDialogClose: any = () => {
+    setDialogDeleteOpen(false)
+    setDeletingUserId('')
+  }
+
+  const handleDeleteUser: any = async () => {
+    const { isSuccess } = await client.deleteUser({ id: deletingUserId })
     if (!isSuccess) { return }
-    deleteUserFromState(id)
+
+    handleDeleteDialogClose()
+    refresh()
   }
 
   const handleDialogClose: any = () => {
@@ -91,6 +113,18 @@ const Users: React.FC = () => {
   useEffect(() => {
     fetchUsers()
   }, [page])
+
+  const deleteDialog = (
+    <CustomDialog
+      isOpen={isDialogDeleteOpen}
+      handleClose={handleDeleteDialogClose}
+      title='Видалити користувача?'
+      buttonName='Так, видалити користувача'
+      handleSubmit={handleDeleteUser}
+      disable={false}>
+      <Typography>Ви впевнені, що хочете видалити користувача?</Typography>
+    </CustomDialog>
+  )
 
   const userCreateDialog =
         <CustomDialog
@@ -165,7 +199,7 @@ const Users: React.FC = () => {
                 <TableCell>{user.name}</TableCell>
                 <TableCell>{user.login}</TableCell>
                 <TableCell>
-                  {state.me?.role === UserRole.admin ? <IconButton aria-label='' onClick={() => handleDeleteUser(user._id)}>
+                  {state.me?.role === UserRole.admin ? <IconButton aria-label='' onClick={handleDeleteDialogOpen(user._id)}>
                     <img src={deleteIcon} alt='Видалити'/>
                   </IconButton> : null}
                 </TableCell>
@@ -174,6 +208,7 @@ const Users: React.FC = () => {
           </TableBody>
         </Table>
         <Button classes={{ root: classes.moreButton }} onClick={onMoreClick}>... Показати більше</Button>
+        {deleteDialog}
       </Container>
     </ThemeProvider>
   )
