@@ -1,6 +1,6 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import CustomDialog from '../../CustomDialog'
-import { MenuItem, Select, TextField, ThemeProvider, makeStyles } from '@material-ui/core'
+import { TextField, ThemeProvider, makeStyles } from '@material-ui/core'
 import theme from '../../../shared/theme'
 import { AppActionType, AppContext } from '../../../shared/reducer'
 import styles from '../../../views/Users/styles'
@@ -11,22 +11,21 @@ import { useHistory } from 'react-router-dom'
 import ErrorSnackbar from '../../ErrorShackBar'
 
 export type UpdateAccountDialogProps = {
-  isDialogOpen: boolean
   handleClose: Function
 }
 
 const useStyles = makeStyles(styles)
 
 const UpdateAccountDialog: React.FC<UpdateAccountDialogProps> = (props) => {
-  const { isDialogOpen, handleClose } = props
+  const { handleClose } = props
 
   const { reducer: { state, dispatch } , client } = useContext(AppContext)
-  const [updatedMe, setUpdatedMe] = React.useState<UserAttributes>(INITIAL_NEW_USER)
-  const [updating, setUpdating] = React.useState<boolean>(false)
-  const [newPassword, setNewPassword] = React.useState<string>('')
-  const [confirmedNewPassword, setConfirmedNewPassword] = React.useState<string>('')
-  const [error, setError] = React.useState<any>(INITIAL_ERROR)
-  const [isUpdateSuccess, setUpdateSuccess] = React.useState<boolean>(true)
+  const [updatedMe, setUpdatedMe] = useState<UserAttributes>(INITIAL_NEW_USER)
+  const [updating, setUpdating] = useState<boolean>(false)
+  const [newPassword, setNewPassword] = useState<string>('')
+  const [confirmedNewPassword, setConfirmedNewPassword] = useState<string>('')
+  const [error, setError] = useState<any>(INITIAL_ERROR)
+  const [isUpdateSuccess, setUpdateSuccess] = useState<boolean>(true)
 
   const history = useHistory()
 
@@ -76,7 +75,6 @@ const UpdateAccountDialog: React.FC<UpdateAccountDialogProps> = (props) => {
   }
 
   const handleUpdateAccount: any = async () => {
-    console.log({ newPassword, confirmedNewPassword, boo: newPassword === confirmedNewPassword })
     let password
     if (newPassword && confirmedNewPassword && newPassword === confirmedNewPassword) {
       password = newPassword
@@ -100,7 +98,7 @@ const UpdateAccountDialog: React.FC<UpdateAccountDialogProps> = (props) => {
   return (<ThemeProvider theme={theme}>
     <ErrorSnackbar title={'Не вдалося змінити профіль'} handleClose={handleErrorSnackbarClose} error={!isUpdateSuccess}/>
     <CustomDialog
-      isOpen={isDialogOpen}
+      isOpen={true}
       handleClose={handleDialogClose}
       title={'Змінити профіль'}
       buttonName={'Так, змінити'}

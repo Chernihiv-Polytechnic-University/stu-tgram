@@ -34,7 +34,7 @@ const UserAccountHeader: React.FC = () => {
 
   const handleLogoutClick: any = async () => {
     const result = await client.logout({})
-    console.log(result)
+
     if (result.isSuccess) {
       history.push('/')
     }
@@ -67,9 +67,10 @@ const UserAccountHeader: React.FC = () => {
           </Grid>
         </Grid>
       </Grid>
-      <UpdateAccountDialog
-        isDialogOpen={isUpdateDialogOpen}
-        handleClose={handleUpdateDialogClose}/>
+      {isUpdateDialogOpen ? (
+        <UpdateAccountDialog
+          handleClose={handleUpdateDialogClose}/>
+      ) : null}
     </Container>
   </ThemeProvider>)
 }

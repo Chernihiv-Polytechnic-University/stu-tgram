@@ -19,4 +19,4 @@ export const MAPPER: { [k: string]: RegExp } = {
   name: /^[\S| ]{6,45}$/
 }
 
-export const ITEMS_PER_PAGE: number = 9
+export const ITEMS_PER_PAGE: number = 8

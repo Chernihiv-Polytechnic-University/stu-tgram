@@ -24,8 +24,6 @@ const GroupItem: React.FC<GroupItemProps> = ({ createdAt, updatedAt, id }: Group
     fetchGroup()
   }, [])
 
-  console.log(group)
-
   return (
     <ListItem>
       <Typography>{group.name} | {group.subgroupNumber} | Created at {createdAt} | Updated at {updatedAt}</Typography>
