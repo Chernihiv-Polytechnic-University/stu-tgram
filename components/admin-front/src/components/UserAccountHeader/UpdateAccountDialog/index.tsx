@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import CustomDialog from '../../CustomDialog'
 import { MenuItem, Select, TextField, ThemeProvider, makeStyles } from '@material-ui/core'
 import theme from '../../../shared/theme'
-import { AppContext } from '../../../shared/reducer'
+import {AppActionType, AppContext} from '../../../shared/reducer'
 import styles from '../../../views/Users/styles'
 import { UserAttributes } from 'libs/domain-model'
 import { INITIAL_NEW_USER } from '../../../views/Users/constants'
@@ -18,7 +18,7 @@ const useStyles = makeStyles(styles)
 const UpdateAccountDialog: React.FC<UpdateAccountDialogProps> = (props) => {
   const { isDialogOpen, handleClose } = props
 
-  const { reducer: { state } , client } = useContext(AppContext)
+  const { reducer: { state, dispatch } , client } = useContext(AppContext)
   const [updatedMe, setUpdatedMe] = React.useState<UserAttributes>(INITIAL_NEW_USER)
   const [updating, setUpdating] = React.useState<boolean>(false)
   const [newPassword, setNewPassword] = React.useState<string>('')
@@ -46,10 +46,18 @@ const UpdateAccountDialog: React.FC<UpdateAccountDialogProps> = (props) => {
   const handlePasswordFieldChange: any = (key: 'newPassword' | 'confirmedNewPassword') => (event: React.ChangeEvent<{value: string}>) => {
     if (key === 'newPassword') {
       setNewPassword(event.target.value)
+      if (event.target.value === '') {
+        setError({ ...error, [key]: false })
+        return
+      }
       validateInput(key, event.target.value)
       return
     }
     setConfirmedNewPassword(event.target.value)
+    if (event.target.value === '') {
+      setError({ ...error, [key]: false })
+      return
+    }
     validateInput(key, event.target.value)
   }
 
@@ -69,9 +77,7 @@ const UpdateAccountDialog: React.FC<UpdateAccountDialogProps> = (props) => {
       password = newPassword
     }
     const result = await client.updateMe({ ...updatedMe, password })
-    setNewPassword('')
-    setConfirmedNewPassword('')
-    setUpdating(false)
+    dispatch({ type: AppActionType.SET_ME, payload: { ...updatedMe } })
     handleDialogClose()
   }
 
