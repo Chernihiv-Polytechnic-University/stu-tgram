@@ -1,9 +1,10 @@
 import React, { useContext } from 'react'
 import { Alert } from '@material-ui/lab'
-import { AppBar, Snackbar, Tab, Tabs, ThemeProvider, Toolbar } from '@material-ui/core'
+import { AppBar, Container, Snackbar, Tab, Tabs, ThemeProvider, Toolbar } from '@material-ui/core'
 import theme from '../../shared/theme'
 import { useHistory } from 'react-router-dom'
 import { AppActionType, AppContext, AppError } from '../../shared/reducer'
+import UserAccountHeader from '../UserAccountHeader'
 
 const AuthErrorSnackbar: React.FC = () => {
   const { reducer: { state, dispatch } } = useContext(AppContext)
@@ -18,7 +19,7 @@ const AuthErrorSnackbar: React.FC = () => {
       onClose={handleClose}
     >
       <Alert onClose={handleClose} elevation={6} variant="filled" severity="error">
-        Помилка аутентифікації. Схоже що час сесії вичерпано. Будь ласка <a href='/'>перелогінтесь</a>.
+        Помилка аутентифікації. Схоже що час сесії вичерпано. Будь ласка <a href='/'>ввійдіть знову</a>.
       </Alert>
     </Snackbar>
   )
@@ -36,17 +37,20 @@ const Header: React.FC = () => {
 
   return (
     <ThemeProvider theme={theme}>
+      <UserAccountHeader/>
       <AppBar position='static'>
-        <Toolbar>
-          <Tabs value={history.location.pathname} variant='fullWidth' onChange={handleTabChange}>
-            <Tab label='Користувачі' value='/users'/>
-            <Tab disabled label='Розклад' href='/users'/>
-            <Tab disabled label='Групи' href='/users'/>
-            <Tab disabled label='Повідомлення' href='/users'/>
-            <Tab label='FAQ' value='/faq'/>
-            <Tab disabled label='Статистика' href='/users'/>
-          </Tabs>
-        </Toolbar>
+        <Container>
+          <Toolbar>
+            <Tabs value={history.location.pathname} variant='fullWidth' onChange={handleTabChange}>
+              <Tab label='Користувачі' value='/users'/>
+              <Tab disabled label='Розклад' href='/users'/>
+              <Tab disabled label='Групи' href='/users'/>
+              <Tab disabled label='Повідомлення' href='/users'/>
+              <Tab label='FAQ' value='/faq'/>
+              <Tab disabled label='Статистика' href='/users'/>
+            </Tabs>
+          </Toolbar>
+        </Container>
         <AuthErrorSnackbar/>
       </AppBar>
     </ThemeProvider>

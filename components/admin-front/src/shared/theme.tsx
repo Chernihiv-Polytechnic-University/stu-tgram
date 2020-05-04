@@ -43,7 +43,7 @@ const theme = createMuiTheme({
         fontStyle: 'normal',
         fontWeight: 500,
         letterSpacing: '0.05em',
-        textTransform: 'capitalize'
+        textTransform: 'none'
       },
       containedPrimary: {
         borderRadius: '10px',
@@ -126,12 +126,12 @@ const theme = createMuiTheme({
       root: {
         height: '80px'
       },
-      gutters: {
-        '@media (min-width: 600px)': {
-          paddingLeft: '119px',
-          paddingRight: '119px',
-        }
-      }
+      // gutters: {
+      //   '@media (min-width: 600px)': {
+      //     paddingLeft: '119px',
+      //     paddingRight: '119px',
+      //   }
+      // }
     },
     MuiTabs: {
       root: {
