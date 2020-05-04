@@ -76,8 +76,13 @@ const UpdateAccountDialog: React.FC<UpdateAccountDialogProps> = (props) => {
 
   const handleUpdateAccount: any = async () => {
     let password
-    if (newPassword && confirmedNewPassword && newPassword === confirmedNewPassword) {
-      password = newPassword
+    if (newPassword && confirmedNewPassword) {
+      if (newPassword === confirmedNewPassword) {
+        password = newPassword
+      } else {
+        setError({ newPassword: true, confirmedNewPassword: true })
+        return
+      }
     }
     const result = await client.updateMe({ ...updatedMe, password })
     if (!result.isSuccess) {

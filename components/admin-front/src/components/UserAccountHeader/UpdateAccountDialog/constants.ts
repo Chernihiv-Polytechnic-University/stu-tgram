@@ -7,7 +7,7 @@ export const INITIAL_ERROR: any = {
 
 export const MAPPER: { [k: string]: RegExp } = {
   login: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
-  newPassword: /^\w{10,32}$/,
-  confirmedNewPassword: /^\w{10,32}$/,
+  newPassword: /^.{9,}$/,
+  confirmedNewPassword: /^.{9,}$/,
   name: /^[\S| ]{6,45}$/
 }
