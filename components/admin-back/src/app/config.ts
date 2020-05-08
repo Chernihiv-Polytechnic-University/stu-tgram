@@ -68,6 +68,11 @@ const schema = {
     env: 'MONGO_PASSWORD',
     default: 'zxc123zxc123plkjn',
   },
+  FRONT_ORIGIN: {
+    format: String,
+    env: 'FRONT_ORIGIN',
+    default: 'http://localhost:3001',
+  },
 }
 
 const initConfig = <T>(definitions: T): (name: keyof T) => any => {
