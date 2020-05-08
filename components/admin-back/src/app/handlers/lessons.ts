@@ -109,7 +109,7 @@ const handleStudentsSchedule = async (week: number, lessons: FarmedLesson[]): Pr
 export const farmLessons = (type: 'students' | 'teachers') =>  withCatch(
   ['lessons', 'farm', type],
   async (req: Request, res: Response) => {
-    const { from, to, week } = req.query
+    const { from, to, week } = req.body
 
     const farmer = await farmLessonSchedule({
       type,
