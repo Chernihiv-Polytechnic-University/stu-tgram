@@ -5,6 +5,7 @@ import * as info from './info'
 import * as groups from './groups'
 import * as systemSettings from './system-settings'
 import * as farmLessons from './farm-lessons'
+import * as files from './files'
 import { ManyOutput } from './shared'
 
 export type BaseOptions = {
@@ -65,5 +66,8 @@ export const initClient = (baseOptions: BaseOptions, errorHandler: ErrorHandler)
     updateSystemSettings: execRequest<systemSettings.UpdateSystemSettingsInput, null>(systemSettings.updateSystemSettings),
 
     farmLessons: execRequest<farmLessons.FarmLessonsInput, null>(farmLessons.farmLessons),
+
+    uploadEducationProcessSchedule: execRequest<files.EducationProcessScheduleInput, null>(files.uploadEducationProcessSchedule),
+    compileImages: execRequest<null, null>(files.compileImages),
   }
 }
