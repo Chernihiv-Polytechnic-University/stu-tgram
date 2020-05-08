@@ -52,10 +52,6 @@ export const get = withCatch(logger, ['get', 'groups'], async (req: Request, res
     page: pageN,
   }
 
-    res.send(result)
-  } catch (e) {
-    logger.error(e)
+  res.send(result)
+})
 
-    next(e)
-  }
-}

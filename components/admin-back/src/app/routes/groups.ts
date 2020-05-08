@@ -6,8 +6,7 @@ import { authMiddleware } from '../services/auth'
 export const initRoutes: InitRoutes = async () => {
   const router = Router()
 
-  router.use(authMiddleware)
-  router.get(['/:id', '/'], get)
+  router.get(['/:id', '/'], authMiddleware, get)
 
   return router
 }
