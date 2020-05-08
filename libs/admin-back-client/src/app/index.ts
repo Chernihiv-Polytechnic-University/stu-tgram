@@ -4,6 +4,7 @@ import * as users from './users'
 import * as info from './info'
 import * as groups from './groups'
 import * as systemSettings from './system-settings'
+import * as farmLessons from './farm-lessons'
 import { ManyOutput } from './shared'
 
 export type BaseOptions = {
@@ -62,5 +63,7 @@ export const initClient = (baseOptions: BaseOptions, errorHandler: ErrorHandler)
 
     getSystemSettings: execRequest<null, domain.SystemSettingsAttributes>(systemSettings.getSystemSettings),
     updateSystemSettings: execRequest<systemSettings.UpdateSystemSettingsInput, null>(systemSettings.updateSystemSettings),
+
+    farmLessons: execRequest<farmLessons.FarmLessonsInput, null>(farmLessons.farmLessons),
   }
 }
