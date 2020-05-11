@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "module": "commonjs",
-    "target": "es2017",
+    "target": "es2018",
     "moduleResolution": "node",
     "noImplicitAny": false,
     "experimentalDecorators": true,
@@ -10,9 +10,7 @@
     "outDir": "dist",
     "baseUrl": ".",
     "lib": [
-      "es2017",
-      "dom",
-      "esnext.asynciterable"
+      "es2018"
     ],
     "paths": {
       "#test/*": [
