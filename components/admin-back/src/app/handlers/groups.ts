@@ -53,9 +53,4 @@ export const get = withCatch(logger, ['get', 'groups'], async (req: Request, res
   }
 
     res.send(result)
-  } catch (e) {
-    logger.error(e)
-
-    next(e)
-  }
-}
+  })

@@ -1,6 +1,6 @@
 import { createMuiTheme } from '@material-ui/core'
 
-const theme = createMuiTheme({
+const theme = (createMuiTheme as any)({
   palette: {
     text: {
       primary: '#544E4E'
@@ -24,6 +24,12 @@ const theme = createMuiTheme({
       lineHeight: '22px',
       fontStyle: 'normal',
       letterSpacing: '0.05em',
+    },
+    h4: {
+      fontSize: '16px',
+      fontWeight: 500,
+      lineHeight: '150%',
+      letterSpacing: '0.05em'
     }
   },
   overrides: {
@@ -136,7 +142,7 @@ const theme = createMuiTheme({
       }
     },
     MuiTab: {
-      textColorInherit: {
+      textColorPrimary: {
         color: '#FFFFFF',
         textTransform: 'capitalize',
         fontSize: '16px',
@@ -145,8 +151,20 @@ const theme = createMuiTheme({
         opacity: 1,
         '&$selected': {
           backgroundColor: '#2282A1',
-          borderRadius: '20px'
+          borderRadius: '20px',
+          color: '#FFFFFF'
         }
+      },
+      textColorInherit: {
+        color: '#005390',
+        fontSize: '14px',
+        textTransform: 'uppercase',
+        opacity: 1,
+      }
+    },
+    MuiPickersToolbar: {
+      toolbar: {
+        display: 'none'
       }
     }
   }

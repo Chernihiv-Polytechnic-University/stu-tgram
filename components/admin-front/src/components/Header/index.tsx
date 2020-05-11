@@ -1,10 +1,18 @@
-import React, { useContext } from 'react'
+import React, {useContext, useState} from 'react'
 import { Alert } from '@material-ui/lab'
 import { AppBar, Container, Snackbar, Tab, Tabs, ThemeProvider, Toolbar } from '@material-ui/core'
 import theme from '../../shared/theme'
 import { useHistory } from 'react-router-dom'
 import { AppActionType, AppContext, AppError } from '../../shared/reducer'
 import UserAccountHeader from '../UserAccountHeader'
+
+const normalizePathname = (path: string) => {
+  if (path.startsWith('/schedule')) {
+    return '/schedule'
+  }
+  return path
+}
+
 
 const AuthErrorSnackbar: React.FC = () => {
   const { reducer: { state, dispatch } } = useContext(AppContext)
@@ -49,9 +57,14 @@ const Header: React.FC = () => {
       <AppBar position='static'>
         <Container>
           <Toolbar>
-            <Tabs value={history.location.pathname} variant='fullWidth' onChange={handleTabChange}>
+            <Tabs
+              value={normalizePathname(history.location.pathname)}
+              variant='fullWidth'
+              textColor='primary'
+              onChange={handleTabChange}
+            >
               <Tab label='Користувачі' value='/users'/>
-              <Tab disabled label='Розклад' href='/users'/>
+              <Tab label='Розклад' value='/schedule'/>
               <Tab disabled label='Групи' href='/users'/>
               <Tab disabled label='Повідомлення' href='/users'/>
               <Tab label='FAQ' value='/faq'/>
