@@ -10,7 +10,7 @@ export type FarmLessonsInput = {
 export const farmLessons = ({ from, to, week, type }: FarmLessonsInput): AxiosRequestConfig => {
   return {
     method: 'post',
-    url: `/farm/for-${type}`,
+    url: `/lessons/farm/for-${type}`,
     data: { from, to, week },
   }
 }
