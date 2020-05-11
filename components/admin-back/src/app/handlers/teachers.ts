@@ -1,22 +1,25 @@
 import { isString } from 'lodash'
 import { Request, Response } from 'express'
 import { withCatch } from '../utils/with-catch'
+import { parseBoolean } from '../utils/parse-boolean'
 import { createLogger } from 'libs/logger'
 import { TeacherModel, Teacher } from 'libs/domain-model'
 const logger = createLogger(`#handlers/${__filename}`)
 
 const mapFullInfo = (teacher: Teacher) => ({
   ...teacher.toJSON(),
-  lessonsScheduleImage: teacher.lessonsScheduleImage.toString('base64'),
+  lessonsScheduleImage: teacher.lessonsScheduleImage
+    ? teacher.lessonsScheduleImage.toString('base64')
+    : undefined,
 })
 
 export const get = withCatch(logger, ['get', 'teachers'], async (req: Request, res: Response) => {
   const { id } = req.params
-  const { page, limit, query } = req.query
+  const { page, limit, query, full = false } = req.query
 
   if (isString(id)) {
     const result = await TeacherModel
-        .findById(id)
+        .findById(id, parseBoolean(full) ? {} : { lessonsScheduleImage: 0 })
         .then(mapFullInfo)
 
     res.send(result)
@@ -29,7 +32,7 @@ export const get = withCatch(logger, ['get', 'teachers'], async (req: Request, r
   const findInput = isString(query) ? { name: { $regex: new RegExp(query), $options: 'i' } } : {}
 
   const docs = await TeacherModel
-      .find(findInput)
+      .find(findInput, parseBoolean(full) ? {} : { lessonsScheduleImage: 0 })
       .limit(limitN)
       .skip(pageN * limitN)
 

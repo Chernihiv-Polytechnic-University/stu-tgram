@@ -1,11 +1,10 @@
 import { isString } from 'lodash'
 import { Request, Response } from 'express'
+import { parseBoolean } from '../utils/parse-boolean'
 import { withCatch } from '../utils/with-catch'
 import { createLogger } from 'libs/logger'
 import { StudentsGroupModel, StudentsGroup } from 'libs/domain-model'
 const logger = createLogger(`#handlers/${__filename}`)
-
-const SELECT_MANY_FIELDS = '_id subgroupNumber name createdAt updatedAt'
 
 const mapFullInfo = (group: StudentsGroup) => ({
   ...group.toJSON(),
@@ -15,11 +14,14 @@ const mapFullInfo = (group: StudentsGroup) => ({
 
 export const get = withCatch(logger, ['get', 'groups'], async (req: Request, res: Response) => {
   const { id } = req.params
-  const { page, limit, query } = req.query
+  const { page, limit, query, full = false } = req.query
 
   if (isString(id)) {
     const result = await StudentsGroupModel
-        .findById(id, { educationSchedule: 0 })
+        .findById(id, parseBoolean(full)
+          ? { educationSchedule: 0 }
+          : { educationScheduleImage: 0, lessonsScheduleImage: 0, educationSchedule: 0 },
+        )
         .then(mapFullInfo)
 
     res.send(result)
@@ -32,10 +34,12 @@ export const get = withCatch(logger, ['get', 'groups'], async (req: Request, res
   const findInput = isString(query) ? { name: { $regex: new RegExp(query), $options: 'i' } } : {}
 
   const docs = await StudentsGroupModel
-      .find(findInput)
+      .find(findInput, parseBoolean(full)
+        ? { educationSchedule: 0 }
+        : { educationScheduleImage: 0, lessonsScheduleImage: 0, educationSchedule: 0 },
+      )
       .limit(limitN)
       .skip(pageN * limitN)
-      .select(SELECT_MANY_FIELDS)
 
   const count = await StudentsGroupModel.countDocuments(findInput).exec()
   const countAll = await StudentsGroupModel.countDocuments({}).exec()
@@ -43,15 +47,14 @@ export const get = withCatch(logger, ['get', 'groups'], async (req: Request, res
   const pagesAll = Math.ceil(countAll / limitN)
 
   const result = {
-    docs,
     count,
     pages,
     pagesAll,
     countAll,
+    docs: docs.map(mapFullInfo),
     limit: limitN,
     page: pageN,
   }
 
   res.send(result)
 })
-
