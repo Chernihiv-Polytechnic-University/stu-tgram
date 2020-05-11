@@ -37,7 +37,7 @@ const connectToDb = () => connect({
 })
 
 const runApp = () => {
-  app.use(cors({ credentials: true, origin: (_, cb) => cb(null, true) }))
+  app.use(cors({ credentials: true, origin: config('FRONT_ORIGIN') }))
   app.use(helmet())
   app.use(cookieParser())
   app.use(compress())

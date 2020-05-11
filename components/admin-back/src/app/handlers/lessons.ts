@@ -6,6 +6,9 @@ import { farmLessonSchedule, FarmedLesson } from 'libs/lesson-schedule-farmer'
 import { flow, map, values, groupBy, find, uniq } from 'lodash/fp'
 import { dateToDay } from '../utils/date-to-day'
 import * as catchUtil from '../utils/with-catch'
+import config from '../config'
+
+const CHUNK_SIZE = 10
 
 const logger = createLogger(`#handlers/${__filename}`)
 const withCatch = catchUtil.withCatch(logger)
@@ -106,15 +109,15 @@ const handleStudentsSchedule = async (week: number, lessons: FarmedLesson[]): Pr
 export const farmLessons = (type: 'students' | 'teachers') =>  withCatch(
   ['lessons', 'farm', type],
   async (req: Request, res: Response) => {
-    const { from, to, week } = req.query
+    const { from, to, week } = req.body
 
     const farmer = await farmLessonSchedule({
       type,
       from,
       to,
-      baseUrl: 'https://vnz.osvita.net/BetaSchedule.asmx',
-      universityId: 11761, // TODO to config
-      chunkSize: 10, // TODO to config
+      baseUrl: config('SCHEDULE_DB_BASE_URL'),
+      universityId: config('SCHEDULE_DB_UNIVERSITY_ID'),
+      chunkSize: CHUNK_SIZE,
     })
 
     const handlePack = type === 'teachers' ? handleTeachersSchedule : handleStudentsSchedule

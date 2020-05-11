@@ -68,6 +68,24 @@ const schema = {
     env: 'MONGO_PASSWORD',
     default: 'zxc123zxc123plkjn',
   },
+  FRONT_ORIGIN: {
+    format: String,
+    env: 'FRONT_ORIGIN',
+    default: 'http://localhost:3001',
+  },
+  SCHEDULE_DB_BASE_URL: {
+    format: String,
+    env: 'SCHEDULE_DB_BASE_URL',
+    default: 'https://vnz.osvita.net/BetaSchedule.asmx',
+  },
+  SCHEDULE_DB_UNIVERSITY_ID: {
+    format: Number,
+    env: 'SCHEDULE_DB_BASE_URL',
+    default: 11761,
+  },
+  // baseUrl: 'https://vnz.osvita.net/BetaSchedule.asmx',
+  // universityId: 11761, // TODO to config
+  // chunkSize: 10, // TODO to config
 }
 
 const initConfig = <T>(definitions: T): (name: keyof T) => any => {
