@@ -1,13 +1,9 @@
 import { AxiosRequestConfig } from 'axios'
-import { InputWithId, InputWithFull } from './shared'
+import { InputWithId, InputWithFull, ManyInput } from './shared'
 
 export type GetTeacherInput = InputWithId & InputWithFull
 
-export type GetTeachersInput = InputWithFull & {
-  limit?: number
-  page?: number
-  query?: string,
-}
+export type GetTeachersInput = InputWithFull & Omit<ManyInput, 'ordering'>
 
 export const getTeacher = ({ id, full = false }: GetTeacherInput): AxiosRequestConfig => {
   return {

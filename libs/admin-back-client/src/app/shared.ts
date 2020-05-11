@@ -14,9 +14,10 @@ export type ManyOutput<T> = {
 }
 
 export type ManyInput = {
-  sort?: string
+  ordering?: string
   limit?: number
-  page?: number,
+  page?: number
+  query?: string,
 }
 
 export type InputWithFull = {

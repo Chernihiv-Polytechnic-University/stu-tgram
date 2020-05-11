@@ -4,6 +4,7 @@ import * as users from './users'
 import * as info from './info'
 import * as groups from './groups'
 import * as teachers from './teachers'
+import * as feedbacks from './feedbacks'
 import * as systemSettings from './system-settings'
 import * as farmLessons from './farm-lessons'
 import * as files from './files'
@@ -56,8 +57,11 @@ export const initClient = (baseOptions: BaseOptions, errorHandler: ErrorHandler)
     getGroup: execRequest<groups.GetGroupInput, domain.StudentsGroupAttributes>(groups.getGroup),
     getGroups: execRequest<groups.GetGroupsInput, ManyOutput<domain.StudentsGroupAttributes>>(groups.getGroups),
 
-    getTeacher: execRequest<teachers.GetTeacherInput, domain.TeacherAttributes>(groups.getTeacher),
-    getTeachers: execRequest<teachers.GetTeachersInput, ManyOutput<domain.TeacherAttributes>>(groups.getTeachers),
+    getTeacher: execRequest<teachers.GetTeacherInput, domain.TeacherAttributes>(teachers.getTeacher),
+    getTeachers: execRequest<teachers.GetTeachersInput, ManyOutput<domain.TeacherAttributes>>(teachers.getTeachers),
+
+    getFeedback: execRequest<feedbacks.GetFeedbackInput, any>(feedbacks.getFeedback),
+    getFeedbacks: execRequest<feedbacks.GetFeedbacksInput, ManyOutput<any>>(feedbacks.getFeedbacks),
 
     createInfo: execRequest<info.CreateInfoInput, null>(info.createInfo),
     updateInfo: execRequest<info.UpdateInfoInput, null>(info.updateInfo),
