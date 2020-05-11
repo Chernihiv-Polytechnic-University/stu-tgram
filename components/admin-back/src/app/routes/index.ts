@@ -7,6 +7,7 @@ import { initRoutes as initFeedbacksRoutes } from './feedbacks'
 import { initRoutes as initInfoRoutes } from './info'
 import { initRoutes as initGroupsRoutes } from './groups'
 import { initRoutes as initLessonsRoutes } from './lessons'
+import { initRoutes as initTeachersRoutes } from './teachers'
 import { initRoutes as initSystemSettingsRoutes } from './system-settings'
 
 export interface InitRoutesOptions {
@@ -26,6 +27,7 @@ export const initRoutes: InitRoutes = async (options) => {
   router.use('/info', await initInfoRoutes(options))
   router.use('/groups', await initGroupsRoutes(options))
   router.use('/lessons', await initLessonsRoutes(options))
+  router.use('/teachers', await initTeachersRoutes(options))
   router.use('/system-settings', await initSystemSettingsRoutes(options))
 
   return router
