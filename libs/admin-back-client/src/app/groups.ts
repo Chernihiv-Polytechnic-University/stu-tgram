@@ -1,16 +1,17 @@
 import { AxiosRequestConfig } from 'axios'
-import { InputWithId } from './shared'
+import { InputWithId, InputWithFull } from './shared'
 
-export type GetGroupInput = InputWithId
+export type GetGroupInput = InputWithId & InputWithFull
 
-export type GetGroupsInput = {
+export type GetGroupsInput = InputWithFull & {
   limit?: number
   page?: number
   query?: string,
 }
 
-export const getGroup = ({ id }: GetGroupInput): AxiosRequestConfig => {
+export const getGroup = ({ id, full = false }: GetGroupInput): AxiosRequestConfig => {
   return {
+    params: { full },
     method: 'get',
     url: `/groups/${id}`,
   }

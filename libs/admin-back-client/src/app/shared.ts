@@ -18,3 +18,7 @@ export type ManyInput = {
   limit?: number
   page?: number,
 }
+
+export type InputWithFull = {
+  full?: boolean,
+}
