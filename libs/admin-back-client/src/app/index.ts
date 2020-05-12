@@ -1,5 +1,5 @@
 import * as axios from 'axios'
-import socket from "socket.io-client";
+import * as socket from "socket.io-client";
 import * as domain from 'libs/domain-model'
 import * as users from './users'
 import * as info from './info'
