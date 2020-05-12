@@ -1,4 +1,5 @@
 import * as axios from 'axios'
+import socket from "socket.io-client";
 import * as domain from 'libs/domain-model'
 import * as users from './users'
 import * as info from './info'
@@ -11,7 +12,8 @@ import * as files from './files'
 import { ManyOutput } from './shared'
 
 export type BaseOptions = {
-  baseURL: string,
+  baseURL: string
+  apiPath: string,
 }
 
 export type Result<R> = {
@@ -31,7 +33,7 @@ const createExecRequest = (baseOptions: BaseOptions, errorHandler: ErrorHandler)
   async (specificFuncOptions: I): Promise<Result<R>> => {
     return await axios.default({
       withCredentials: true,
-      ...baseOptions,
+      baseURL: baseOptions.baseURL + baseOptions.apiPath,
       ...specificFunc(specificFuncOptions),
     }).then((axiosResult) => {
       return { isSuccess: true, result: axiosResult.data }
@@ -41,8 +43,15 @@ const createExecRequest = (baseOptions: BaseOptions, errorHandler: ErrorHandler)
     })
   }
 
+const createSocketConnection = (url: string): (event: string, listener: Function) => void => {
+  const connection = socket(url)
+
+  return (event, listener) => connection.on(event, listener)
+}
+
 export const initClient = (baseOptions: BaseOptions, errorHandler: ErrorHandler) => {
   const execRequest = createExecRequest(baseOptions, errorHandler)
+  const socketConnection = createSocketConnection(baseOptions.baseURL)
 
   return {
     login: execRequest<users.LoginInput, null>(users.login),
@@ -77,5 +86,6 @@ export const initClient = (baseOptions: BaseOptions, errorHandler: ErrorHandler)
 
     uploadEducationProcessSchedule: execRequest<files.EducationProcessScheduleInput, null>(files.uploadEducationProcessSchedule),
     compileImages: execRequest<null, null>(files.compileImages),
+    onImagesCompiling: (listener: Function) => socketConnection('image_compiling', listener)
   }
 }

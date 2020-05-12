@@ -5,9 +5,8 @@ export type GetFeedbackInput = InputWithId
 
 export type GetFeedbacksInput = Pick<ManyInput, 'page' | 'limit'>
 
-export const getFeedback = ({ id, full = false }: GetFeedbackInput): AxiosRequestConfig => {
+export const getFeedback = ({ id }: GetFeedbackInput): AxiosRequestConfig => {
   return {
-    params: { full },
     method: 'get',
     url: `/feedbacks/${id}`,
   }
