@@ -1,26 +1,21 @@
-import React, {useContext, useState} from 'react'
+import React, { useContext, useState } from 'react'
 import {
-  ThemeProvider,
-  Grid,
-  Button,
-  RadioGroup,
-  FormControl,
-  FormControlLabel,
-  Radio
+  ThemeProvider
 } from '@material-ui/core'
 import Information from '../../../components/Information'
-import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers'
-import DateFnsUtils from '@date-io/date-fns'
 import theme from '../../../shared/theme'
-import Paper from '../../../components/Paper'
 import { INITIAL_FARM_LESSON_INPUT, FarmLessonsInput } from './constants'
 import { addWeeks, formatISO } from 'date-fns'
-import { uk } from 'date-fns/locale'
-import { AppContext } from "../../../shared/reducer";
+import { AppContext } from '../../../shared/reducer'
+import FarmContainer from './FarmContainer'
+import FarmingResultComponent from './FarmingResultComponent'
 
 const ManageSchedule: React.FC = () => {
   const { client } = useContext(AppContext)
   const [farmLessonsInput, setFarmLessonsInput] = useState<FarmLessonsInput>(INITIAL_FARM_LESSON_INPUT)
+  const [farming, setFarming] = useState<boolean>(false)
+  const [isFarmingSuccess, setFarmingSuccess] = useState<boolean>(false)
+  const [isFarmingStarted, setFarmingStarted] = useState<boolean>(false)
 
   const handleWeekChange = (event: any) => {
     if (event.target.value === '0') {
@@ -43,75 +38,33 @@ const ManageSchedule: React.FC = () => {
   }
 
   const handleFarmLessonsClick = async () => {
-    const result1 = await client.farmLessons(farmLessonsInput)
-      .then((result: any) => console.log(result))
+    setFarming(true)
+    setFarmingStarted(true)
+    await client.farmLessons(farmLessonsInput)
+      .then((result: any) => {
+        if (result.isSuccess) {
+          setFarmingSuccess(true)
+        } else {
+          setFarmingSuccess(false)
+        }
+        setFarming(false)
+        setFarmLessonsInput(INITIAL_FARM_LESSON_INPUT)
+      })
   }
-
-  console.log(farmLessonsInput)
 
   return (<ThemeProvider theme={theme}>
     <Information content='Content'/>
-    <Grid container spacing={3} justify='center'>
-      <Paper title='Оберіть тиждень:'>
-        <FormControl component="fieldset">
-          <RadioGroup
-            aria-label="week"
-            name="week"
-            value={farmLessonsInput.week}
-            onChange={handleWeekChange}>
-            <FormControlLabel
-              value={0}
-              control={<Radio color='primary'/>}
-              label="Парний"
-            />
-            <FormControlLabel
-              value={1}
-              control={<Radio color='primary'/>}
-              label="Непарний"
-            />
-          </RadioGroup>
-        </FormControl>
-      </Paper>
-
-      <Paper title='Оберіть початок тижня:'>
-        <MuiPickersUtilsProvider utils={DateFnsUtils} locale={uk}>
-          <DatePicker
-            autoOk
-            openTo='date'
-            orientation="landscape"
-            value={farmLessonsInput.from}
-            onChange={handleDateChange}
-            variant='static'/>
-        </MuiPickersUtilsProvider>
-      </Paper>
-      <Paper title='Оберіть акторів:'>
-        <FormControl component="fieldset">
-          <RadioGroup
-            aria-label="type"
-            name='type'
-            value={farmLessonsInput.type}
-            onChange={handleTypeChange}>
-            <FormControlLabel
-              value='teachers'
-              control={<Radio color='primary'/>}
-              label="Викладачі"
-            />
-            <FormControlLabel
-              value='students'
-              control={<Radio color='primary'/>}
-              label="Здобувачі вищої освіти"
-            />
-          </RadioGroup>
-        </FormControl>
-      </Paper>
-      <Button
-        style={{ marginBottom: '66px' }}
-        variant='outlined'
-        onClick={handleFarmLessonsClick}
-        color='primary'>
-        Отримати інформацію
-      </Button>
-    </Grid>
+    {isFarmingStarted && !farming
+      ? (isFarmingSuccess ? <FarmingResultComponent type='success'/> : <FarmingResultComponent type='failed'/>)
+      : null}
+    <FarmContainer
+      farmLessonsInput={farmLessonsInput}
+      handleWeekChange={handleWeekChange}
+      handleDateChange={handleDateChange}
+      handleTypeChange={handleTypeChange}
+      handleFarmLessonsClick={handleFarmLessonsClick}
+      farming={farming}
+    />
   </ThemeProvider>)
 }
 
