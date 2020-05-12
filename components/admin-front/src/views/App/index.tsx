@@ -14,8 +14,8 @@ export const RouteWithSubRoutes: React.FC = (route: any) => {
 const App: React.FC = () => {
   const [state, dispatch] = React.useReducer(reducer, initialState)
 
-  const client = initClient({ baseURL: process.env.REACT_APP_API_URL as string }, async (error: any) => {
-    if (error.response.status === 401) {
+  const client = initClient({ baseURL: process.env.REACT_APP_API_URL as string, apiPath: process.env.REACT_APP_API_PATH as string }, async (error: any) => {
+    if (error?.response?.status === 401) {
 
       dispatch({ type: AppActionType.SET_ERROR, payload: AppError.AUTH_ERROR })
 
