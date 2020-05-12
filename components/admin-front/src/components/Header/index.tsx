@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react'
+import React, { useContext } from 'react'
 import { Alert } from '@material-ui/lab'
 import { AppBar, Container, Snackbar, Tab, Tabs, ThemeProvider, Toolbar } from '@material-ui/core'
 import theme from '../../shared/theme'
@@ -68,7 +68,7 @@ const Header: React.FC = () => {
               <Tab label='FAQ' value='/faq'/>
               <Tab label='Групи' value='/groups'/>
               <Tab label='Викладачі' value='/teachers'/>
-              <Tab disabled label='Відгуки' value='/feedbacks'/>
+              <Tab label='Відгуки' value='/feedbacks'/>
               <Tab disabled label='Статистика' value='/statistic'/>
             </Tabs>
           </Toolbar>
