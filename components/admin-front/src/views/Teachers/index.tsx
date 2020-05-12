@@ -21,10 +21,10 @@ import { ITEMS_PER_PAGE } from './constants'
 
 const useStyles = makeStyles(styles as any)
 
-const Groups: React.FC = () => {
+const Teachers: React.FC = () => {
   const classes = useStyles()
   const { client } = useContext(AppContext)
-  const [groups, setGroups] = useState<any[]>([])
+  const [teachers, setTeachers] = useState<any[]>([])
   const [page, setPage] = useState<number>(0)
   const [query, setQuery] = useState<string>('')
 
@@ -33,15 +33,15 @@ const Groups: React.FC = () => {
     setPage(page + 1)
   }
 
-  const fetchGroups = async () => {
-    const { result, isSuccess } = await client.getGroups({ limit: ITEMS_PER_PAGE, page, query })
+  const fetchTeachers = async () => {
+    const { result, isSuccess } = await client.getTeachers({ limit: ITEMS_PER_PAGE, page, query })
 
     if (!isSuccess) { return }
 
     if (page === 0) {
-      setGroups(result.docs)
+      setTeachers(result.docs)
     } else {
-      setGroups(old => [...old, ...result.docs])
+      setTeachers(old => [...old, ...result.docs])
     }
   }
 
@@ -51,7 +51,7 @@ const Groups: React.FC = () => {
   }
 
   useEffect(() => {
-    fetchGroups()
+    fetchTeachers()
   }, [page, query])
 
   return (
@@ -66,23 +66,19 @@ const Groups: React.FC = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>Код</TableCell>
-              <TableCell>Номер підгрупи</TableCell>
+              <TableCell>Ім’я</TableCell>
               <TableCell>Оновлено</TableCell>
-              <TableCell>Графік учбового процесу</TableCell>
               <TableCell>Розклад пар</TableCell>
               <TableCell />
             </TableRow>
           </TableHead>
           <TableBody>
-            {groups.map(group => {
+            {teachers.map(teacher => {
               return (
-                <TableRow key={group._id} hover>
-                  <TableCell>{group.name}</TableCell>
-                  <TableCell>{group.subgroupNumber}</TableCell>
-                  <TableCell>{formatISO(new Date(group.updatedAt), { representation: 'date' })}</TableCell>
-                  <TableCell>{group.educationScheduleImage ? 'Є' : 'Немає'}</TableCell>
-                  <TableCell>{group.lessonsScheduleImage ? 'Є' : 'Немає'}</TableCell>
+                <TableRow key={teacher._id} hover>
+                  <TableCell>{teacher.name}</TableCell>
+                  <TableCell>{formatISO(new Date(teacher.updatedAt), { representation: 'date' })}</TableCell>
+                  <TableCell>{teacher.lessonsScheduleImage ? 'Є' : 'Немає'}</TableCell>
                 </TableRow>)
             })}
           </TableBody>
@@ -93,4 +89,4 @@ const Groups: React.FC = () => {
   )
 }
 
-export default Groups
+export default Teachers

@@ -65,10 +65,11 @@ const Header: React.FC = () => {
             >
               <Tab label='Користувачі' value='/users'/>
               <Tab label='Розклад' value='/schedule'/>
-              <Tab disabled label='Групи' href='/users'/>
-              <Tab disabled label='Повідомлення' href='/users'/>
               <Tab label='FAQ' value='/faq'/>
-              <Tab disabled label='Статистика' href='/users'/>
+              <Tab label='Групи' value='/groups'/>
+              <Tab label='Викладачі' value='/teachers'/>
+              <Tab disabled label='Відгуки' value='/feedbacks'/>
+              <Tab disabled label='Статистика' value='/statistic'/>
             </Tabs>
           </Toolbar>
         </Container>

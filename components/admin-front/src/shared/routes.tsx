@@ -1,4 +1,5 @@
 import Groups from '../views/Groups'
+import Teachers from '../views/Teachers'
 import Login from '../views/Login'
 import Users from '../views/Users'
 import FAQ from '../views/FAQ'
@@ -11,6 +12,10 @@ export const routes = [
   {
     path: '/groups',
     component: Groups
+  },
+  {
+    path: '/teachers',
+    component: Teachers
   },
   {
     path: '/users',
