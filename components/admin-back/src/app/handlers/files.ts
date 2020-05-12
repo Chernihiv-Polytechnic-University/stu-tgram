@@ -101,7 +101,7 @@ export const compilePNGs = withCatch(['files', 'compile_png'], async (req, res) 
     await TeacherModel.updateOne({ _id: teacher._id }, { $set: { lessonsScheduleImage } }).exec()
 
     left += 1
-    res.locals.socket.emit('png_compiling', { all, left })
+    res.locals.socket.emit('image_compiling', { all, left })
   }, { concurrency })
 
   await imageMaker.destruct()
