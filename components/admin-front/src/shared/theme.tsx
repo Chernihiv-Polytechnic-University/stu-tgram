@@ -18,6 +18,12 @@ const theme = (createMuiTheme as any)({
       fontWeight: 500,
       fontStyle: 'normal'
     },
+    h2: {
+      fontSize: '24px',
+      fontWeight: 500,
+      letterSpacing: '0.05em',
+      lineHeight: '28px'
+    },
     h3: {
       fontSize: '19px',
       fontWeight: 500,
@@ -28,6 +34,12 @@ const theme = (createMuiTheme as any)({
     h4: {
       fontSize: '16px',
       fontWeight: 500,
+      lineHeight: '150%',
+      letterSpacing: '0.05em'
+    },
+    h5: {
+      fontSize: '16px',
+      fontWeight: 'normal',
       lineHeight: '150%',
       letterSpacing: '0.05em'
     }
