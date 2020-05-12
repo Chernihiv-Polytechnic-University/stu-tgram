@@ -6,10 +6,10 @@ import { createLogger } from 'libs/logger'
 import { StudentsGroupModel, StudentsGroup } from 'libs/domain-model'
 const logger = createLogger(`#handlers/${__filename}`)
 
-const mapFullInfo = (group: StudentsGroup) => ({
+const mapInfo = (full: boolean) => (group: StudentsGroup) => ({
   ...group.toJSON(),
-  educationScheduleImage: group.educationScheduleImage.toString('base64'),
-  lessonsScheduleImage: group.lessonsScheduleImage.toString('base64'),
+  educationScheduleImage: full ? group.educationScheduleImage.toString('base64') : !!group.educationScheduleImage,
+  lessonsScheduleImage: full ? group.lessonsScheduleImage.toString('base64') : !!group.educationScheduleImage,
 })
 
 export const get = withCatch(logger, ['get', 'groups'], async (req: Request, res: Response) => {
@@ -18,11 +18,8 @@ export const get = withCatch(logger, ['get', 'groups'], async (req: Request, res
 
   if (isString(id)) {
     const result = await StudentsGroupModel
-        .findById(id, parseBoolean(full)
-          ? { educationSchedule: 0 }
-          : { educationScheduleImage: 0, lessonsScheduleImage: 0, educationSchedule: 0 },
-        )
-        .then(mapFullInfo)
+        .findById(id, { educationSchedule: 0 })
+        .then(mapInfo(parseBoolean(full)))
 
     res.send(result)
 
@@ -34,10 +31,7 @@ export const get = withCatch(logger, ['get', 'groups'], async (req: Request, res
   const findInput = isString(query) ? { name: { $regex: new RegExp(query), $options: 'i' } } : {}
 
   const docs = await StudentsGroupModel
-      .find(findInput, parseBoolean(full)
-        ? { educationSchedule: 0 }
-        : { educationScheduleImage: 0, lessonsScheduleImage: 0, educationSchedule: 0 },
-      )
+      .find(findInput, { educationSchedule: 0 })
       .limit(limitN)
       .skip(pageN * limitN)
 
@@ -51,7 +45,7 @@ export const get = withCatch(logger, ['get', 'groups'], async (req: Request, res
     pages,
     pagesAll,
     countAll,
-    docs: docs.map(mapFullInfo),
+    docs: docs.map(mapInfo(false)),
     limit: limitN,
     page: pageN,
   }
