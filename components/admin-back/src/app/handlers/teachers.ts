@@ -6,11 +6,11 @@ import { createLogger } from 'libs/logger'
 import { TeacherModel, Teacher } from 'libs/domain-model'
 const logger = createLogger(`#handlers/${__filename}`)
 
-const mapFullInfo = (teacher: Teacher) => ({
+const mapFullInfo = (full: boolean) => (teacher: Teacher) => ({
   ...teacher.toJSON(),
-  lessonsScheduleImage: teacher.lessonsScheduleImage
+  lessonsScheduleImage: full
     ? teacher.lessonsScheduleImage.toString('base64')
-    : undefined,
+    : !!teacher.lessonsScheduleImage,
 })
 
 export const get = withCatch(logger, ['get', 'teachers'], async (req: Request, res: Response) => {
@@ -19,8 +19,8 @@ export const get = withCatch(logger, ['get', 'teachers'], async (req: Request, r
 
   if (isString(id)) {
     const result = await TeacherModel
-        .findById(id, parseBoolean(full) ? {} : { lessonsScheduleImage: 0 })
-        .then(mapFullInfo)
+        .findById(id)
+        .then(mapFullInfo(parseBoolean(full)))
 
     res.send(result)
 
@@ -32,7 +32,7 @@ export const get = withCatch(logger, ['get', 'teachers'], async (req: Request, r
   const findInput = isString(query) ? { name: { $regex: new RegExp(query), $options: 'i' } } : {}
 
   const docs = await TeacherModel
-      .find(findInput, parseBoolean(full) ? {} : { lessonsScheduleImage: 0 })
+      .find(findInput)
       .limit(limitN)
       .skip(pageN * limitN)
 
@@ -46,7 +46,7 @@ export const get = withCatch(logger, ['get', 'teachers'], async (req: Request, r
     pages,
     pagesAll,
     countAll,
-    docs: docs.map(mapFullInfo),
+    docs: docs.map(mapFullInfo(false)),
     limit: limitN,
     page: pageN,
   }
