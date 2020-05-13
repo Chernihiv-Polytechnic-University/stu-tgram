@@ -12,12 +12,14 @@ import {
   TableCell,
   TableBody,
   ThemeProvider,
-  makeStyles
+  makeStyles, IconButton
 } from '@material-ui/core'
 import { AppContext } from '../../shared/reducer'
 import theme from '../../shared/theme'
+import GroupInfo from './GroupInfo'
 import styles from './styles'
 import { ITEMS_PER_PAGE } from './constants'
+import changeIcon from '../../assets/changeIcon.svg'
 
 const useStyles = makeStyles(styles as any)
 
@@ -27,7 +29,15 @@ const Groups: React.FC = () => {
   const [groups, setGroups] = useState<any[]>([])
   const [page, setPage] = useState<number>(0)
   const [query, setQuery] = useState<string>('')
+  const [groupId, setGroupId] = useState<string | null>(null)
 
+  const hideGroupInfo = () => {
+    setGroupId(null)
+  }
+
+  const showGroupInfo = (id: string) => () => {
+    setGroupId(id)
+  }
 
   const onMoreClick: any = () => {
     setPage(page + 1)
@@ -57,6 +67,7 @@ const Groups: React.FC = () => {
   return (
     <ThemeProvider theme={theme}>
       <Container>
+        <GroupInfo groupId={groupId} onClose={hideGroupInfo} />
         <Grid container direction='row' justify='space-between' alignItems='baseline'>
           <Typography component="h3" variant="h3" align="left" color="textPrimary">Групи</Typography>
         </Grid>
@@ -83,6 +94,11 @@ const Groups: React.FC = () => {
                   <TableCell>{formatISO(new Date(group.updatedAt), { representation: 'date' })}</TableCell>
                   <TableCell>{group.educationScheduleImage ? 'Є' : 'Немає'}</TableCell>
                   <TableCell>{group.lessonsScheduleImage ? 'Є' : 'Немає'}</TableCell>
+                  <TableCell>
+                    <IconButton aria-label='' onClick={showGroupInfo(group._id)}>
+                      <img src={changeIcon} alt='Показати'/>
+                    </IconButton>
+                  </TableCell>
                 </TableRow>)
             })}
           </TableBody>

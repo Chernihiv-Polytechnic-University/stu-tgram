@@ -12,12 +12,15 @@ import {
   TableCell,
   TableBody,
   ThemeProvider,
-  makeStyles
+  IconButton,
+  makeStyles,
 } from '@material-ui/core'
+import TeacherInfo from './TeacherInfo'
 import { AppContext } from '../../shared/reducer'
 import theme from '../../shared/theme'
 import styles from './styles'
 import { ITEMS_PER_PAGE } from './constants'
+import changeIcon from '../../assets/changeIcon.svg'
 
 const useStyles = makeStyles(styles as any)
 
@@ -27,6 +30,7 @@ const Teachers: React.FC = () => {
   const [teachers, setTeachers] = useState<any[]>([])
   const [page, setPage] = useState<number>(0)
   const [query, setQuery] = useState<string>('')
+  const [teacherId, setTeacherId] = useState<string | null>(null)
 
 
   const onMoreClick: any = () => {
@@ -54,9 +58,18 @@ const Teachers: React.FC = () => {
     fetchTeachers()
   }, [page, query])
 
+  const hideTeacherInfo = () => {
+    setTeacherId(null)
+  }
+
+  const showTeacherInfo = (id: string) => () => {
+    setTeacherId(id)
+  }
+
   return (
     <ThemeProvider theme={theme}>
       <Container>
+        <TeacherInfo teacherId={teacherId} onClose={hideTeacherInfo} />
         <Grid container direction='row' justify='space-between' alignItems='baseline'>
           <Typography component="h3" variant="h3" align="left" color="textPrimary">Групи</Typography>
         </Grid>
@@ -79,6 +92,11 @@ const Teachers: React.FC = () => {
                   <TableCell>{teacher.name}</TableCell>
                   <TableCell>{formatISO(new Date(teacher.updatedAt), { representation: 'date' })}</TableCell>
                   <TableCell>{teacher.lessonsScheduleImage ? 'Є' : 'Немає'}</TableCell>
+                  <TableCell>
+                    <IconButton aria-label='' onClick={showTeacherInfo(teacher._id)}>
+                      <img src={changeIcon} alt='Показати'/>
+                    </IconButton>
+                  </TableCell>
                 </TableRow>)
             })}
           </TableBody>
