@@ -6,7 +6,7 @@ import Users from '../views/Users'
 import FAQ from '../views/FAQ'
 import Schedule from '../views/Schedule'
 import Images from '../views/Schedule/Images'
-import LearningProcess from '../views/Schedule/LearningProcess'
+import LearningProcess from '../views/Schedule/EducationProcess'
 import ManageSchedule from '../views/Schedule/ManageSchedule'
 
 export const routes = [
