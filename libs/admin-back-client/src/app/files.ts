@@ -5,19 +5,23 @@ export type EducationProcessScheduleInput = {
 }
 
 export const uploadEducationProcessSchedule = ({ file }: EducationProcessScheduleInput): AxiosRequestConfig => {
+  const formData = new FormData()
+
+  formData.append('schedule-xlsx', file, file.name)
+
   return {
-    method: 'post',
+    method: 'put',
     headers: {
       'Content-Type': 'multipart/form-data',
     },
-    url: '/schedule/upload-education-process',
-    data: { 'schedule-xlsx': file },
+    url: '/files/schedule/upload-education-process',
+    data: formData,
   }
 }
 
 export const compileImages = (): AxiosRequestConfig => {
   return {
     method: 'post',
-    url: '/schedule/compile-images',
+    url: '/files/schedule/compile-images',
   }
 }

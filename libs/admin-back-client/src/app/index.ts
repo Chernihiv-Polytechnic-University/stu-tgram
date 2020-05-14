@@ -46,7 +46,9 @@ const createExecRequest = (baseOptions: BaseOptions, errorHandler: ErrorHandler)
 const createSocketConnection = (url: string): (event: string, listener: Function) => void => {
   const connection = socket(url)
 
-  return (event, listener) => connection.on(event, listener)
+  return (event, listener) => {
+    connection.on(event, listener)
+  }
 }
 
 export const initClient = (baseOptions: BaseOptions, errorHandler: ErrorHandler) => {

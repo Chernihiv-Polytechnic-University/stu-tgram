@@ -10,7 +10,8 @@
     "outDir": "dist",
     "baseUrl": ".",
     "lib": [
-      "es2018"
+      "es2018",
+      "dom"
     ],
     "paths": {
       "#test/*": [
