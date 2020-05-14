@@ -77,7 +77,7 @@ export const compilePNGs = withCatch(['files', 'compile_png'], async (req, res) 
   const all = groups.length + teachers.length
   let left = 0
 
-  res.locals.socket.emit('png_compiling', { all, left })
+  res.locals.socket.emit('image_compiling', { all, left })
 
   await pMap(groups, async (g: StudentsGroup, i) => {
     const lessons = await LessonModel.find({ groupId: g._id.toString() }).exec()
@@ -90,7 +90,7 @@ export const compilePNGs = withCatch(['files', 'compile_png'], async (req, res) 
     await StudentsGroupModel.updateOne({ _id: g._id }, { $set: { lessonsScheduleImage, educationScheduleImage } }).exec()
 
     left += 1
-    res.locals.socket.emit('png_compiling', { all, left })
+    res.locals.socket.emit('image_compiling', { all, left })
 
   }, { concurrency })
 
