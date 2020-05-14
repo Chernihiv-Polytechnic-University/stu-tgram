@@ -3,13 +3,13 @@ import { Container, Grid, Typography, makeStyles } from '@material-ui/core'
 import styles from './styles'
 
 export type InformationProps = {
-  content: string
+  children: any
 }
 
 const useStyles = makeStyles(styles)
 
 const Information: React.FC<InformationProps> = (props) => {
-  const { content } = props
+  const { children } = props
 
   const classes = useStyles()
 
@@ -29,9 +29,7 @@ const Information: React.FC<InformationProps> = (props) => {
             className={classes.contentStyle}
             align='center'
             color='textPrimary'>
-            Основатели харьковской IT-компании Sloboda Studio искали узкую нишу для своего бизнеса
-            и решили сконцентрироваться на создании маркетплейсов. Но затея провалилась, а компания
-            потеряла на этом эксперименте $40 тысяч и трех крутых программистов.
+            {children}
           </Typography>
         </div>
       </Grid>
