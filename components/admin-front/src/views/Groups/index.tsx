@@ -20,6 +20,9 @@ import GroupInfo from './GroupInfo'
 import styles from './styles'
 import { ITEMS_PER_PAGE } from './constants'
 import changeIcon from '../../assets/changeIcon.svg'
+import threeDottIcon from '../../assets/threeDottIcon.svg'
+import redCircle from '../../assets/redCircle.svg'
+import greenCircle from '../../assets/greenCircle.svg'
 
 const useStyles = makeStyles(styles as any)
 
@@ -64,37 +67,49 @@ const Groups: React.FC = () => {
     fetchGroups()
   }, [page, query])
 
+  const exist = <div style={{ display: 'flex' }}>
+    <img style={{ paddingRight: '16px' }} src={greenCircle} alt='Exist'/>
+    <div>Існує</div>
+  </div>
+
+  const doesNotExist = <div style={{ display: 'flex' }}>
+    <img style={{ paddingRight: '16px' }} src={redCircle} alt='Does not exist'/>
+    <div>Не існує</div>
+  </div>
+
   return (
     <ThemeProvider theme={theme}>
       <Container>
         <GroupInfo groupId={groupId} onClose={hideGroupInfo} />
         <Grid container direction='row' justify='space-between' alignItems='baseline'>
           <Typography component="h3" variant="h3" align="left" color="textPrimary">Групи</Typography>
-        </Grid>
-        <Grid container direction='row' justify='flex-end'>
-          <TextField classes={{ root: classes.searchTextField }} variant='outlined' label='Пошук...' onChange={handleQueryChange} />
+          <TextField
+            classes={{ root: classes.searchTextField }}
+            variant='outlined'
+            label='Пошук...'
+            onChange={handleQueryChange} />
         </Grid>
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>Код</TableCell>
-              <TableCell>Номер підгрупи</TableCell>
+              <TableCell className={classes.groupHeaderStyle}>Група</TableCell>
+              <TableCell className={classes.subGroupHeaderStyle}>Підгрупа</TableCell>
+              <TableCell style={{ paddingLeft: '66px' }}>Графік навчального процесу</TableCell>
+              <TableCell>Розклад занять</TableCell>
               <TableCell>Оновлено</TableCell>
-              <TableCell>Графік учбового процесу</TableCell>
-              <TableCell>Розклад пар</TableCell>
-              <TableCell />
+              <TableCell/>
             </TableRow>
           </TableHead>
           <TableBody>
             {groups.map(group => {
               return (
                 <TableRow key={group._id} hover>
-                  <TableCell>{group.name}</TableCell>
-                  <TableCell>{group.subgroupNumber}</TableCell>
+                  <TableCell className={classes.groupStyle}>{group.name}</TableCell>
+                  <TableCell className={classes.subGroupStyle}>{group.subgroupNumber}</TableCell>
+                  <TableCell style={{ paddingLeft: '66px', width: '300px' }}>{group.educationScheduleImage ? exist : doesNotExist}</TableCell>
+                  <TableCell style={{ width: '200px' }}>{group.lessonsScheduleImage ? exist : doesNotExist}</TableCell>
                   <TableCell>{formatISO(new Date(group.updatedAt), { representation: 'date' })}</TableCell>
-                  <TableCell>{group.educationScheduleImage ? 'Є' : 'Немає'}</TableCell>
-                  <TableCell>{group.lessonsScheduleImage ? 'Є' : 'Немає'}</TableCell>
-                  <TableCell>
+                  <TableCell style={{ width: '50px' }}>
                     <IconButton aria-label='' onClick={showGroupInfo(group._id)}>
                       <img src={changeIcon} alt='Показати'/>
                     </IconButton>
@@ -103,7 +118,8 @@ const Groups: React.FC = () => {
             })}
           </TableBody>
         </Table>
-        <Button classes={{ root: classes.moreButton }} onClick={onMoreClick}>... Показати більше</Button>
+        <Button classes={{ root: classes.moreButton }} onClick={onMoreClick}>
+          <img className={classes.dottStyle} src={threeDottIcon} alt='Three dott'/>Показати більше</Button>
       </Container>
     </ThemeProvider>
   )

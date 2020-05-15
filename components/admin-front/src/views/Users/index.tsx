@@ -191,7 +191,7 @@ const Users: React.FC = () => {
           <TableBody>
             {users.map(user => {
               return (<TableRow key={user._id} hover>
-                <TableCell className={classes.startStyle}>
+                <TableCell className={classes.starStyle}>
                   <Icon>
                     <img src={user.role === 'm' ? managerIcon : adminIcon}
                       alt={user.role === 'm' ? 'Менеджер' : 'Адміністратор'}/>

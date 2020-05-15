@@ -14,7 +14,7 @@ export default {
     paddingRight: '24px',
     width: '96px'
   },
-  startStyle: {
+  starStyle: {
     paddingLeft: '34px'
   },
   deleteButtonStyle: {
