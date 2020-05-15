@@ -64,7 +64,7 @@ const Header: React.FC = () => {
               onChange={handleTabChange}
             >
               <Tab label='Користувачі' value='/users'/>
-              <Tab label='Розклад' value='/schedule'/>
+              <Tab disabled label='Розклад' value='/schedule'/>
               <Tab label='FAQ' value='/faq'/>
               <Tab label='Групи' value='/groups'/>
               <Tab label='Викладачі' value='/teachers'/>

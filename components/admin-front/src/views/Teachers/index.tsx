@@ -21,6 +21,9 @@ import theme from '../../shared/theme'
 import styles from './styles'
 import { ITEMS_PER_PAGE } from './constants'
 import changeIcon from '../../assets/changeIcon.svg'
+import threeDottIcon from '../../assets/threeDottIcon.svg'
+import redCircle from '../../assets/redCircle.svg'
+import greenCircle from '../../assets/greenCircle.svg'
 
 const useStyles = makeStyles(styles as any)
 
@@ -66,22 +69,34 @@ const Teachers: React.FC = () => {
     setTeacherId(id)
   }
 
+  const exist = <div style={{ display: 'flex' }}>
+    <img style={{ paddingRight: '16px' }} src={greenCircle} alt='Exist'/>
+    <div>Існує</div>
+  </div>
+
+  const doesNotExist = <div style={{ display: 'flex' }}>
+    <img style={{ paddingRight: '16px' }} src={redCircle} alt='Does not exist'/>
+    <div>Не існує</div>
+  </div>
+
   return (
     <ThemeProvider theme={theme}>
       <Container>
         <TeacherInfo teacherId={teacherId} onClose={hideTeacherInfo} />
         <Grid container direction='row' justify='space-between' alignItems='baseline'>
-          <Typography component="h3" variant="h3" align="left" color="textPrimary">Групи</Typography>
-        </Grid>
-        <Grid container direction='row' justify='flex-end'>
-          <TextField classes={{ root: classes.searchTextField }} variant='outlined' label='Пошук...' onChange={handleQueryChange} />
+          <Typography component="h3" variant="h3" align="left" color="textPrimary">Викладачі</Typography>
+          <TextField
+            classes={{ root: classes.searchTextField }}
+            variant='outlined'
+            label='Пошук...'
+            onChange={handleQueryChange} />
         </Grid>
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>Ім’я</TableCell>
-              <TableCell>Оновлено</TableCell>
+              <TableCell style={{ paddingLeft: '24px' }}>Прізвище І.П.</TableCell>
               <TableCell>Розклад пар</TableCell>
+              <TableCell>Оновлено</TableCell>
               <TableCell />
             </TableRow>
           </TableHead>
@@ -89,10 +104,10 @@ const Teachers: React.FC = () => {
             {teachers.map(teacher => {
               return (
                 <TableRow key={teacher._id} hover>
-                  <TableCell>{teacher.name}</TableCell>
+                  <TableCell style={{ paddingLeft: '24px' }}>{teacher.name}</TableCell>
+                  <TableCell>{teacher.lessonsScheduleImage ? exist : doesNotExist}</TableCell>
                   <TableCell>{formatISO(new Date(teacher.updatedAt), { representation: 'date' })}</TableCell>
-                  <TableCell>{teacher.lessonsScheduleImage ? 'Є' : 'Немає'}</TableCell>
-                  <TableCell>
+                  <TableCell style={{ width: '50px' }}>
                     <IconButton aria-label='' onClick={showTeacherInfo(teacher._id)}>
                       <img src={changeIcon} alt='Показати'/>
                     </IconButton>
@@ -101,7 +116,10 @@ const Teachers: React.FC = () => {
             })}
           </TableBody>
         </Table>
-        <Button classes={{ root: classes.moreButton }} onClick={onMoreClick}>... Показати більше</Button>
+        <Button classes={{ root: classes.moreButton }} onClick={onMoreClick}>
+          <img className={classes.dottStyle} src={threeDottIcon} alt='Three dott'/>
+          Показати більше
+        </Button>
       </Container>
     </ThemeProvider>
   )

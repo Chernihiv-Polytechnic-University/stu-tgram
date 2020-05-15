@@ -53,7 +53,7 @@ const ManageSchedule: React.FC = () => {
   }
 
   return (<ThemeProvider theme={theme}>
-    <Information content='Content'/>
+    <Information>Content</Information>
     {isFarmingStarted && !farming
       ? (isFarmingSuccess ? <FarmingResultComponent type='success'/> : <FarmingResultComponent type='failed'/>)
       : null}

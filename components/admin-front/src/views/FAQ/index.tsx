@@ -24,6 +24,7 @@ import changeIcon from '../../assets/changeIcon.svg'
 import { AppContext } from '../../shared/reducer'
 import styles from './styles'
 import { CREATE_UPDATE_DIALOG_DEFAULT_STATE, INITIAL_NEW_QUESTION, ITEMS_PER_PAGE } from './constants'
+import threeDottIcon from '../../assets/threeDottIcon.svg'
 
 
 const useStyles = makeStyles(styles as any)
@@ -164,7 +165,7 @@ const FAQ: React.FC = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>№</TableCell>
+              <TableCell className={classes.numberHeaderStyle}>№</TableCell>
               <TableCell>Питання</TableCell>
               <TableCell>Категорія</TableCell>
               <TableCell/>
@@ -173,11 +174,13 @@ const FAQ: React.FC = () => {
           <TableBody>
             {questions.map((question, index) => {
               return (<TableRow key={question._id} hover>
-                <TableCell>
+                <TableCell className={classes.numberCellStyle}>
                   {index+1}
                 </TableCell>
-                <TableCell>
-                  {question.question}
+                <TableCell style={{ width: '554px' }}>
+                  <p className={classes.tableRowCellStyle}>
+                    {question.question}
+                  </p>
                 </TableCell>
                 <TableCell>
                   <Button
@@ -188,11 +191,15 @@ const FAQ: React.FC = () => {
                     color="primary"
                     variant="outlined">{question.category}</Button>
                 </TableCell>
-                <TableCell>
-                  <IconButton aria-label='' onClick={handleCreateUpdateDialogOpen(question, question._id)}>
+                <TableCell className={classes.changeDeleteCellStyle}>
+                  <IconButton
+                    className={classes.iconButtonStyle}
+                    aria-label='' onClick={handleCreateUpdateDialogOpen(question, question._id)}>
                     <img src={changeIcon} alt='Змінити'/>
                   </IconButton>
-                  <IconButton aria-label='' onClick={handleDeleteDialogOpen(question._id)}>
+                  <IconButton
+                    className={classes.iconButtonStyle}
+                    aria-label='' onClick={handleDeleteDialogOpen(question._id)}>
                     <img src={deleteIcon} alt='Видалити'/>
                   </IconButton>
                 </TableCell>
@@ -200,7 +207,10 @@ const FAQ: React.FC = () => {
             })}
           </TableBody>
         </Table>
-        <Button classes={{ root: classes.moreButton }} onClick={onMoreClick}>... Показати більше</Button>
+        <Button classes={{ root: classes.moreButton }} onClick={onMoreClick}>
+          <img className={classes.dottStyle} src={threeDottIcon} alt='Three dott'/>
+          Показати більше
+        </Button>
         {deleteDialog}
       </Container>
     </ThemeProvider>
