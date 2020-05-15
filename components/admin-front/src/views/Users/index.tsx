@@ -26,6 +26,7 @@ import adminIcon from '../../assets/adminIcon.svg'
 import { AppContext } from '../../shared/reducer'
 import { INITIAL_ERROR, INITIAL_NEW_USER, MAPPER, ITEMS_PER_PAGE } from './constants'
 import styles from './styles'
+import threeDottIcon from '../../assets/threeDottIcon.svg'
 
 const useStyles = makeStyles(styles)
 
@@ -181,7 +182,7 @@ const Users: React.FC = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>Роль</TableCell>
+              <TableCell className={classes.roleHeaderStyle}>Роль</TableCell>
               <TableCell>Ім’я</TableCell>
               <TableCell>Email</TableCell>
               <TableCell/>
@@ -190,7 +191,7 @@ const Users: React.FC = () => {
           <TableBody>
             {users.map(user => {
               return (<TableRow key={user._id} hover>
-                <TableCell>
+                <TableCell className={classes.startStyle}>
                   <Icon>
                     <img src={user.role === 'm' ? managerIcon : adminIcon}
                       alt={user.role === 'm' ? 'Менеджер' : 'Адміністратор'}/>
@@ -198,7 +199,7 @@ const Users: React.FC = () => {
                 </TableCell>
                 <TableCell>{user.name}</TableCell>
                 <TableCell>{user.login}</TableCell>
-                <TableCell>
+                <TableCell className={classes.deleteButtonStyle}>
                   {state.me?.role === UserRole.admin ? <IconButton aria-label='' onClick={handleDeleteDialogOpen(user._id)}>
                     <img src={deleteIcon} alt='Видалити'/>
                   </IconButton> : null}
@@ -207,7 +208,10 @@ const Users: React.FC = () => {
             })}
           </TableBody>
         </Table>
-        <Button classes={{ root: classes.moreButton }} onClick={onMoreClick}>... Показати більше</Button>
+        <Button classes={{ root: classes.moreButton }} onClick={onMoreClick}>
+          <img className={classes.dottStyle} src={threeDottIcon} alt='Three dott'/>
+          Показати більше
+        </Button>
         {deleteDialog}
       </Container>
     </ThemeProvider>

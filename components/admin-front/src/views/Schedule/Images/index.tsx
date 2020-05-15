@@ -15,7 +15,7 @@ const Images: React.FC = () => {
   }
 
   return (<div>
-    <Information content='Content'/>
+    <Information>Content</Information>
     <Grid container justify='center'>
       <Paper title='Оберіть початок непарного тижня:'>
         <MuiPickersUtilsProvider utils={DateFnsUtils} locale={uk}>
