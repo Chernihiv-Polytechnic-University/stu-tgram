@@ -17,6 +17,7 @@ import { AppContext } from '../../shared/reducer'
 import theme from '../../shared/theme'
 import styles from './styles'
 import { ITEMS_PER_PAGE } from './constants'
+import threeDottIcon from "../../assets/threeDottIcon.svg";
 
 const useStyles = makeStyles(styles as any)
 
@@ -56,9 +57,9 @@ const Teachers: React.FC = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>Відгук</TableCell>
-              <TableCell>Телеграм id</TableCell>
-              <TableCell>Телеграм ім’я</TableCell>
+              <TableCell style={{ paddingLeft: '24px' }}>Відгук</TableCell>
+              <TableCell>ID Telegram</TableCell>
+              <TableCell>Name Telegram</TableCell>
               <TableCell>Група</TableCell>
               <TableCell>Створено</TableCell>
             </TableRow>
@@ -67,7 +68,7 @@ const Teachers: React.FC = () => {
             {feedbacks.map(feedback => {
               return (
                 <TableRow key={feedback._id} hover>
-                  <TableCell>{feedback?.text}</TableCell>
+                  <TableCell style={{ paddingLeft: '24px' }}><p className={classes.tableRowCellStyle}>{feedback?.text}</p></TableCell>
                   <TableCell>{feedback?.author?.username}</TableCell>
                   <TableCell>{feedback?.author?.name}</TableCell>
                   <TableCell>{feedback?.group?.name || 'Не встановлено'}</TableCell>
@@ -76,7 +77,10 @@ const Teachers: React.FC = () => {
             })}
           </TableBody>
         </Table>
-        <Button classes={{ root: classes.moreButton }} onClick={onMoreClick}>... Показати більше</Button>
+        <Button classes={{ root: classes.moreButton }} onClick={onMoreClick}>
+          <img className={classes.dottStyle} src={threeDottIcon} alt='Three dott'/>
+          Показати більше
+        </Button>
       </Container>
     </ThemeProvider>
   )
