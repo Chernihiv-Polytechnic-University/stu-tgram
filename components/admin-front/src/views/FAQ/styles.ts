@@ -20,6 +20,34 @@ export default {
   moreButton: {
     color: '#005390',
     margin: 'auto',
-    display: 'flex'
+    display: 'flex',
+    marginTop: '26px',
+    marginBottom: '24px'
+  },
+  dottStyle: {
+    paddingRight: '16px'
+  },
+  numberHeaderStyle: {
+    paddingLeft: '38px',
+    paddingRight: '22px',
+    width: '12px'
+  },
+  numberCellStyle: {
+    paddingLeft: '38px'
+  },
+  changeDeleteCellStyle: {
+    paddingRight: '26px',
+    width: '94px'
+  },
+  iconButtonStyle: {
+    paddingRight: '14px',
+    paddingLeft: '14px'
+  },
+  tableRowCellStyle: {
+    width: '405px',
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    letterSpacing: '0.05em'
   }
 }
