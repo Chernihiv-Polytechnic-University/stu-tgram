@@ -1,10 +1,11 @@
-import React, {useContext, useState} from 'react'
-import {Button, Container, Grid, makeStyles, TextField, ThemeProvider, Typography} from '@material-ui/core'
-import {useHistory} from 'react-router-dom'
-import {AppActionType, AppContext} from '../../shared/reducer'
+import React, { useContext, useState } from 'react'
+import { Button, Container, Grid, makeStyles, TextField, ThemeProvider, Typography } from '@material-ui/core'
+import { useHistory } from 'react-router-dom'
+import { AppActionType, AppContext } from '../../shared/reducer'
 import theme from '../../shared/theme'
 import logo from '../../assets/logo.svg'
 import styles from './styles'
+import loginImage from '../../assets/loginImage.webp'
 
 const useStyles = makeStyles(styles)
 
@@ -34,57 +35,60 @@ const Login: React.FC = () => {
     history.push('/users')
   }
 
+  // TODO сделать проверку поддерживает ли браузер webp
   return (
     <ThemeProvider theme={theme}>
-      <Container>
-        <Grid container xs={5} direction='column' alignItems='center'>
-          <div className={classes.logo}>
-            <img src={logo} alt='Logo'/>
-          </div>
-          <Typography component="h1" variant="h1" color='primary' className={classes.heading}>
+      <div style={{ backgroundImage: `url(${loginImage})` }} className={classes.loginBackground}>
+        <Container>
+          <Grid container xs={5} direction='column' alignItems='center'>
+            <div className={classes.logo}>
+              <img src={logo} alt='Logo'/>
+            </div>
+            <Typography component="h1" variant="h1" color='primary' className={classes.heading}>
                         З поверненням!
-          </Typography>
-          <form noValidate>
-            <TextField
-              className={classes.textField}
-              error={error}
-              variant="outlined"
-              required
-              fullWidth
-              id="email"
-              name="email"
-              autoComplete="email"
-              autoFocus
-              label='Email'
-              onChange={handleFieldChange('email')}
-            />
-            <TextField
-              className={classes.textField}
-              error={error}
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-              onChange={handleFieldChange('password')}
-              label='Пароль'
-            />
-            <Button
-              className={classes.button}
-              fullWidth
-              type="submit"
-              variant="contained"
-              color='primary'
-              onClick={handleSignInClick}
-            >
+            </Typography>
+            <form noValidate>
+              <TextField
+                className={classes.textField}
+                error={error}
+                variant="outlined"
+                required
+                fullWidth
+                id="email"
+                name="email"
+                autoComplete="email"
+                autoFocus
+                label='Email'
+                onChange={handleFieldChange('email')}
+              />
+              <TextField
+                className={classes.textField}
+                error={error}
+                variant="outlined"
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+                onChange={handleFieldChange('password')}
+                label='Пароль'
+              />
+              <Button
+                className={classes.button}
+                fullWidth
+                type="submit"
+                variant="contained"
+                color='primary'
+                onClick={handleSignInClick}
+              >
               Увійти
-            </Button>
-          </form>
-        </Grid>
-      </Container>
+              </Button>
+            </form>
+          </Grid>
+        </Container>
+      </div>
     </ThemeProvider>
   )
 }

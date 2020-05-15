@@ -14,6 +14,7 @@
     "prop-types": "^15.7.2",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
+    "react-image-webp": "^0.7.0",
     "react-router-dom": "^5.1.2",
     "sass": "^1.25.0",
     "socket.io-client": "^2.3.0"

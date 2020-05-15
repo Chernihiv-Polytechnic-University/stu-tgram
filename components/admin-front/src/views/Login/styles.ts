@@ -11,6 +11,12 @@ export default {
     margin: '0 0 32px 0'
   },
   button: {
-    height: '64px'
+    height: '64px',
+    marginBottom: '100px'
+  },
+  loginBackground: {
+    backgroundPosition: 'right',
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: '50%'
   }
 }
