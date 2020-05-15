@@ -6,6 +6,11 @@ export default {
   moreButton: {
     color: '#005390',
     margin: 'auto',
-    display: 'flex'
+    display: 'flex',
+    marginTop: '26px',
+    marginBottom: '24px'
+  },
+  dottStyle: {
+    paddingRight: '16px'
   }
 }
