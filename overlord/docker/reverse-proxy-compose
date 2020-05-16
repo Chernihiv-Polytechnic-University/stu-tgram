@@ -1,0 +1,6 @@
+version: '3.4'
+services:
+  proxy:
+    build: ../proxy
+    ports:
+      - '4040:80'

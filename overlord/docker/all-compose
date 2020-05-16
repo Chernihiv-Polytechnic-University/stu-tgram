@@ -42,6 +42,11 @@ services:
     depends_on:
       - mongo
 
+  proxy:
+    build: ../proxy
+    ports:
+    - '4040:80'
+
   mongo:
     image: mongo:4.2
     restart: always
