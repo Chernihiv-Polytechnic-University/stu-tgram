@@ -27,6 +27,7 @@ const Teachers: React.FC = () => {
   const { client } = useContext(AppContext)
   const [feedbacks, setFeedbacks] = useState<any[]>([])
   const [page, setPage] = useState<number>(0)
+  const [count, setCount] = useState<number>(0)
 
 
   const onMoreClick: any = () => {
@@ -38,6 +39,8 @@ const Teachers: React.FC = () => {
 
     if (!isSuccess) { return }
 
+    setCount(result.count)
+
     if (page === 0) {
       setFeedbacks(result.docs)
     } else {
@@ -48,6 +51,8 @@ const Teachers: React.FC = () => {
   useEffect(() => {
     fetchFeedbacks()
   }, [page])
+
+  console.log(feedbacks.length)
 
   return (
     <ThemeProvider theme={theme}>
@@ -72,10 +77,10 @@ const Teachers: React.FC = () => {
             })}
           </TableBody>
         </Table>
-        <Button classes={{ root: classes.moreButton }} onClick={onMoreClick}>
+        {feedbacks.length < count ? <Button classes={{ root: classes.moreButton }} onClick={onMoreClick}>
           <img className={classes.dottStyle} src={threeDottIcon} alt='Three dott'/>
           Показати більше
-        </Button>
+        </Button> : <div style={{ paddingBottom: '50px' }}/>}
       </Container>
     </ThemeProvider>
   )

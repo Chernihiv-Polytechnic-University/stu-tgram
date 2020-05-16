@@ -33,6 +33,7 @@ const Groups: React.FC = () => {
   const [page, setPage] = useState<number>(0)
   const [query, setQuery] = useState<string>('')
   const [groupId, setGroupId] = useState<string | null>(null)
+  const [count, setCount] = useState<number>(0)
 
   const hideGroupInfo = () => {
     setGroupId(null)
@@ -51,6 +52,7 @@ const Groups: React.FC = () => {
 
     if (!isSuccess) { return }
 
+    setCount(result.count)
     if (page === 0) {
       setGroups(result.docs)
     } else {
@@ -118,8 +120,10 @@ const Groups: React.FC = () => {
             })}
           </TableBody>
         </Table>
-        <Button classes={{ root: classes.moreButton }} onClick={onMoreClick}>
-          <img className={classes.dottStyle} src={threeDottIcon} alt='Three dott'/>Показати більше</Button>
+        {groups.length < count ? <Button classes={{ root: classes.moreButton }} onClick={onMoreClick}>
+          <img className={classes.dottStyle} src={threeDottIcon} alt='Three dott'/>
+          Показати більше
+        </Button> : <div style={{ paddingBottom: '50px' }}/>}
       </Container>
     </ThemeProvider>
   )

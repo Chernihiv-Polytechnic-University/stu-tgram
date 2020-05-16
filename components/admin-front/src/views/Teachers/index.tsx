@@ -34,6 +34,7 @@ const Teachers: React.FC = () => {
   const [page, setPage] = useState<number>(0)
   const [query, setQuery] = useState<string>('')
   const [teacherId, setTeacherId] = useState<string | null>(null)
+  const [count, setCount] = useState<number>(0)
 
 
   const onMoreClick: any = () => {
@@ -45,6 +46,7 @@ const Teachers: React.FC = () => {
 
     if (!isSuccess) { return }
 
+    setCount(result.count)
     if (page === 0) {
       setTeachers(result.docs)
     } else {
@@ -116,10 +118,10 @@ const Teachers: React.FC = () => {
             })}
           </TableBody>
         </Table>
-        <Button classes={{ root: classes.moreButton }} onClick={onMoreClick}>
+        {teachers.length < count ? <Button classes={{ root: classes.moreButton }} onClick={onMoreClick}>
           <img className={classes.dottStyle} src={threeDottIcon} alt='Three dott'/>
           Показати більше
-        </Button>
+        </Button> : <div style={{ paddingBottom: '50px' }}/>}
       </Container>
     </ThemeProvider>
   )
