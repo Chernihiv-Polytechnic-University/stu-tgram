@@ -17,7 +17,8 @@ import { AppContext } from '../../shared/reducer'
 import theme from '../../shared/theme'
 import styles from './styles'
 import { ITEMS_PER_PAGE } from './constants'
-import threeDottIcon from "../../assets/threeDottIcon.svg";
+import threeDottIcon from '../../assets/threeDottIcon.svg'
+import FeedbackItem from './FeedbackItem'
 
 const useStyles = makeStyles(styles as any)
 
@@ -67,13 +68,7 @@ const Teachers: React.FC = () => {
           <TableBody>
             {feedbacks.map(feedback => {
               return (
-                <TableRow key={feedback._id} hover>
-                  <TableCell style={{ paddingLeft: '24px' }}><p className={classes.tableRowCellStyle}>{feedback?.text}</p></TableCell>
-                  <TableCell>{feedback?.author?.username}</TableCell>
-                  <TableCell>{feedback?.author?.name}</TableCell>
-                  <TableCell>{feedback?.group?.name || 'Не встановлено'}</TableCell>
-                  <TableCell>{formatISO(new Date(feedback.createdAt), { representation: 'date' })}</TableCell>
-                </TableRow>)
+                <FeedbackItem key={feedback._id} feedback={feedback}/>)
             })}
           </TableBody>
         </Table>

@@ -15,5 +15,21 @@ export default {
     overflow: 'hidden',
     textOverflow: 'ellipsis',
     letterSpacing: '0.05em'
+  },
+  idStyle: {
+    width: '167px',
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    letterSpacing: '0.05em',
+    boxSizing: 'border-box'
+  },
+  nameStyle: {
+    width: '216px',
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    letterSpacing: '0.05em',
+    boxSizing: 'border-box'
   }
 }
