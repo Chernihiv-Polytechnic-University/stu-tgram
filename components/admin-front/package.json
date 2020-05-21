@@ -13,6 +13,7 @@
     "lodash": "^4.17.15",
     "prop-types": "^15.7.2",
     "react": "^16.12.0",
+    "react-circular-progressbar": "^2.0.3",
     "react-dom": "^16.12.0",
     "react-dropzone": "^11.0.1",
     "react-image-webp": "^0.7.0",
