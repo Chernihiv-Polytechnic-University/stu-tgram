@@ -17,7 +17,8 @@ import { AppContext } from '../../shared/reducer'
 import theme from '../../shared/theme'
 import styles from './styles'
 import { ITEMS_PER_PAGE } from './constants'
-import threeDottIcon from "../../assets/threeDottIcon.svg";
+import threeDottIcon from '../../assets/threeDottIcon.svg'
+import FeedbackItem from './FeedbackItem'
 
 const useStyles = makeStyles(styles as any)
 
@@ -26,6 +27,7 @@ const Teachers: React.FC = () => {
   const { client } = useContext(AppContext)
   const [feedbacks, setFeedbacks] = useState<any[]>([])
   const [page, setPage] = useState<number>(0)
+  const [count, setCount] = useState<number>(0)
 
 
   const onMoreClick: any = () => {
@@ -37,6 +39,8 @@ const Teachers: React.FC = () => {
 
     if (!isSuccess) { return }
 
+    setCount(result.count)
+
     if (page === 0) {
       setFeedbacks(result.docs)
     } else {
@@ -47,6 +51,8 @@ const Teachers: React.FC = () => {
   useEffect(() => {
     fetchFeedbacks()
   }, [page])
+
+  console.log(feedbacks.length)
 
   return (
     <ThemeProvider theme={theme}>
@@ -67,20 +73,14 @@ const Teachers: React.FC = () => {
           <TableBody>
             {feedbacks.map(feedback => {
               return (
-                <TableRow key={feedback._id} hover>
-                  <TableCell style={{ paddingLeft: '24px' }}><p className={classes.tableRowCellStyle}>{feedback?.text}</p></TableCell>
-                  <TableCell>{feedback?.author?.username}</TableCell>
-                  <TableCell>{feedback?.author?.name}</TableCell>
-                  <TableCell>{feedback?.group?.name || 'Не встановлено'}</TableCell>
-                  <TableCell>{formatISO(new Date(feedback.createdAt), { representation: 'date' })}</TableCell>
-                </TableRow>)
+                <FeedbackItem key={feedback._id} feedback={feedback}/>)
             })}
           </TableBody>
         </Table>
-        <Button classes={{ root: classes.moreButton }} onClick={onMoreClick}>
+        {feedbacks.length < count ? <Button classes={{ root: classes.moreButton }} onClick={onMoreClick}>
           <img className={classes.dottStyle} src={threeDottIcon} alt='Three dott'/>
           Показати більше
-        </Button>
+        </Button> : <div style={{ paddingBottom: '50px' }}/>}
       </Container>
     </ThemeProvider>
   )

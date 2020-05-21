@@ -34,6 +34,7 @@ const Teachers: React.FC = () => {
   const [page, setPage] = useState<number>(0)
   const [query, setQuery] = useState<string>('')
   const [teacherId, setTeacherId] = useState<string | null>(null)
+  const [count, setCount] = useState<number>(0)
 
 
   const onMoreClick: any = () => {
@@ -45,6 +46,7 @@ const Teachers: React.FC = () => {
 
     if (!isSuccess) { return }
 
+    setCount(result.count)
     if (page === 0) {
       setTeachers(result.docs)
     } else {
@@ -65,8 +67,9 @@ const Teachers: React.FC = () => {
     setTeacherId(null)
   }
 
-  const showTeacherInfo = (id: string) => () => {
-    setTeacherId(id)
+  const showTeacherInfo = (teacher: any) => () => {
+    if (!teacher.lessonsScheduleImage) return
+    setTeacherId(teacher._id)
   }
 
   const exist = <div style={{ display: 'flex' }}>
@@ -97,29 +100,23 @@ const Teachers: React.FC = () => {
               <TableCell style={{ paddingLeft: '24px' }}>Прізвище І.П.</TableCell>
               <TableCell>Розклад пар</TableCell>
               <TableCell>Оновлено</TableCell>
-              <TableCell />
             </TableRow>
           </TableHead>
           <TableBody>
             {teachers.map(teacher => {
               return (
-                <TableRow key={teacher._id} hover>
+                <TableRow key={teacher._id} hover onClick={showTeacherInfo(teacher)}>
                   <TableCell style={{ paddingLeft: '24px' }}>{teacher.name}</TableCell>
                   <TableCell>{teacher.lessonsScheduleImage ? exist : doesNotExist}</TableCell>
                   <TableCell>{formatISO(new Date(teacher.updatedAt), { representation: 'date' })}</TableCell>
-                  <TableCell style={{ width: '50px' }}>
-                    <IconButton aria-label='' onClick={showTeacherInfo(teacher._id)}>
-                      <img src={changeIcon} alt='Показати'/>
-                    </IconButton>
-                  </TableCell>
                 </TableRow>)
             })}
           </TableBody>
         </Table>
-        <Button classes={{ root: classes.moreButton }} onClick={onMoreClick}>
+        {teachers.length < count ? <Button classes={{ root: classes.moreButton }} onClick={onMoreClick}>
           <img className={classes.dottStyle} src={threeDottIcon} alt='Three dott'/>
           Показати більше
-        </Button>
+        </Button> : <div style={{ paddingBottom: '50px' }}/>}
       </Container>
     </ThemeProvider>
   )

@@ -51,7 +51,11 @@ const UserAccountHeader: React.FC = () => {
         <img className={classes.imageStyle} src={logo} alt='logo'/>
         <Grid item>
           <Grid container direction='row' justify='space-between' alignItems='center'>
-            <Typography>Вітаємо, {state.me?.name}</Typography>
+            <Typography color='textPrimary'>
+              Вітаємо, <span style={{ color: '#005390', fontWeight: 500 }}>
+                {state.me?.name}
+              </span>
+            </Typography>
             <IconButton aria-haspopup="true" onClick={handleMenuClick}>
               <img src={downIcon} alt='Down'/>
             </IconButton>

@@ -38,6 +38,7 @@ const FAQ: React.FC = () => {
   const [isDialogDeleteOpen, setDialogDeleteOpen] = useState<boolean>(false)
   const [page, setPage] = useState<number>(0)
   const [query, setQuery] = useState<string>('')
+  const [count, setCount] = useState<number>(0)
 
   const classes = useStyles()
 
@@ -49,6 +50,7 @@ const FAQ: React.FC = () => {
     const { isSuccess, result } = await client.getInfoCategories(null)
 
     if (!isSuccess) { return }
+    setCount(result.count)
     setCategories(map(result, 'category'))
   }
 
@@ -207,10 +209,10 @@ const FAQ: React.FC = () => {
             })}
           </TableBody>
         </Table>
-        <Button classes={{ root: classes.moreButton }} onClick={onMoreClick}>
+        {questions.length < count ? <Button classes={{ root: classes.moreButton }} onClick={onMoreClick}>
           <img className={classes.dottStyle} src={threeDottIcon} alt='Three dott'/>
           Показати більше
-        </Button>
+        </Button> : <div style={{ paddingBottom: '50px' }}/>}
         {deleteDialog}
       </Container>
     </ThemeProvider>

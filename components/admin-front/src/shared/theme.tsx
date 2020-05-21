@@ -116,7 +116,7 @@ const theme = (createMuiTheme as any)({
     },
     MuiDialog: {
       paperWidthSm: {
-        maxWidth: '769px'
+        maxWidth: '920px'
       }
     },
     MuiDialogTitle: {

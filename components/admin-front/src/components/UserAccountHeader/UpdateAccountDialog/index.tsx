@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react'
 import CustomDialog from '../../CustomDialog'
-import { TextField, ThemeProvider, makeStyles } from '@material-ui/core'
+import { TextField, ThemeProvider, makeStyles, Container } from '@material-ui/core'
 import theme from '../../../shared/theme'
 import { AppActionType, AppContext } from '../../../shared/reducer'
 import styles from '../../../views/Users/styles'
@@ -110,38 +110,40 @@ const UpdateAccountDialog: React.FC<UpdateAccountDialogProps> = (props) => {
       handleSubmit={handleUpdateAccount}
       disable={!(!error.name && !error.newPassword && !error.confirmedNewPassword && !error.login)}
     >
-      <TextField
-        className={classes.formInput}
-        value={updatedMe?.name}
-        error={error.name}
-        onChange={handleFieldChange('name')}
-        variant='outlined'
-        label='Введіть прізвище, ім’я, побатькові користувача'
-        fullWidth/>
-      <TextField
-        className={classes.formInput}
-        value={updatedMe?.login}
-        error={error.login}
-        onChange={handleFieldChange('login')}
-        variant='outlined'
-        label='Введіть електронну пошту користувача'
-        type="email" fullWidth/>
-      <TextField
-        className={classes.formInput}
-        error={error.newPassword}
-        onChange={handlePasswordFieldChange('newPassword')}
-        value={newPassword}
-        variant='outlined'
-        type='password'
-        label='Введіть новий пароль' fullWidth/>
-      <TextField
-        className={classes.formInput}
-        error={error.confirmedNewPassword}
-        onChange={handlePasswordFieldChange('confirmedNewPassword')}
-        value={confirmedNewPassword}
-        variant='outlined'
-        type='password'
-        label='Повторіть ввод нового пароля' fullWidth/>
+      <Container style={{ width: 572, height: 330 }}>
+        <TextField
+          className={classes.formInput}
+          value={updatedMe?.name}
+          error={error.name}
+          onChange={handleFieldChange('name')}
+          variant='outlined'
+          label='Введіть прізвище, ім’я, побатькові користувача'
+          fullWidth/>
+        <TextField
+          className={classes.formInput}
+          value={updatedMe?.login}
+          error={error.login}
+          onChange={handleFieldChange('login')}
+          variant='outlined'
+          label='Введіть електронну пошту користувача'
+          type="email" fullWidth/>
+        <TextField
+          className={classes.formInput}
+          error={error.newPassword}
+          onChange={handlePasswordFieldChange('newPassword')}
+          value={newPassword}
+          variant='outlined'
+          type='password'
+          label='Введіть новий пароль' fullWidth/>
+        <TextField
+          className={classes.formInput}
+          error={error.confirmedNewPassword}
+          onChange={handlePasswordFieldChange('confirmedNewPassword')}
+          value={confirmedNewPassword}
+          variant='outlined'
+          type='password'
+          label='Повторіть ввод нового пароля' fullWidth/>
+      </Container>
     </CustomDialog>
 
   </ThemeProvider>)

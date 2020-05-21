@@ -40,6 +40,7 @@ const Users: React.FC = () => {
   const [newUser, setUser] = useState<UserAttributes>(INITIAL_NEW_USER)
   const [error, setError] = useState<any>(INITIAL_ERROR)
   const [page, setPage] = useState<number>(0)
+  const [count, setCount] = useState<number>(0)
 
   const classes = useStyles()
 
@@ -50,6 +51,7 @@ const Users: React.FC = () => {
   const fetchUsers: any = async () => {
     const { result, isSuccess } = await client.getUsers({ limit: ITEMS_PER_PAGE, page })
     if (!isSuccess) { return }
+    setCount(result.count)
     if (page === 0) {
       setUsers(result.docs)
       return
@@ -208,10 +210,10 @@ const Users: React.FC = () => {
             })}
           </TableBody>
         </Table>
-        <Button classes={{ root: classes.moreButton }} onClick={onMoreClick}>
+        {users.length < count ? <Button classes={{ root: classes.moreButton }} onClick={onMoreClick}>
           <img className={classes.dottStyle} src={threeDottIcon} alt='Three dott'/>
           Показати більше
-        </Button>
+        </Button> : <div style={{ paddingBottom: '50px' }}/>}
         {deleteDialog}
       </Container>
     </ThemeProvider>

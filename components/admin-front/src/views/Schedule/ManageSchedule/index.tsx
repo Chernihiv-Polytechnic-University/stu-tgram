@@ -53,7 +53,12 @@ const ManageSchedule: React.FC = () => {
   }
 
   return (<ThemeProvider theme={theme}>
-    <Information>Content</Information>
+    <Information>
+      Інтерфейс відповідає за збір розкладу з https://schedule.stu.cn.ua<br />
+      Для виконання збору даних необхідно вказати тиждень, дату початку тижня та тип акторів<br />
+      Для повного розкладу необхідно виконати 4 рази процес збору для кожної пари тиждень-актори<br />
+      Процес одного збору займає близько однієї хвилини<br/>
+    </Information>
     {isFarmingStarted && !farming
       ? (isFarmingSuccess ? <FarmingResultComponent type='success'/> : <FarmingResultComponent type='failed'/>)
       : null}
