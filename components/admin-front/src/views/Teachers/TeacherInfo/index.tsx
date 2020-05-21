@@ -36,7 +36,7 @@ const TeacherInfo: React.FC<Params> = ({ teacherId, onClose }: Params) => {
       handleSubmit={onClose}
       disable={false}
     >
-      <Container style={{ width: 600, height: 600 }}>
+      <Container style={{ width: 848, height: 600 }}>
         <div />
         {info?.lessonsScheduleImage && <img src={`data:image/png;base64,${info.lessonsScheduleImage}`} />}
       </Container>
