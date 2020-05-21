@@ -1,0 +1,30 @@
+version: '3.4'
+services:
+
+  telegram-back-build:
+    image: node:14
+    volumes:
+      - ../../:/home/
+    working_dir: /home/
+    command: >
+      sh -c "cd ./components/telegram-back &&
+             npm run compile"
+
+  admin-front-build:
+    image: node:14
+    volumes:
+      - ../../:/home/
+      - ../config/.env.admin-front.dev:/home/components/admin-front/.env
+    working_dir: /home/
+    command: >
+      sh -c "cd ./components/admin-front &&
+             npm run compile"
+
+  admin-back-build:
+    image: node:14
+    volumes:
+      - ../../:/home/
+    working_dir: /home/
+    command: >
+      sh -c "cd ./components/admin-back &&
+             npm run compile"

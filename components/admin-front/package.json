@@ -47,7 +47,7 @@
     "test": "node ./node_modules/react-scripts/bin/react-scripts.js test",
     "eject": "node ./node_modules/react-scripts/bin/react-scripts.js eject",
     "clean": "node ../../overlord/nodescripts/rmdir.js dist node_modules",
-    "compile": "npm run compile-libs",
+    "compile": "npm run clean && npm i && npm run compile-libs && npm run build",
     "compile-libs": "node ../../overlord/nodescripts/compile-libs.js domain-model admin-back-client"
   },
   "eslintConfig": {
