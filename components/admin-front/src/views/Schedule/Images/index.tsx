@@ -8,8 +8,9 @@ import GeneratingProgressBar from './GeneratingProgressBar'
 import GeneratingResultContainer from './GeneratingResultContainer'
 
 const Images: React.FC = () => {
-  const [firstOddWeekMondayDate, setFirstOddWeekMondayDate] = useState(formatISO(startOfWeek(new Date(), { weekStartsOn: 1 }), { representation: 'date' }))
-  const [isSetDateSuccess, setSuccessSetDate] = useState<boolean>(false)
+  const [firstOddWeekMondayDate, setFirstOddWeekMondayDate] = useState(
+    formatISO(startOfWeek(new Date(), { weekStartsOn: 1 }), { representation: 'date' })
+  )
   const [isGeneratingStart, setGeneratingStart] = useState<boolean>(false)
   const [isGeneratingFinished, setGeneratingFinished] = useState<boolean>(false)
   const [isGeneratingSuccess, setGeneratingSuccess] = useState<boolean>(false)
@@ -17,18 +18,18 @@ const Images: React.FC = () => {
   const [done, setDone] = useState<number>(0)
   const { client } = useContext(AppContext)
 
-  const handleDateChange = (date: any) => {
-    if (date === null) return
-    setFirstOddWeekMondayDate(formatISO(date, { representation: 'date' }))
-    client.updateSystemSettings({ firstOddWeekMondayDate })
-      .then((result: any) => {
-        console.log(result)
-        if (result.isSuccess) {
-          setSuccessSetDate(true)
-          return
-        }
-        setSuccessSetDate(false)
-      })
+  const handleDateChange = async (date: any) => {
+    if (!date) return
+
+    const next = formatISO(date, { representation: 'date' })
+
+    setFirstOddWeekMondayDate(next)
+
+    const { isSuccess } = await client.updateSystemSettings({ firstOddWeekMondayDate: next })
+
+    if (isSuccess) { return }
+
+    setFirstOddWeekMondayDate(firstOddWeekMondayDate)
   }
 
   const fetchFirstOddWeekMondayDate = async () => {

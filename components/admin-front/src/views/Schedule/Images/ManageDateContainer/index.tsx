@@ -3,7 +3,7 @@ import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers'
 import DateFnsUtils from '@date-io/date-fns'
 import { uk } from 'date-fns/locale'
 import Paper from '../../../../components/Paper'
-import { Button, Grid, Typography } from '@material-ui/core'
+import { Grid } from '@material-ui/core'
 
 type ManageDateContainerProps = {
   firstOddWeekMondayDate: any
@@ -11,11 +11,12 @@ type ManageDateContainerProps = {
 }
 
 const ManageDateContainer: React.FC<ManageDateContainerProps> = (
-  { handleDateChange, firstOddWeekMondayDate }) => {
-  
+  { handleDateChange, firstOddWeekMondayDate }
+) => {
+
   return <div>
     <Grid container justify='center'>
-      <Paper title='Встановлена дата:'>
+      <Paper title={`Встановлена дата: ${firstOddWeekMondayDate}`}>
         <MuiPickersUtilsProvider utils={DateFnsUtils} locale={uk}>
           <DatePicker
             autoOk
