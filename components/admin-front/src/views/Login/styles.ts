@@ -17,6 +17,7 @@ export default {
   loginBackground: {
     backgroundPosition: 'right',
     backgroundRepeat: 'no-repeat',
-    backgroundSize: '50%'
+    backgroundSize: '50%',
+    height: 'auto'
   }
 }

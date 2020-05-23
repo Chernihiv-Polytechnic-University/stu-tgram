@@ -5,10 +5,10 @@ import { AppContext } from '../../../shared/reducer'
 import { formatISO, startOfWeek } from 'date-fns'
 import ManageDateContainer from './ManageDateContainer'
 import GeneratingProgressBar from './GeneratingProgressBar'
-import GeneratingResultContainer from "./GeneratingResultContainer";
+import GeneratingResultContainer from './GeneratingResultContainer'
 
 const Images: React.FC = () => {
-  const [firstOddWeekMondayDate, setFirstOddWeekMondayDate] = useState(startOfWeek(new Date(), { weekStartsOn: 1 }))
+  const [firstOddWeekMondayDate, setFirstOddWeekMondayDate] = useState(formatISO(startOfWeek(new Date(), { weekStartsOn: 1 }), { representation: 'date' }))
   const [isSetDateSuccess, setSuccessSetDate] = useState<boolean>(false)
   const [isGeneratingStart, setGeneratingStart] = useState<boolean>(false)
   const [isGeneratingFinished, setGeneratingFinished] = useState<boolean>(false)
@@ -17,14 +17,12 @@ const Images: React.FC = () => {
   const [done, setDone] = useState<number>(0)
   const { client } = useContext(AppContext)
 
-  const handleDateChange = (date: Date | null) => {
+  const handleDateChange = (date: any) => {
     if (date === null) return
-    setFirstOddWeekMondayDate(date)
-  }
-
-  const handleSetDateClick = async () => {
-    await client.updateSystemSettings(formatISO(firstOddWeekMondayDate), { representation: 'date' })
+    setFirstOddWeekMondayDate(formatISO(date, { representation: 'date' }))
+    client.updateSystemSettings({ firstOddWeekMondayDate })
       .then((result: any) => {
+        console.log(result)
         if (result.isSuccess) {
           setSuccessSetDate(true)
           return
@@ -37,8 +35,8 @@ const Images: React.FC = () => {
     await client.getSystemSettings()
       .then((result: any) => {
         console.log(result)
-        if (result.isSuccess && result.firstOddWeekMondayDate === null) {
-          setFirstOddWeekMondayDate(result.firstOddWeekMondayDate)
+        if (result.isSuccess && result.result.firstOddWeekMondayDate !== null) {
+          setFirstOddWeekMondayDate(result.result.firstOddWeekMondayDate)
         }
       })
   }
@@ -77,19 +75,19 @@ const Images: React.FC = () => {
       Процес компіляції триває до 30 хвилин
     </Information>
     {isGeneratingFinished ? <GeneratingResultContainer isGeneratingSuccess={isGeneratingSuccess}/> : null}
-    {!isGeneratingStart && !isGeneratingSuccess || (!isGeneratingFinished && isGeneratingSuccess) ? <div><ManageDateContainer
-      firstOddWeekMondayDate={firstOddWeekMondayDate}
-      handleSetDateClick={handleSetDateClick}
-      handleDateChange={handleDateChange}/>
-    <Grid container justify='center' direction='row'>
-      <Button
-        style={{ marginBottom: '66px' }}
-        variant='outlined'
-        onClick={handleGeneratingClick}
-        color='primary'>
+    {!isGeneratingStart && !isGeneratingSuccess || (!isGeneratingFinished && isGeneratingSuccess) ? <div>
+      <ManageDateContainer
+        firstOddWeekMondayDate={firstOddWeekMondayDate}
+        handleDateChange={handleDateChange}/>
+      <Grid container justify='center' direction='row'>
+        <Button
+          style={{ marginBottom: '66px' }}
+          variant='outlined'
+          onClick={handleGeneratingClick}
+          color='primary'>
           Генерувати зображення
-      </Button>
-    </Grid></div> : null}
+        </Button>
+      </Grid></div> : null}
     {isGeneratingStart ? <GeneratingProgressBar done={done} all={all}/> : null}
   </div>)
 }

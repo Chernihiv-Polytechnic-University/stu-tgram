@@ -6,13 +6,12 @@ import Paper from '../../../../components/Paper'
 import { Button, Grid, Typography } from '@material-ui/core'
 
 type ManageDateContainerProps = {
-  firstOddWeekMondayDate: Date
+  firstOddWeekMondayDate: any
   handleDateChange: any
-  handleSetDateClick: any
 }
 
 const ManageDateContainer: React.FC<ManageDateContainerProps> = (
-  { handleDateChange, firstOddWeekMondayDate, handleSetDateClick }) => {
+  { handleDateChange, firstOddWeekMondayDate }) => {
   
   return <div>
     <Grid container justify='center'>
@@ -28,15 +27,6 @@ const ManageDateContainer: React.FC<ManageDateContainerProps> = (
         </MuiPickersUtilsProvider>
       </Paper>
     </Grid>
-    {/*<Grid container justify='center' direction='row'>*/}
-    {/*  <Button*/}
-    {/*    style={{ marginBottom: '66px' }}*/}
-    {/*    variant='outlined'*/}
-    {/*    onClick={handleSetDateClick}*/}
-    {/*    color='primary'>*/}
-    {/*    Встановити*/}
-    {/*  </Button>*/}
-    {/*</Grid>*/}
   </div>
 }
 

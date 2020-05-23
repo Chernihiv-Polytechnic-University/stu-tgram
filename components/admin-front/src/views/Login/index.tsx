@@ -5,7 +5,7 @@ import { AppActionType, AppContext } from '../../shared/reducer'
 import theme from '../../shared/theme'
 import logo from '../../assets/logo.svg'
 import styles from './styles'
-import loginImage from '../../assets/loginImage.webp'
+import loginImage from '../../assets/loginImagePNG.png'
 
 const useStyles = makeStyles(styles)
 
