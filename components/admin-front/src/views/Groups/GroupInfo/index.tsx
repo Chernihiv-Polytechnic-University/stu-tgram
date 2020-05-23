@@ -38,7 +38,7 @@ const TeacherInfo: React.FC<Params> = ({ groupId, onClose }: Params) => {
     >
       <Container style={{ width: 848 }}>
         <div />
-        {info?.lessonsScheduleImage && <img src={`data:image/png;base64,${info.educationScheduleImage}`} />}
+        {info?.educationScheduleImage && <img src={`data:image/png;base64,${info.educationScheduleImage}`} />}
         {info?.lessonsScheduleImage && <img src={`data:image/png;base64,${info.lessonsScheduleImage}`} />}
       </Container>
 

@@ -40,7 +40,7 @@ const Groups: React.FC = () => {
   }
 
   const showGroupInfo = (group: any) => () => {
-    if (!group.educationScheduleImage || !group.lessonsScheduleImage) return
+    if (!group.educationScheduleImage && !group.lessonsScheduleImage) return
     setGroupId(group._id)
   }
 
