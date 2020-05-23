@@ -6,10 +6,15 @@ import { createLogger } from 'libs/logger'
 import { StudentsGroupModel, StudentsGroup } from 'libs/domain-model'
 const logger = createLogger(`#handlers/${__filename}`)
 
+const getImageFiled = (group: any, field: string, full: boolean) => {
+  if (!full) { return !!group[field] }
+  return group[field] ? group[field].toString('base64') : undefined
+}
+
 const mapInfo = (full: boolean) => (group: StudentsGroup) => ({
   ...group.toJSON(),
-  educationScheduleImage: full ? group.educationScheduleImage.toString('base64') : !!group.educationScheduleImage,
-  lessonsScheduleImage: full ? group.lessonsScheduleImage.toString('base64') : !!group.educationScheduleImage,
+  educationScheduleImage: getImageFiled(group, 'educationScheduleImage', full),
+  lessonsScheduleImage: getImageFiled(group, 'lessonsScheduleImage', full),
 })
 
 export const get = withCatch(logger, ['get', 'groups'], async (req: Request, res: Response) => {
