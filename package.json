@@ -12,6 +12,6 @@
     "typescript": "^3.5.3"
   },
   "author": "a.iskryzhytskyi",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "homepage": "https://github.com/anton-iskryzhytskyi/stu-tgram"
 }

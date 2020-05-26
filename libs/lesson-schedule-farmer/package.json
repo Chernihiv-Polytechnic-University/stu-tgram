@@ -9,7 +9,7 @@
     "compile-component": "tsc -p tsconfig.json"
   },
   "author": "a.iskryzhytskyi",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "homepage": "https://github.com/anton-iskryzhytskyi/stu-tgram",
   "devDependencies": {
     "@types/bluebird": "^3.5.30",

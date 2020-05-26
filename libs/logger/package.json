@@ -10,7 +10,7 @@
     "compile-libs": "node ../../overlord/nodescripts/compile-libs.js libs/logger domain-model"
   },
   "author": "a.iskryzhytskyi",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "homepage": "https://github.com/anton-iskryzhytskyi/stu-tgram",
   "devDependencies": {
     "typescript": "^3.5.3",

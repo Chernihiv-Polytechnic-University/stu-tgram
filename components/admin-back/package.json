@@ -11,7 +11,7 @@
     "dev": "./node_modules/.bin/nodemon -e ts --watch 'src/app' --exec 'npm run compile-component && node dist/index.js'"
   },
   "author": "a.iskryzhytskyi",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "homepage": "https://github.com/anton-iskryzhytskyi/stu-tgram",
   "dependencies": {
     "axios": "^0.19.2",

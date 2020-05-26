@@ -11,7 +11,7 @@
     "test": "jest --passWithNoTests '^((?!\\\\.int\\\\.spec\\\\.ts).)*$'"
   },
   "author": "a.iskryzhytskyi",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "homepage": "https://github.com/anton-iskryzhytskyi/stu-tgram",
   "devDependencies": {
     "@types/exceljs": "^1.3.0",
