@@ -9,13 +9,9 @@
     "compile-component": "tsc -p tsconfig.json",
     "compile-libs": "node ../../overlord/nodescripts/compile-libs.js libs/logger domain-model"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://iskryzhytskyi@bitbucket.org/iskryzhytskyi/utb.git"
-  },
   "author": "a.iskryzhytskyi",
   "license": "UNLICENSED",
-  "homepage": "https://bitbucket.org/iskryzhytskyi/utb#readme",
+  "homepage": "https://github.com/anton-iskryzhytskyi/stu-tgram",
   "devDependencies": {
     "typescript": "^3.5.3",
     "@types/mongoose": "^5.5.16"

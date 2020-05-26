@@ -6,10 +6,6 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://iskryzhytskyi@bitbucket.org/iskryzhytskyi/utb.git"
-  },
   "devDependencies": {
     "tslint": "^5.19.0",
     "tslint-config-airbnb": "^5.11.1",
@@ -17,5 +13,5 @@
   },
   "author": "a.iskryzhytskyi",
   "license": "UNLICENSED",
-  "homepage": "https://bitbucket.org/iskryzhytskyi/utb#readme"
+  "homepage": "https://github.com/anton-iskryzhytskyi/stu-tgram"
 }

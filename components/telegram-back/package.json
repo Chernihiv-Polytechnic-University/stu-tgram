@@ -10,13 +10,9 @@
     "compile-libs": "node ../../overlord/nodescripts/compile-libs.js components/telegram-back logger metrics bus domain-model",
     "dev": "./node_modules/.bin/nodemon -e ts --watch 'src/app' --exec 'npm run compile-component && node dist/main.js'"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://iskryzhytskyi@bitbucket.org/iskryzhytskyi/utb.git"
-  },
   "author": "a.iskryzhytskyi",
   "license": "UNLICENSED",
-  "homepage": "https://bitbucket.org/iskryzhytskyi/utb#readme",
+  "homepage": "https://github.com/anton-iskryzhytskyi/stu-tgram",
   "devDependencies": {
     "@types/bluebird": "^3.5.27",
     "@types/config": "0.0.34",
