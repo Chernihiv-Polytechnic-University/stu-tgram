@@ -8,7 +8,8 @@
     "compile": "npm run clean && npm i && npm run compile-libs && npm run compile-component",
     "compile-component": "tsc -p tsconfig.json",
     "compile-libs": "node ../../overlord/nodescripts/compile-libs.js components/telegram-back logger metrics bus domain-model",
-    "dev": "./node_modules/.bin/nodemon -e ts --watch 'src/app' --exec 'npm run compile-component && node dist/main.js'"
+    "dev": "./node_modules/.bin/nodemon -e ts --watch 'src/app' --exec 'npm run compile-component && node dist/main.js'",
+    "test": "jest src/app/**/*.spec.ts"
   },
   "author": "a.iskryzhytskyi",
   "license": "MIT",
@@ -18,13 +19,16 @@
     "@types/config": "0.0.34",
     "@types/convict": "^4.2.1",
     "@types/dotenv": "^8.2.0",
+    "@types/jest": "^26.0.0",
     "@types/lodash": "^4.14.137",
     "@types/moment": "^2.13.0",
     "@types/moment-timezone": "^0.5.12",
     "@types/mongoose": "^5.5.17",
     "@types/node": "^12.7.2",
     "@types/node-telegram-bot-api": "^0.31.0",
+    "jest": "^26.0.1",
     "nodemon": "^1.19.1",
+    "ts-jest": "^26.1.0",
     "typescript": "^3.5.3"
   },
   "dependencies": {
