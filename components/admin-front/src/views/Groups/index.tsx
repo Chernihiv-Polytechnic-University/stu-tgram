@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, {useCallback, useContext, useEffect, useState} from 'react'
 import { formatISO } from 'date-fns'
 import {
   Container,
@@ -12,14 +12,13 @@ import {
   TableCell,
   TableBody,
   ThemeProvider,
-  makeStyles, IconButton
+  makeStyles
 } from '@material-ui/core'
 import { AppContext } from '../../shared/reducer'
 import theme from '../../shared/theme'
 import GroupInfo from './GroupInfo'
 import styles from './styles'
 import { ITEMS_PER_PAGE } from './constants'
-import changeIcon from '../../assets/changeIcon.svg'
 import threeDottIcon from '../../assets/threeDottIcon.svg'
 import redCircle from '../../assets/redCircle.svg'
 import greenCircle from '../../assets/greenCircle.svg'
@@ -48,7 +47,7 @@ const Groups: React.FC = () => {
     setPage(page + 1)
   }
 
-  const fetchGroups = async () => {
+  const fetchGroups = useCallback(async () => {
     const { result, isSuccess } = await client.getGroups({ limit: ITEMS_PER_PAGE, page, query })
 
     if (!isSuccess) { return }
@@ -59,7 +58,7 @@ const Groups: React.FC = () => {
     } else {
       setGroups(old => [...old, ...result.docs])
     }
-  }
+  }, [page, query, client])
 
   const handleQueryChange: any = (event: React.ChangeEvent<{ value: string}>) => {
     setPage(0)
@@ -68,7 +67,7 @@ const Groups: React.FC = () => {
 
   useEffect(() => {
     fetchGroups()
-  }, [page, query])
+  }, [fetchGroups])
 
   const exist = <div style={{ display: 'flex' }}>
     <img style={{ paddingRight: '16px' }} src={greenCircle} alt='Exist'/>

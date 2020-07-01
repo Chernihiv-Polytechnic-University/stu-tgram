@@ -1,5 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { formatISO } from 'date-fns'
+import React, {useCallback, useContext, useEffect, useState} from 'react'
 import {
   Container,
   Grid,
@@ -34,7 +33,7 @@ const Teachers: React.FC = () => {
     setPage(page + 1)
   }
 
-  const fetchFeedbacks = async () => {
+  const fetchFeedbacks = useCallback(async () => {
     const { result, isSuccess } = await client.getFeedbacks({ limit: ITEMS_PER_PAGE, page })
 
     if (!isSuccess) { return }
@@ -46,11 +45,11 @@ const Teachers: React.FC = () => {
     } else {
       setFeedbacks(old => [...old, ...result.docs])
     }
-  }
+  }, [page, client])
 
   useEffect(() => {
     fetchFeedbacks()
-  }, [page])
+  }, [fetchFeedbacks])
 
   console.log(feedbacks.length)
 

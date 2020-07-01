@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, {useCallback, useContext, useEffect, useState} from 'react'
 import { formatISO } from 'date-fns'
 import {
   Container,
@@ -12,7 +12,6 @@ import {
   TableCell,
   TableBody,
   ThemeProvider,
-  IconButton,
   makeStyles,
 } from '@material-ui/core'
 import TeacherInfo from './TeacherInfo'
@@ -20,7 +19,6 @@ import { AppContext } from '../../shared/reducer'
 import theme from '../../shared/theme'
 import styles from './styles'
 import { ITEMS_PER_PAGE } from './constants'
-import changeIcon from '../../assets/changeIcon.svg'
 import threeDottIcon from '../../assets/threeDottIcon.svg'
 import redCircle from '../../assets/redCircle.svg'
 import greenCircle from '../../assets/greenCircle.svg'
@@ -41,7 +39,7 @@ const Teachers: React.FC = () => {
     setPage(page + 1)
   }
 
-  const fetchTeachers = async () => {
+  const fetchTeachers = useCallback(async () => {
     const { result, isSuccess } = await client.getTeachers({ limit: ITEMS_PER_PAGE, page, query })
 
     if (!isSuccess) { return }
@@ -52,7 +50,7 @@ const Teachers: React.FC = () => {
     } else {
       setTeachers(old => [...old, ...result.docs])
     }
-  }
+  }, [page, query, client])
 
   const handleQueryChange: any = (event: React.ChangeEvent<{ value: string}>) => {
     setPage(0)
@@ -61,7 +59,7 @@ const Teachers: React.FC = () => {
 
   useEffect(() => {
     fetchTeachers()
-  }, [page, query])
+  }, [fetchTeachers])
 
   const hideTeacherInfo = () => {
     setTeacherId(null)

@@ -3,7 +3,7 @@ import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers'
 import DateFnsUtils from '@date-io/date-fns'
 import { uk } from 'date-fns/locale'
 import Paper from '../../../../components/Paper'
-import { Button, Grid, Typography } from '@material-ui/core'
+import { Grid } from '@material-ui/core'
 
 type ManageDateContainerProps = {
   firstOddWeekMondayDate: any

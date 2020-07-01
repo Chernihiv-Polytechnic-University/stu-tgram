@@ -20,7 +20,7 @@ const FileUploader: React.FC<FileUploaderProps> = ({ onFileUpload, isGenerating,
   const classes = useStyles()
 
   const { getRootProps, getInputProps, open, isDragAccept,
-    isDragActive, isDragReject, acceptedFiles, fileRejections } = useDropzone({
+    isDragActive, isDragReject, acceptedFiles } = useDropzone({
     noClick: true,
     noKeyboard: true,
     accept: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',

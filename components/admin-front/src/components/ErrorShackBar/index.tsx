@@ -1,5 +1,4 @@
-import React, { useContext } from 'react'
-import { AppActionType, AppContext, AppError } from '../../shared/reducer'
+import React from 'react'
 import { Snackbar } from '@material-ui/core'
 import { Alert } from '@material-ui/lab'
 

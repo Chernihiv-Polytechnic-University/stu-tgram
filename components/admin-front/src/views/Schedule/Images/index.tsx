@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, {useCallback, useContext, useEffect, useState} from 'react'
 import { Button, Grid } from '@material-ui/core'
 import Information from '../../../components/Information'
 import { AppContext } from '../../../shared/reducer'
@@ -31,7 +31,7 @@ const Images: React.FC = () => {
       })
   }
 
-  const fetchFirstOddWeekMondayDate = async () => {
+  const fetchFirstOddWeekMondayDate = useCallback(async () => {
     await client.getSystemSettings()
       .then((result: any) => {
         console.log(result)
@@ -39,7 +39,7 @@ const Images: React.FC = () => {
           setFirstOddWeekMondayDate(result.result.firstOddWeekMondayDate)
         }
       })
-  }
+  }, [client])
 
   const handleGeneratingClick = async () => {
     setGeneratingStart(true)
@@ -63,7 +63,7 @@ const Images: React.FC = () => {
 
   useEffect(() => {
     fetchFirstOddWeekMondayDate()
-  }, [])
+  }, [fetchFirstOddWeekMondayDate])
 
   return (<div>
     <Information>
@@ -75,7 +75,7 @@ const Images: React.FC = () => {
       Процес компіляції триває до 30 хвилин
     </Information>
     {isGeneratingFinished ? <GeneratingResultContainer isGeneratingSuccess={isGeneratingSuccess}/> : null}
-    {!isGeneratingStart && !isGeneratingSuccess || (!isGeneratingFinished && isGeneratingSuccess) ? <div>
+    {(!isGeneratingStart && !isGeneratingSuccess) || (!isGeneratingFinished && isGeneratingSuccess) ? <div>
       <ManageDateContainer
         firstOddWeekMondayDate={firstOddWeekMondayDate}
         handleDateChange={handleDateChange}/>
