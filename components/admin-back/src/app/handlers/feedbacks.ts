@@ -15,7 +15,7 @@ const mapInfo = (feedback: any) => ({
   ...feedback,
   author: mapAuthor(feedback.author),
   group: {
-    name: feedback.group && feedback.group
+    name: feedback.group && feedback.group[0]
       ? `${feedback.group[0].name}:${feedback.group[0].subgroupNumber}`
       : undefined
   }

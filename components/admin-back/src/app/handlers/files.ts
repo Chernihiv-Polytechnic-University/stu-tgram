@@ -1,6 +1,6 @@
 import { map as pMap, mapSeries } from 'bluebird'
 import { map, values, find, groupBy, flow, omit } from 'lodash/fp'
-import { parseLessonsSchedule, parseEducationSchedule, Lesson as ParsedLesson } from 'libs/xlsx-parser'
+import { parseEducationSchedule } from 'libs/xlsx-parser'
 import { createImageMaker } from 'libs/image-builder'
 import { createLogger } from 'libs/logger'
 import {
@@ -16,38 +16,6 @@ import * as catchUtil from '../utils/with-catch'
 
 const logger = createLogger(`#handlers/${__filename}`)
 const withCatch = catchUtil.withCatch(logger)
-
-const getGroupByGroupData = (groups: StudentsGroup[], data: StudentsGroupAttributes): StudentsGroup =>
-  find((g: StudentsGroup) => g.name === data.name && g.subgroupNumber === data.subgroupNumber)(groups) as StudentsGroup
-
-const buildLessonInsert = (groups: StudentsGroup[], lesson: ParsedLesson) =>
-  ({ ...omit(['group'])(lesson), groupId: getGroupByGroupData(groups, lesson.group)._id })
-
-const buildGroupsUpdateOptions = (groups: Partial<StudentsGroupAttributes>[]) =>
-  map((e: Partial<StudentsGroupAttributes>) => ({ updateOne: { filter: e, update: { $set: { ...e } }, upsert: true } }))(groups)
-
-const extractGroups = (lessons: ParsedLesson[]): any[] => flow(
-  map('group'),
-  groupBy((group: StudentsGroupAttributes) => `${group.name}${group.subgroupNumber}`),
-  map(values),
-  map('0'),
-)(lessons)
-
-export const uploadLessonsSchedule = withCatch(['files', 'upload_lessons', 'deprecated'], async (req, res) => {
-  const { buffer: fileBuffer } = req.file
-
-  const lessons: ParsedLesson[] = await parseLessonsSchedule(fileBuffer)
-  const parsedGroups = extractGroups(lessons)
-  const groupsBulkWriteOptions = buildGroupsUpdateOptions(parsedGroups)
-
-  await StudentsGroupModel.bulkWrite(groupsBulkWriteOptions)
-  const groups: StudentsGroup[] = await StudentsGroupModel.find({ name: { $in: map('name', parsedGroups) } }).exec()
-
-  await LessonModel.deleteMany({ groupId: { $in: map('_id', groups) } })
-  await LessonModel.create(lessons.map(lesson => buildLessonInsert(groups, lesson)))
-
-  res.status(204).send()
-})
 
 export const uploadEducationProcessSchedule = withCatch(['files', 'education_schedule'], async (req, res, next) => {
 

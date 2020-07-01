@@ -8,19 +8,15 @@
     "compile-component": "npm i && tsc -p tsconfig.json",
     "compile": "npm run clean && npm i && npm run compile-component"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://iskryzhytskyi@bitbucket.org/iskryzhytskyi/utb.git"
-  },
   "author": "a.iskryzhytskyi",
-  "license": "UNLICENSED",
-  "homepage": "https://bitbucket.org/iskryzhytskyi/utb#readme",
+  "license": "MIT",
+  "homepage": "https://github.com/anton-iskryzhytskyi/stu-tgram",
   "devDependencies": {
     "typescript": "^3.5.3",
     "@types/mongoose": "^5.5.15"
   },
   "dependencies": {
-    "mongoose": "^5.6.11",
+    "mongoose": "^5.7.5",
     "moment": "^2.24.0"
   }
 }

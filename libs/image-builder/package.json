@@ -9,13 +9,9 @@
     "compile-component": "tsc -p tsconfig.json && node ../../overlord/nodescripts/cp.js dist /src/app/education-process-schedule.html /src/app/lesson-schedule.html",
     "compile-libs": "node ../../overlord/nodescripts/compile-libs.js libs/image-builder domain-model"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://iskryzhytskyi@bitbucket.org/iskryzhytskyi/utb.git"
-  },
   "author": "a.iskryzhytskyi",
-  "license": "UNLICENSED",
-  "homepage": "https://bitbucket.org/iskryzhytskyi/utb#readme",
+  "license": "MIT",
+  "homepage": "https://github.com/anton-iskryzhytskyi/stu-tgram",
   "devDependencies": {
     "@types/handlebars": "^4.1.0",
     "@types/lodash": "^4.14.138",

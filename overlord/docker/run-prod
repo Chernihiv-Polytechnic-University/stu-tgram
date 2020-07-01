@@ -39,7 +39,7 @@ services:
     volumes:
       - ../config/proxy.nginx.prod.conf:/etc/nginx/conf.d/default.conf
     ports:
-      - '4040:80'
+      - '80:80'
     depends_on:
       - admin-back
       - admin-front

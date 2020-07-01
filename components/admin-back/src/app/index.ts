@@ -8,7 +8,6 @@ import * as helmet from 'helmet'
 import * as bodyParser from 'body-parser'
 import * as cookieParser from 'cookie-parser'
 import config from './config'
-import { timeout } from './middlewares/timeout'
 import { trace } from './middlewares/trace'
 import { logOnResponse } from './middlewares/log-on-end'
 import { init as initSocketManager } from './services/socket-manager'
@@ -41,7 +40,6 @@ const runApp = () => {
   app.use(helmet())
   app.use(cookieParser())
   app.use(compress())
-  app.use(timeout(60 * 30))
   app.use(trace)
   app.use(initSocketManager(socket).middleware)
   app.use(bodyParser.json({ limit: config('JSON_SIZE_LIMIT') }))

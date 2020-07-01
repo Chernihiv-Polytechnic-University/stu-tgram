@@ -83,9 +83,6 @@ const schema = {
     env: 'SCHEDULE_DB_BASE_URL',
     default: 11761,
   },
-  // baseUrl: 'https://vnz.osvita.net/BetaSchedule.asmx',
-  // universityId: 11761, // TODO to config
-  // chunkSize: 10, // TODO to config
 }
 
 const initConfig = <T>(definitions: T): (name: keyof T) => any => {

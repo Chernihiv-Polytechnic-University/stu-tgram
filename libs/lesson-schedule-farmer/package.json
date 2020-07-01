@@ -8,13 +8,9 @@
     "compile": "npm run clean && npm i && npm run compile-component",
     "compile-component": "tsc -p tsconfig.json"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://iskryzhytskyi@bitbucket.org/iskryzhytskyi/utb.git"
-  },
   "author": "a.iskryzhytskyi",
-  "license": "UNLICENSED",
-  "homepage": "https://bitbucket.org/iskryzhytskyi/utb#readme",
+  "license": "MIT",
+  "homepage": "https://github.com/anton-iskryzhytskyi/stu-tgram",
   "devDependencies": {
     "@types/bluebird": "^3.5.30",
     "@types/lodash": "^4.14.149",
