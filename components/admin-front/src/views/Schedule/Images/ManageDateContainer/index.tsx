@@ -11,11 +11,12 @@ type ManageDateContainerProps = {
 }
 
 const ManageDateContainer: React.FC<ManageDateContainerProps> = (
-  { handleDateChange, firstOddWeekMondayDate }) => {
-  
+  { handleDateChange, firstOddWeekMondayDate }
+) => {
+
   return <div>
     <Grid container justify='center'>
-      <Paper title='Встановлена дата:'>
+      <Paper title={`Встановлена дата: ${firstOddWeekMondayDate}`}>
         <MuiPickersUtilsProvider utils={DateFnsUtils} locale={uk}>
           <DatePicker
             autoOk
