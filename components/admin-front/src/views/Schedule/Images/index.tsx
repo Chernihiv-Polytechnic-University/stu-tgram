@@ -1,15 +1,16 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, {useCallback, useContext, useEffect, useState} from 'react'
 import { Button, Grid } from '@material-ui/core'
 import Information from '../../../components/Information'
 import { AppContext } from '../../../shared/reducer'
 import { formatISO, startOfWeek } from 'date-fns'
 import ManageDateContainer from './ManageDateContainer'
 import GeneratingProgressBar from './GeneratingProgressBar'
-import GeneratingResultContainer from "./GeneratingResultContainer";
+import GeneratingResultContainer from './GeneratingResultContainer'
 
 const Images: React.FC = () => {
-  const [firstOddWeekMondayDate, setFirstOddWeekMondayDate] = useState(startOfWeek(new Date(), { weekStartsOn: 1 }))
-  const [isSetDateSuccess, setSuccessSetDate] = useState<boolean>(false)
+  const [firstOddWeekMondayDate, setFirstOddWeekMondayDate] = useState(
+    formatISO(startOfWeek(new Date(), { weekStartsOn: 1 }), { representation: 'date' })
+  )
   const [isGeneratingStart, setGeneratingStart] = useState<boolean>(false)
   const [isGeneratingFinished, setGeneratingFinished] = useState<boolean>(false)
   const [isGeneratingSuccess, setGeneratingSuccess] = useState<boolean>(false)
@@ -17,31 +18,29 @@ const Images: React.FC = () => {
   const [done, setDone] = useState<number>(0)
   const { client } = useContext(AppContext)
 
-  const handleDateChange = (date: Date | null) => {
-    if (date === null) return
-    setFirstOddWeekMondayDate(date)
+  const handleDateChange = async (date: any) => {
+    if (!date) return
+
+    const next = formatISO(date, { representation: 'date' })
+
+    setFirstOddWeekMondayDate(next)
+
+    const { isSuccess } = await client.updateSystemSettings({ firstOddWeekMondayDate: next })
+
+    if (isSuccess) { return }
+
+    setFirstOddWeekMondayDate(firstOddWeekMondayDate)
   }
 
-  const handleSetDateClick = async () => {
-    await client.updateSystemSettings(formatISO(firstOddWeekMondayDate), { representation: 'date' })
-      .then((result: any) => {
-        if (result.isSuccess) {
-          setSuccessSetDate(true)
-          return
-        }
-        setSuccessSetDate(false)
-      })
-  }
-
-  const fetchFirstOddWeekMondayDate = async () => {
+  const fetchFirstOddWeekMondayDate = useCallback(async () => {
     await client.getSystemSettings()
       .then((result: any) => {
         console.log(result)
-        if (result.isSuccess && result.firstOddWeekMondayDate === null) {
-          setFirstOddWeekMondayDate(result.firstOddWeekMondayDate)
+        if (result.isSuccess && result.result.firstOddWeekMondayDate !== null) {
+          setFirstOddWeekMondayDate(result.result.firstOddWeekMondayDate)
         }
       })
-  }
+  }, [client])
 
   const handleGeneratingClick = async () => {
     setGeneratingStart(true)
@@ -65,7 +64,7 @@ const Images: React.FC = () => {
 
   useEffect(() => {
     fetchFirstOddWeekMondayDate()
-  }, [])
+  }, [fetchFirstOddWeekMondayDate])
 
   return (<div>
     <Information>
@@ -77,19 +76,19 @@ const Images: React.FC = () => {
       Процес компіляції триває до 30 хвилин
     </Information>
     {isGeneratingFinished ? <GeneratingResultContainer isGeneratingSuccess={isGeneratingSuccess}/> : null}
-    {!isGeneratingStart && !isGeneratingSuccess || (!isGeneratingFinished && isGeneratingSuccess) ? <div><ManageDateContainer
-      firstOddWeekMondayDate={firstOddWeekMondayDate}
-      handleSetDateClick={handleSetDateClick}
-      handleDateChange={handleDateChange}/>
-    <Grid container justify='center' direction='row'>
-      <Button
-        style={{ marginBottom: '66px' }}
-        variant='outlined'
-        onClick={handleGeneratingClick}
-        color='primary'>
+    {(!isGeneratingStart && !isGeneratingSuccess) || (!isGeneratingFinished && isGeneratingSuccess) ? <div>
+      <ManageDateContainer
+        firstOddWeekMondayDate={firstOddWeekMondayDate}
+        handleDateChange={handleDateChange}/>
+      <Grid container justify='center' direction='row'>
+        <Button
+          style={{ marginBottom: '66px' }}
+          variant='outlined'
+          onClick={handleGeneratingClick}
+          color='primary'>
           Генерувати зображення
-      </Button>
-    </Grid></div> : null}
+        </Button>
+      </Grid></div> : null}
     {isGeneratingStart ? <GeneratingProgressBar done={done} all={all}/> : null}
   </div>)
 }

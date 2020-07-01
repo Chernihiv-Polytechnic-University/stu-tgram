@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, {useCallback, useContext, useEffect, useState} from 'react'
 import {
   Button,
   Container,
@@ -46,15 +46,15 @@ const FAQ: React.FC = () => {
     setPage(page + 1)
   }
 
-  const fetchCategories: any = async () => {
+  const fetchCategories: any = useCallback(async () => {
     const { isSuccess, result } = await client.getInfoCategories(null)
 
     if (!isSuccess) { return }
     setCount(result.count)
     setCategories(map(result, 'category'))
-  }
+  }, [client])
 
-  const fetchQuestions: any = async () => {
+  const fetchQuestions: any = useCallback(async () => {
     const { result, isSuccess } = await client.getManyInfo({ limit: ITEMS_PER_PAGE, page, question: query })
 
     if (!isSuccess) { return }
@@ -64,7 +64,7 @@ const FAQ: React.FC = () => {
     } else {
       setQuestions(old => [...old, ...result.docs])
     }
-  }
+  }, [page, query, client])
 
   const refresh = () => {
     if (page !== 0) {
@@ -127,7 +127,7 @@ const FAQ: React.FC = () => {
   useEffect(() => {
     fetchCategories()
     fetchQuestions()
-  }, [page, query])
+  }, [fetchCategories, fetchQuestions])
 
   const deleteDialog = (
     <CustomDialog

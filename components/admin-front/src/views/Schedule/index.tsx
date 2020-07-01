@@ -1,17 +1,12 @@
 import React from 'react'
-import { ThemeProvider, Typography, Container, makeStyles } from '@material-ui/core'
+import { ThemeProvider, Typography, Container } from '@material-ui/core'
 import theme from '../../shared/theme'
 import ScheduleTabs from '../../components/SchedultTabs'
 import { RouteWithSubRoutes } from '../App'
 import { Switch } from 'react-router-dom'
-import styles from './styles'
-
-const useStyles = makeStyles(styles)
 
 const Schedule: React.FC<any> = (props) => {
   const { routes } = props
-
-  const classes = useStyles()
 
   return (<ThemeProvider theme={theme}>
     <Container>

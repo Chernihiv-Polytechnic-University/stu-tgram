@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, {useCallback, useContext, useEffect, useState} from 'react'
 import { UserAttributes, UserRole } from 'libs/domain-model'
 import {
   Button,
@@ -48,7 +48,7 @@ const Users: React.FC = () => {
     setPage(page + 1)
   }
 
-  const fetchUsers: any = async () => {
+  const fetchUsers: any = useCallback(async () => {
     const { result, isSuccess } = await client.getUsers({ limit: ITEMS_PER_PAGE, page })
     if (!isSuccess) { return }
     setCount(result.count)
@@ -57,7 +57,7 @@ const Users: React.FC = () => {
       return
     }
     setUsers([...users, ...result?.docs as []])
-  }
+  }, [client, page, users])
 
   const refresh: any = () => {
     if (page !== 0) {
@@ -104,9 +104,9 @@ const Users: React.FC = () => {
     validateInput(field, event.target.value)
   }
 
-  const handleCreateUser: any = async () => {
-    const { isSuccess } = await client.createUser(newUser)
-    if (isSuccess){
+  const handleCreateUser: any =async () => {
+    const {isSuccess} = await client.createUser(newUser)
+    if (isSuccess) {
       setUsers(prevUsers => prevUsers.concat(newUser))
       setUser(INITIAL_NEW_USER)
     }
@@ -115,7 +115,7 @@ const Users: React.FC = () => {
 
   useEffect(() => {
     fetchUsers()
-  }, [page])
+  }, [fetchUsers])
 
   const deleteDialog = (
     <CustomDialog

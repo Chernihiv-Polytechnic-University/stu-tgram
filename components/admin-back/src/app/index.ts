@@ -41,9 +41,10 @@ const runApp = () => {
   app.use(cookieParser())
   app.use(compress())
   app.use(trace)
-  app.use(logOnResponse(logger))
   app.use(initSocketManager(socket).middleware)
   app.use(bodyParser.json({ limit: config('JSON_SIZE_LIMIT') }))
+  app.use(logOnResponse(logger))
+
   initRoutes({ uploader })
     .then(router => app.use('/api/v1', router))
     .then(connectToDb)

@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react'
+import React, {useContext, useState, useEffect, useCallback} from 'react'
 import { StudentsGroupAttributes } from 'libs/domain-model'
 import {
   Container,
@@ -16,17 +16,17 @@ const TeacherInfo: React.FC<Params> = ({ groupId, onClose }: Params) => {
   const [info, setInfo] = useState<StudentsGroupAttributes | null>()
 
 
-  const fetchGroup = async () => {
+  const fetchGroup = useCallback(async () => {
     if (!groupId) { return }
     const { result, isSuccess } = await client.getGroup({ id: groupId, full: true })
     if (!isSuccess) { return }
 
     setInfo(result)
-  }
+  }, [groupId, client])
 
   useEffect(() => {
     fetchGroup()
-  }, [groupId])
+  }, [fetchGroup])
 
   return (
     <CustomDialog
@@ -38,8 +38,8 @@ const TeacherInfo: React.FC<Params> = ({ groupId, onClose }: Params) => {
     >
       <Container style={{ width: 848 }}>
         <div />
-        {info?.educationScheduleImage && <img src={`data:image/png;base64,${info.educationScheduleImage}`} />}
-        {info?.lessonsScheduleImage && <img src={`data:image/png;base64,${info.lessonsScheduleImage}`} />}
+        {info?.educationScheduleImage && <img alt='Educational schedule' src={`data:image/png;base64,${info.educationScheduleImage}`} />}
+        {info?.lessonsScheduleImage && <img alt='Lessons schedule' src={`data:image/png;base64,${info.lessonsScheduleImage}`} />}
       </Container>
 
     </CustomDialog>

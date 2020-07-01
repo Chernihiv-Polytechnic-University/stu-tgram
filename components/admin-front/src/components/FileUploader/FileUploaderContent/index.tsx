@@ -95,7 +95,6 @@ const FileUploaderContent: React.FC<FileUploaderContentProps> = (props) => {
     isFileRejected,
     fileName,
     isGeneratingFinished,
-    isGenerating,
     isSuccess } = props
 
   if (isDragActive && isDragAccept) return <ActiveAndAcceptContent/>
