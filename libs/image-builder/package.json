@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "handlebars": "^4.7.3",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "moment": "^2.24.0",
     "puppeteer": "^2.1.1"
   }
