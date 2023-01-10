@@ -34,7 +34,7 @@
   "dependencies": {
     "bluebird": "^3.5.5",
     "config": "^3.2.2",
-    "convict": "^5.2.0",
+    "convict": "^6.2.4",
     "dotenv": "^8.2.0",
     "lodash": "^4.17.15",
     "moment": "^2.24.0",
